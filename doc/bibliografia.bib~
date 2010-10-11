@@ -1,0 +1,42 @@
+@MastersThesis{FAG10,
+  author = 	 {"Sara Faggioni"},
+  title = 	 {"Strumenti Testuali e grafici per la specifica di reti di Petri"},
+  school = 	 {"Universit\'a degli Studi di Milano Bicocca"},
+  year = 	 {2010},
+}
+
+@Misc{PYTH,
+  author =       {"Python"},
+  howpublished = {http://www.python.org},
+}
+
+@Misc{PYTHCODESTYLE,
+  author =       {"Guido Von Rossum"},
+  howpublished = {http://www.python.org/dev/peps/pep-0008},
+  year =         {2000},
+}
+
+@Book{SUMMERFIELD,
+  author =       {"Mark Summerfield"},
+  title = 	 {"Programming in Python3"},
+  publisher = 	 {Addison Wesley},
+  year = 	 {2009}
+}
+
+@Article{WEB-KINDLER,
+  author = 	 {"Michael Weber and Ekkart Kindler"},
+  title = 	 {"The Petri Net Markup Language"},
+}
+
+@Article{KINDLER,
+  author = 	 {"Ekkart Kindler"},
+  title = 	 {"Concepts, Status, and Future Directionse"},
+  year =         {2006},
+}
+
+@Article{MURATA,
+  author = 	 {"Tadao Murata"},
+  title = 	 {"Petri Nets: Properties, Analysis and Applications"},
+  year =         {2006},
+}
+

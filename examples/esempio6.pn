@@ -1,0 +1,8 @@
+PetriNet philo1, philo2, fork1, fork2;
+Place philo1{pensa,ha_una_forchetta,mangia}, philo2{pensa,ha_una_forchetta,mangia}, fork1{free,busy}, fork2{free,busy};
+Transition philo1{prende_sx,prende_dx,rilascia}, philo2{prende_sx,prende_dx,rilascia}, fork1{get,rilascia}, fork2{get,riascia};
+philo1{pensa -> prende_sx -> ha_una_forchetta -> prende_dx -> mangia -> rilascia -> pensa};
+philo2{pensa -> prende_sx -> ha_una_forchetta -> prende_dx -> mangia -> rilascia -> pensa};
+fork1{free -> get -> busy -> rilascia -> free};
+fork2{free -> get -> busy -> rilascia -> free};
+show_nets;

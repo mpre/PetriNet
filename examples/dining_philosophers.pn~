@@ -1,0 +1,25 @@
+PetriNet philosophers[4], fork[4];
+Place philosophers{thinking, eating}, fork{p};
+Transition philosophers{start_thinking, start_eating}, fork{get, release};
+
+philosophers{thinking -> start_eating -> eating -> start_thinking -> thinking};
+fork{release -> p -> get};
+
+s1 = union(philosophers[0], fork[0]) on [start_eating = get, start_thinking = release];
+s1 = union(s1, fork[1]) on [start_eating = get, start_thinking = release];
+s2 = union(philosophers[1], fork[1]) on [start_eating = get, start_thinking = release];
+s2 = union(s2, fork[2]) on [start_eating = get, start_thinking = release];
+s3 = union(philosophers[2], fork[2]) on [start_eating = get, start_thinking = release];
+s3 = union(s3, fork[3]) on [start_eating = get, start_thinking = release];
+s4 = union(philosophers[3], fork[3]) on [start_eating = get, start_thinking = release];
+s4 = union(s4, fork[0]) on [start_eating = get, start_thinking = release];
+
+sys = union(s1, s2) on [fork__1__.free = fork__1__.free]
+
+
+temp1 = union(philosophers[0], philosophers[1]);
+temp2 = union(philosophers[2], philosophers[3]);
+temp3 = union(temp1, temp2);
+
+temp3 = union(temp3, s1) on [philosophers[0]_start_eating = get, philosopers[0]_start_thinking = release];
+temp3::to_pnml_pipe("~/reti/philo1.xml");

@@ -1,0 +1,23 @@
+PetriNet a,b;
+Place a::x(7),a::y,p1(3),p2, b::v, b::r;
+Transition a::r,t,a::trans, b::tre;
+show_nets;
+//show_nets;
+//show_links;
+//show_transitions;
+a::add(t);
+a::x ->(1) a::r ->(2) a::y -> a::t;
+a::trans ->(6) a::y;
+b::v -> b::tre -> b::r;
+p1 -> t -> p2;
+//show_links;
+//show_places;
+//show_nets;
+//show_links;
+//show_nets;
+show_nets;
+a::to_dot("/Users/tosh/Desktop/uno", "png");
+c = union(a,b) on [x=v,y=r];
+
+show_nets;
+c::to_dot("/Users/tosh/Desktop/c", "png");

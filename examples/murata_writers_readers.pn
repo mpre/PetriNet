@@ -1,0 +1,10 @@
+PetriNet net;
+Place net{reading, writing, p1(5), p3(5)};
+Transition net{t1, t2, t3, t4};
+
+net{p3 -> t1 -> reading -> t3 -> p3 | p3 ->(5) t2 -> writing -> t4 ->(5) p3};
+net{p1 -> t1 | p1 -> t2 | t3 -> p1 | t4 -> p1};
+
+net{p1=5, p3=5};
+
+net::to_pnml_pipe("~/reti/murata_writers_readers.xml");

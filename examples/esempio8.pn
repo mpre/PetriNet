@@ -1,0 +1,3 @@
+PetriNet net;
+//PetriNet[2] a;
+show_nets;

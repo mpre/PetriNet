@@ -1,0 +1,19 @@
+PetriNet produttore, consumatore, buffer;
+Place produttore::riposo, produttore::in_lavorazione;
+Place consumatore{in_attesa, usando};
+show_nets;
+Transition produttore::deposita, produttore::svegliati;
+Transition consumatore{preleva, attendi};
+show_nets;
+produttore{riposo -> svegliati -> in_lavorazione -> deposita | deposita -> riposo};
+consumatore{in_attesa -> preleva -> usando -> attendi -> in_attesa};
+
+Place buffer{pieno, vuoto};
+Transition buffer::put, buffer::get;
+
+buffer::vuoto -> buffer::put -> buffer::pieno -> buffer::get -> buffer::vuoto;
+
+uno = union(produttore,buffer) on [deposita=put];
+due = union(uno,consumatore) on [get=preleva];
+
+due::to_dot("/Users/tosh/Desktop/prod_cons","png");

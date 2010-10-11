@@ -1,0 +1,7 @@
+PetriNet n;
+Place n{a(5),b};
+Transition n{y,z};
+n{a->y->(2)b->z};
+n::to_pnml_pipe("~/Desktop/Reti_PetriNet/esempio7.xml");
+// n::to_dot("~/Desktop/Reti_PetriNet/esempio7");
+show_nets;

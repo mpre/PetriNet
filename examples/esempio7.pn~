@@ -1,0 +1,5 @@
+PetriNet net;
+Place net{a,b};
+Transition net{y,z};
+
+net::to_pnml("~/Desktop/Reti_PetriNet/esempio7.pnml")

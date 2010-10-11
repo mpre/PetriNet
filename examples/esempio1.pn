@@ -1,0 +1,15 @@
+PetriNet a,b,c;
+Place x,y,z,a::f,a::x,b::z;
+Transition t1,t2;
+
+a::add(t1);
+a::add(t2);
+show_nets;
+//Questo è un commento e non verrà cagato assolutamente
+a::remove(t1);
+a::to_dot("/Users/tosh/Desktop/uno", "png");
+b::to_dot("/Users/tosh/Desktop/due", "png");
+c::add(x);
+c::add(x);
+
+show_nets;

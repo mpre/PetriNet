@@ -1,0 +1,9 @@
+PetriNet philo[3], fork[3];
+Place philo{think, got_left, got_right, munch_munch}, fork{busy, free};
+Transition philo{get_left, get_right, eat, release}, fork{get, release};
+
+philo{ think -> get_left -> got_left -> get_right -> got_right -> eat -> munch_munch -> release -> think};
+fork{ free -> get -> busy -> release -> free};
+
+show_nets;
+

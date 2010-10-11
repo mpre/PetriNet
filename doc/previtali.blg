@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: previtali.aux
+The style file: alpha.bst
+Database file #1: bibliografia.bib
+Warning--empty journal in KINDLER
+Warning--empty journal in MURATA
+Warning--empty journal in WEB-KINDLER
+Warning--empty year in WEB-KINDLER
+You've used 7 entries,
+            2543 wiz_defined-function locations,
+            593 strings with 5036 characters,
+and the built_in function-call counts, 1899 in all, are:
+= -- 176
+> -- 67
+< -- 6
++ -- 18
+- -- 18
+* -- 96
+:= -- 330
+add.period$ -- 18
+call.type$ -- 7
+change.case$ -- 33
+chr.to.int$ -- 7
+cite$ -- 11
+duplicate$ -- 91
+empty$ -- 153
+format.name$ -- 31
+if$ -- 377
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 5
+newline$ -- 35
+num.names$ -- 21
+pop$ -- 60
+preamble$ -- 1
+purify$ -- 43
+quote$ -- 0
+skip$ -- 73
+stack$ -- 0
+substring$ -- 49
+swap$ -- 3
+text.length$ -- 6
+text.prefix$ -- 6
+top$ -- 0
+type$ -- 52
+warning$ -- 4
+while$ -- 15
+width$ -- 9
+write$ -- 77
+(There were 4 warnings)

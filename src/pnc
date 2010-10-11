@@ -1,0 +1,21 @@
+#! /bin/bash
+if [ $# -eq 0 ]
+then
+    echo "You must give at least INPUT file"
+    exit 1
+fi
+if [ $# -eq 1 ] 
+then
+    input_name=$1
+    output_name="$1.temp"
+else
+    if [ $# -eq 2 ]
+    then
+	input_name=$1
+	output_name=$2
+    fi
+fi
+./pnpre.py -i $input_name -o $output_name
+./PetriNet_parser.py -f $output_name
+rm $output_name
+exit 0

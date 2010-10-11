@@ -1,0 +1,32 @@
+PetriNet philo1, philo2, philo3, fork1,fork2,fork3;
+Place philo1{wait,got_left,got_right}, philo2{wait,got_left, got_right}, philo3{wait, got_left, got_right};
+Place fork1{busy,free}, fork2{busy,free}, fork3{busy,free};
+Transition philo1{get_left,get_right,release}, philo2{get_left,get_right,release}, philo3{get_left,get_right,release};
+Transition fork1{get,release}, fork2{get,release}, fork3{get,release};
+
+show_nets;
+
+philo1{wait->get_left->got_left->get_right->got_right->release->wait};
+philo2{wait -> get_left -> got_left -> get_right -> got_right -> release -> wait};
+philo3{wait -> get_left -> got_left -> get_right -> got_right -> release -> wait};
+
+fork1{free -> get -> busy -> release -> free};
+fork2{free -> get -> busy -> release -> free};
+fork3{free -> get -> busy -> release -> free};
+
+sys1 = union(fork1, fork2) on [release=release];
+philo_a = union(sys1, philo1) on [fork2_get=get_right, fork1_get=get_left, release=release];
+sys3 = union(fork2, fork3) on [release=release];
+philo_b = union(sys3, philo2) on [fork3_get=get_right, fork2_get=get_left, release=release];
+sys5 = union(fork3, fork1) on [release=release];
+philo_c = union(sys5, philo3) on [fork1_get=get_right, fork3_get=get_left, release=release];
+
+philo_a::to_dot("~/Desktop/Reti_PetriNet/philo_a", "png");
+philo_b::to_dot("~/Desktop/Reti_PetriNet/philo_b", "png");
+
+philo_a_b = union(philo_a, philo_b) on [fork2_free=fork2_free, fork2_busy=fork2_busy];
+philo_a_b::to_dot("~/Desktop/Reti_PetriNet/philo_a_b", "png");
+philo_a_b_c = union(philo_a_b,philo_c) on [fork3_free=fork3_free, fork3_busy=fork3_busy, fork1_free=fork1_free, fork1_busy=fork1_busy];
+philo_a_b_c::to_dot("~/Desktop/Reti_PetriNet/sys", "png");
+
+philo_a_b_c::to_pnml_pipe("~/Desktop/Reti_PetriNet/sys.xml");

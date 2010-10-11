@@ -1,0 +1,9 @@
+PetriNet net;
+Place net{p1, p2(5), p3};
+Transition net{t1, t2, t3};
+
+net{p1 -> t1 ->(3) p2 ->(3) t2 -> p3 -> t3 -> p1};
+
+net{p1=1, p2=3};
+
+net::to_pnml_pipe("~/reti/test_marcature.xml");

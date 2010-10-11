@@ -1,0 +1,23 @@
+PetriNet sender, receiver, buffer;
+Place sender{ready, waiting, hold_over}, receiver{waiting, busy, hold_over};
+Place buffer{msg_free, msg_busy, ack_free, ack_busy};
+
+Transition sender{produce_msg, send_msg, receive_ack}, receiver{receive_msg, send_ack, consume_msg};
+Transition buffer{push_msg, pop_msg, push_ack, pop_ack};
+
+sender{hold_over -> produce_msg -> ready -> send_msg -> waiting -> receive_ack -> hold_over};
+receiver{waiting -> receive_msg -> busy -> send_ack -> hold_over -> consume_msg -> waiting};
+buffer{msg_free -> push_msg -> msg_busy -> pop_msg -> msg_free | ack_free -> push_ack -> ack_busy -> pop_ack -> ack_free};
+
+sender{ready=1};
+receiver{waiting=1};
+buffer{msg_free=1, ack_free=1};
+
+show_places;
+
+s = union(sender, receiver);
+show_places;
+
+s = union(s, buffer) on [send_msg = push_msg, receive_ack = pop_ack, send_ack = push_ack, receive_msg = pop_msg];
+s::to_dot("~/Desktop/send_rec", "png");
+//s::to_pnml_pipe("~/reti/send_rec.xml");

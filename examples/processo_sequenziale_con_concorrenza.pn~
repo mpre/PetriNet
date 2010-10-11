@@ -1,0 +1,8 @@
+PetriNet net;
+Place net{p1,p2,p3};
+Transition net{t1,t2,t3,t4};
+
+// Modellazione flussi
+net{ p1 -> t1 -> p2 -> t2 -> p1 | p1 -> t3 -> p3 -> t4 -> p1};
+
+net::to_pnml_pipe("~/Reti_PetriNet/processo_seq_concorrenza.xml");

@@ -1,0 +1,7 @@
+PetriNet a,b,c;
+Place a::p1,a::p2,b::p1,b::p2;
+Transition a::t1,a::t2,b::t3,b::t4;
+a::p1->a::t1->a::p2->a::t2->a::p1;
+b::p1->b::t3->b::p2->b::t4->b::p1;
+c = union(a,b) on [t2=t4];
+c::to_dot("/Users/tosh/Desktop/c_new","png");

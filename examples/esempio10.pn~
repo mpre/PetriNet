@@ -1,0 +1,5 @@
+PetriNet a;
+Place a{x[5]};
+Transition a{y[5]};
+a{x[1] -> y[1]};
+show_nets;

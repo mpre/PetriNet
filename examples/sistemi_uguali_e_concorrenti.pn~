@@ -1,0 +1,13 @@
+PetriNet agente[2], risorsa;
+Place agente{attesa, lavoro}, risorsa{libera, occupata};
+Transition agente{prendi, rilascia}, risorsa{prendi, rilascia};
+
+agente{attesa -> prendi -> lavoro -> rilascia -> attesa};
+risorsa{libera -> prendi -> occupata -> rilascia -> libera};
+
+agente[0] = union(agente[0], risorsa) on [prendi = prendi, rilascia = rilascia];
+agente[1] = union(agente[1], risorsa) on [prendi = prendi, rilascia = rilascia];
+
+sys = union(agente[0],agente[1]) on [libera = libera, occupata = occupata];
+
+sys::to_pnml_pipe("~/reti/conc.xml");
