@@ -780,6 +780,7 @@ def p_element_list_string(p):
     
 def p_union(p):
     """expression : ID '=' LPAREN union_net_list RPAREN ON LSQBRACE union_element_list RSQBRACE SEMI
+                          | ARRAY_ID '=' LPAREN union_net_list RPAREN ON LSQBRACE union_element_list RSQBRACE SEMI
 
     """
     # union_net_list è la lista di N reti sulle quali si chiama l'unione
@@ -788,7 +789,13 @@ def p_union(p):
     # mentre l'ultimo è il nome dell'elemento nella nuova rete
     un_nets = p[4]
     un_el = p[8]
-    
+    # Il seguente codice serve per *salvarsi* dalle occasioni in cui ci si trova senza elementi
+    # su cui eseguire l'unione
+    if un_el == [[]]:
+        un_el[0] = []
+        for i in range(len(un_nets) +1):
+            un_el[0] += ['null']
+
     for element in un_el:
         if not len(element) == len(un_nets) + 1:
             print 'Error in union definition:', p[1]
@@ -820,7 +827,33 @@ def p_union(p):
                 
             elif element[i] != 'null':
                 print element[i], ' not in ',un_nets[i].name
+                print un_nets[i]
                 exit()
+    if argv['union_add_prefix'] == "True":
+        # Ora verranno aggiunti tutti i nomi agli elementi che non vengono sovrapposti
+        new_un = []
+        for n in un_nets:
+            new_net = copy.deepcopy(n)
+            for pl in n.places:
+                skip = False
+                for element in un_el:
+                    if pl.name in element:
+                        skip = True
+                if not skip:    
+                    new_pl = copy.deepcopy(pl)
+                    new_pl.name = '{0}{1}'.format(n.name, new_pl.name)
+                    new_net.replace_place(pl, new_pl)
+            for tr in n.transitions:
+                skip = False
+                for element in un_el:
+                    if tr.name in element:
+                        skip = True
+                if not skip:  
+                    new_tr = copy.deepcopy(tr)
+                    new_tr.name = '{0}{1}'.format(n.name, new_tr.name)
+                    new_net.replace_transition(tr, new_tr)
+            new_un += [new_net]
+        un_nets = new_un
     # A questo punto avremo che tutti i i posti e tutte le transizioni sono stati modificati
     # correttamente. Non ci resta che creare una nuova rete e aggiungere ogni posto esistente
     # nelle reti dell'unione.
@@ -834,7 +867,11 @@ def p_union(p):
                 new_net.add(t)
         for l in n.links:
             new_net.add(l)
-    nets[p[1]] = new_net
+    if p[1].__class__.__name__ == 'list':
+        place_name, place_dimension = p[1]
+        nets[place_name][place_dimension] = new_net
+    else:
+        nets[p[1]] = new_net;
     print 'p_union'
 
 def p_union_element_list(p):
@@ -849,13 +886,19 @@ def p_union_element_list(p):
 
 def p_element_eq_list(p):
     """ element_eq_list : ID '=' element_eq_list
-                                  | ID AS element_eq_list
-                                  | ID
+                                  | ID AS ID
+                                  |
     """
-    ids = [p[1]]
-    if len(p) > 2:
-        ids += p[3]
-    p[0] = ids
+    if len(p) > 1:
+        ids = [p[1]]
+        if len(p) > 2:
+            if p[2] == '=':
+                ids += p[3]
+            else:
+                ids += [p[3]]
+            p[0] = ids
+    else:
+        p[0] = []
         
 def p_union_net_list(p):
     """ union_net_list : ID OR union_net_list
@@ -865,13 +908,24 @@ def p_union_net_list(p):
     net_list = []
     if p[1].__class__.__name__ == 'list':
         net_name, net_position = p[1]
-        net_list += [nets[net_name][net_position]]
+        temp = copy.deepcopy(nets[net_name][net_position])
+        net_list += [temp]
     else:
-        net_list += [nets[p[1]]]
+        temp = copy.deepcopy(nets[p[1]])
+        net_list += [temp]
     if len(p) > 2:
         net_list += p[3]
     print 'p_union_net_list'
     p[0] = net_list
+
+#===============================================================================
+# # Direttive al preprocessore
+#===============================================================================
+def p_preprocess_directive(p):
+    """expression : '#' ID '=' ID"""
+    argv[p[2]] = p[4]
+    print 'p_preprocess_directive'
+
 #===============================================================================
 # # Commenti
 #===============================================================================
@@ -1060,8 +1114,15 @@ def main():
     arg_par.add_option("-i", "--interactive", action="store_true",
                        dest="interactive", default=False,
                        help="Esegue il parser in modo interattivo (in questo caso il file passato non viene preso in considerazione")
+    arg_par.add_option("-p", "--add-prefix", action="store_true",
+                       dest="union_add_prefix", default=False,
+                       help="Se l'opzione viene scelta, nell'unione viene aggiunto come prefisso il nome della rete ad ogni posto ed ad ogni transizione ")
     opts, args = arg_par.parse_args()
+    # Effettuo il seguente passaggio di argomenti perché anche dichiarando
+    # opts all'esterno della funzione main() non riesco a vedere i suoi valori
+    # nella funzione union
     argv['union_type'] = opts.union_type
+    argv['union_add_prefix'] = opts.union_add_prefix
     if not opts.interactive:
         try: 
             data=open(opts.input_file, 'r') #apertura del file in lettura

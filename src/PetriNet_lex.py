@@ -24,12 +24,12 @@ reserved = {
     #"to" :  "TO", 
     #"in": "IN", 
     "on":"ON", 
-    "union":"UNION", 
+    #"union":"UNION", 
     "as" : "AS"
     #            "M0" : "M0"
             }
             
-literals = ['=', ',', '.', '>', '|']
+literals = ['=', ',', '.', '>', '|','#']
 #tokens
 tokens = [ 
           "ID", 
@@ -45,7 +45,8 @@ tokens = [
           "SEMI",
           "COMMENT",
           "DDOT",
-          "OR"
+          "OR",
+    "IDDOT"
           #"FUNCTION_ID"
            ] + list(reserved.values())
           
@@ -104,7 +105,6 @@ def t_COMMENT(t):
 def t_STRING(t):
     r'\".*\"'
     return t
-
 #costruzione del lexer
 lexer=lex.lex() 
 #data = '''//ciao
