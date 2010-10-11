@@ -4,6 +4,7 @@ import ply.yacc as yacc
 import PetriNet
 import sys
 import copy
+import optparse
 
 precedence = (('left', 'ON'), ('left',  'SEMI'))
 
@@ -14,6 +15,7 @@ links = {} # Tupla dei links *liberi* da rete
 #foo = [] # Tupla utilizzata per passare valori all'interno di chiamate tra varie regole
 # Regole per il parsing
 
+argv = {}
 #===============================================================================
 # # Regole per le nuove reti
 #===============================================================================
@@ -786,9 +788,53 @@ def p_union(p):
     # mentre l'ultimo è il nome dell'elemento nella nuova rete
     un_nets = p[4]
     un_el = p[8]
-    for el_list in un_el:
-        if not len(el_list) == len(un_nets) + 1:
+    
+    for element in un_el:
+        if not len(element) == len(un_nets) + 1:
             print 'Error in union definition:', p[1]
+            exit()
+        cap, mark = None, None
+        for i in range(len(element) -1):
+            if PetriNet.Place(element[i]) in un_nets[i].places:
+                index = un_nets[i].places.index(PetriNet.Place(element[i]))
+                if argv['union_type'] == 'only_when_equal':
+                    
+                    if cap == None:
+                        cap = un_nets[i].places[index].capacity
+                    else:
+                        if cap !=  un_nets[i].places[index].capacity:
+                            print element[i],' capacity not equal to other one'
+                            exit()
+                    if mark == None:
+                        mark =  un_nets[i].places[index].mark
+                    else:
+                        if mark !=  un_nets[i].places[index].mark:
+                            print element[i],' mark not equal to other one'
+                            exit()
+                new_place = PetriNet.Place(element[len(element) -1], un_nets[i].places[index].capacity, un_nets[i].places[index].mark)
+                un_nets[i].replace_place(un_nets[i].places[index], new_place)
+            elif PetriNet.Transition(element[i]) in un_nets[i].transitions:
+                index = un_nets[i].transitions.index(PetriNet.Transition(element[i]))
+                new_trans = PetriNet.Transition(element[len(element) -1])
+                un_nets[i].replace_transition(un_nets[i].transitions[index], new_trans)
+                
+            elif element[i] != 'null':
+                print element[i], ' not in ',un_nets[i].name
+                exit()
+    # A questo punto avremo che tutti i i posti e tutte le transizioni sono stati modificati
+    # correttamente. Non ci resta che creare una nuova rete e aggiungere ogni posto esistente
+    # nelle reti dell'unione.
+    new_net = PetriNet.PetriNet(p[1])
+    for n in un_nets:
+        for pl in n.places:
+            if not pl in new_net.places:
+                new_net.add(pl)
+        for t in n.transitions:
+            if not t in new_net.transitions:
+                new_net.add(t)
+        for l in n.links:
+            new_net.add(l)
+    nets[p[1]] = new_net
     print 'p_union'
 
 def p_union_element_list(p):
@@ -1001,38 +1047,43 @@ def net_trans(net, trans_name):
 #===============================================================================
 from PetriNet_lex import tokens
 
-if len(sys.argv)>1:
-    if sys.argv[1] == "-f":
-        # Questa porcheria non l'ho scritta io.
-        #
-        # Io conosco il modulo optparse.
-        # Lascio tutto come ho trovato in modo che i posteri possano
-        # dannarsi. Lettore, per favore, se tu mai dovrai scrivere
-        # qualcosa che sia utilizzabile da riga di comando, leggiti
-        # la pagina su optparse che puoi facilmente trovare ad [1].
-        #
-        # Nota: da Python 2.7 optparse diventerà deprecato, già che ci
-        # sei dai un'occhiata a [2]
-        #
-        # [1] http://docs.python.org/library/optparse.html
-        # [2] http://docs.python.org/library/argparse.html
+def main():
+    usage = "usage: %prog [-f INPUT_FILE] [-u UNION_STYLE] "
+    arg_par = optparse.OptionParser(usage=usage)
+    arg_par.add_option("-u", "--union-type", action="store",
+                       type="choice", dest="union_type", choices=("only_when_equal", "override"),
+                       default="only_when_equal",
+                       help="Rappresenta il comportamento nell'unione su posti. \n only_when_equal[default]: permette l'unione solo se i posti hanno la stessa marcatura e la stessa capacita' \n override: il posto avra' capacita' e marcatura del primo posto dichiarato")
+    arg_par.add_option("-f", "--file", action="store",
+                       type="string", dest="input_file",
+                       help="File su cui richiamare il parser")
+    arg_par.add_option("-i", "--interactive", action="store_true",
+                       dest="interactive", default=False,
+                       help="Esegue il parser in modo interattivo (in questo caso il file passato non viene preso in considerazione")
+    opts, args = arg_par.parse_args()
+    argv['union_type'] = opts.union_type
+    if not opts.interactive:
         try: 
-            data=open(sys.argv[2], 'r') #apertura del file in lettura
+            data=open(opts.input_file, 'r') #apertura del file in lettura
         except IOError: 
             print "Problem in opening the file"
-        
+
+
         yacc.yacc() #faccio partire il parser
         s=data.readlines() #s è un array di tutte le righe del file
         for riga in s: #per tutte le righe eseguo il parsing
             if riga != '': 
                 yacc.parse(riga+'\n') 
-else:
-    yacc.yacc() 
-    while 1: 
-        try: #inserisco i comandi da riga di comando
-            s = raw_input('petriNet > ') 
-        except EOFError:
-            break 
-        if s=="":
-            break
-        yacc.parse(s+'\n')  
+    else:
+        yacc.yacc() 
+        while 1: 
+            try: #inserisco i comandi da riga di comando
+                s = raw_input('petriNet > ') 
+            except EOFError:
+                break 
+            if s=="":
+                break
+            yacc.parse(s+'\n')  
+
+if __name__ == "__main__":
+    main()
