@@ -1,2 +1,1 @@
 - Creare un tipo di Eccezione all'interno del file PetriNet.py. L'utilzzo di Exception è scoraggiato
-- RIFARE UNIONE USANDO "ON [ELEMENTO1 = ELEMENTO2 AS NOME, ELEMENTO3 = ....]"
