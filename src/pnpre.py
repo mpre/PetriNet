@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import optparse
+import copy
 
 def find_expand(text, var={}):
     """Trova i cicli for e li espande ricorsivamente"""
@@ -59,8 +60,10 @@ def expand(text, var):
     while len(text) != 0:
         if "[" in text:
             expanded_txt = expanded_txt + text[:text.find("[") + 1]
-            expanded_txt = expanded_txt + str(simplify(text[text.find("[") + 1: text.find("]")], var)) + "]"
-            text = text[text.find("]") + 1:]
+            #print text[text.find("["): find_balanced_rsqbrace(text[text.find("["))]
+            print text[text.find("[") + 1: find_balanced_rsqbrace(text, text.find("["))]
+            expanded_txt = expanded_txt + str(simplify(expand(text[text.find("[") + 1: find_balanced_rsqbrace(text, text.find("["))], var), var)) + "]"
+            text = text[find_balanced_rsqbrace(text,text.find("[")) + 1:]
         else:
             expanded_txt = expanded_txt + text
             text = ""
@@ -84,31 +87,60 @@ def find_balanced_rbrace(text, begin = 0):
             index = index + 1
     if index == len(text):
         raise Exception("Unbalanced {")
+
+def find_balanced_rsqbrace(text, begin = 0):
+    """Trova l'indice della [ bilanciata con la prima { trovata in text a partire dall'indice begin"""
+    deep = -1
+    index = begin
+    for char in text[begin:]:
+        if char == "]" and deep == 0:
+            return index
+        elif char == "]":
+            deep = deep - 1
+            index = index + 1
+        elif char == "[":
+            deep = deep + 1
+            index = index + 1
+        else:
+            index = index + 1
+    if index == len(text):
+        raise Exception("Unbalanced [")
         
-def simplify(exp, var):
+def simplify(exp, vars):
     """Semplifica l'espressione exp con i valori delle variabili contenuti nel dizionario var"""
     # Se leggendo qui sotto ti chiedi cosa stiano a significare
     # car e cdr... beh, è meglio che ti dai una ripassata
     # al corso di Linguaggi di programmazione
+    print exp
     try:
         exp = int(exp)
         return exp
     except Exception:
+        app = copy.deepcopy(exp)
         exp = exp.replace(" ","").replace("\t", "")
-        if "+" in exp:
-            car, cdr = exp.split("+", 1)
-            return simplify(car, var) + simplify(cdr, var)
-        elif "-" in exp:
-            car, cdr = exp.split("-", 1)
-            return simplify(car, var) - simplify(cdr, var)
-        elif "*" in exp:
-            car, cdr = exp.split("*", 1)
-            return simplify(car, var) * simplify(cdr, var)
+        if "%" in exp:
+            car, cdr = exp.split("%", 1)
+            return simplify(car, vars) % simplify(cdr, vars)
         elif "/" in exp:
             car, cdr = exp.split("/", 1)
-            return simplify(car, var) / simplify(cdr, var)
+            return simplify(car, vars) / simplify(cdr, vars)
+        elif "*" in exp:
+            car, cdr = exp.split("*", 1)
+            return simplify(car, vars) * simplify(cdr, vars)
+        elif "+" in exp:
+            car, cdr = exp.split("+", 1)
+            return simplify(car, vars) + simplify(cdr, vars)
+        elif "-" in exp:
+            car, cdr = exp.split("-", 1)
+            return simplify(car, vars) - simplify(cdr, vars)
         else:
-            return int(var[exp])
+            try:
+                if str(exp) in vars:
+                    return int(vars[exp])
+                else:
+                    return app
+            except Exception:
+                return app
 
 def reached_conds(end_conds, var):
     """Ritorna vero se almeno una condizione di end_conds è stata raggiunta"""
@@ -142,6 +174,8 @@ def dictionarize(conds):
         cond = cond.replace(" ","").replace("\t","")
         if "==" in cond:
             cond_name, cond_value = cond.split("==")
+        elif "%" in cond:
+            cond_name, cond_value = cond.split("%")
         elif "+=" in cond:
             cond_name, cond_value = cond.split("+=")
         elif "-=" in cond:
@@ -169,6 +203,8 @@ def dictionarize(conds):
             
         if "==" in cond:
             new_conds = new_conds + ["{0}=={1}".format(cond_name, cond_value)]
+        elif "%" in cond:
+            new_conds = new_conds + ["{0}%{1}".format(cond_name, cond_value)]
         elif "+=" in cond:
             new_conds = new_conds + ["{0}+={1}".format(cond_name, cond_value)]
         elif "-=" in cond:

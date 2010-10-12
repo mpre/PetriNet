@@ -25,7 +25,8 @@ reserved = {
     #"in": "IN", 
     "on":"ON", 
     #"union":"UNION", 
-    "as" : "AS"
+    "as" : "AS",
+    "id_in_id" : "ID_IN_ID"
     #            "M0" : "M0"
             }
             
@@ -64,6 +65,10 @@ t_DDOT = r'::'
 t_OR = r'\|'
 #caratteri ignorati, spazi e tab
 t_ignore = ' \t'
+
+def t_ID_IN_ID(t):
+    r'[a-zA-Z][_a-zA-Z0-9]*[\[[0-9][0-9]*\]]*.[a-zA-Z][_a-zA-Z0-9]*'
+    return t
 
 # Identificatore di array
 def t_ARRAY_ID(t):
@@ -105,6 +110,7 @@ def t_COMMENT(t):
 def t_STRING(t):
     r'\".*\"'
     return t
+
 #costruzione del lexer
 lexer=lex.lex() 
 #data = '''//ciao

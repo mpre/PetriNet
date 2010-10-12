@@ -841,7 +841,7 @@ def p_union(p):
                         skip = True
                 if not skip:    
                     new_pl = copy.deepcopy(pl)
-                    new_pl.name = '{0}{1}'.format(n.name, new_pl.name)
+                    new_pl.name = '{0}.{1}'.format(n.name, new_pl.name)
                     new_net.replace_place(pl, new_pl)
             for tr in n.transitions:
                 skip = False
@@ -850,7 +850,7 @@ def p_union(p):
                         skip = True
                 if not skip:  
                     new_tr = copy.deepcopy(tr)
-                    new_tr.name = '{0}{1}'.format(n.name, new_tr.name)
+                    new_tr.name = '{0}.{1}'.format(n.name, new_tr.name)
                     new_net.replace_transition(tr, new_tr)
             new_un += [new_net]
         un_nets = new_un
@@ -886,6 +886,7 @@ def p_union_element_list(p):
 
 def p_element_eq_list(p):
     """ element_eq_list : ID '=' element_eq_list
+                                  | ID AS ID_IN_ID
                                   | ID AS ID
                                   |
     """
@@ -922,7 +923,7 @@ def p_union_net_list(p):
 # # Direttive al preprocessore
 #===============================================================================
 def p_preprocess_directive(p):
-    """expression : '#' ID '=' ID"""
+    """expression : '#' ID '=' ID SEMI"""
     argv[p[2]] = p[4]
     print 'p_preprocess_directive'
 
