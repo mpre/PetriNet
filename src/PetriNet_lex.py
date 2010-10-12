@@ -26,7 +26,8 @@ reserved = {
     "on":"ON", 
     #"union":"UNION", 
     "as" : "AS",
-    "id_in_id" : "ID_IN_ID"
+    "id_in_id" : "ID_IN_ID",
+    "id_in_id_no_arr" : "ID_IN_ID_NO_ARR"
     #            "M0" : "M0"
             }
             
@@ -66,8 +67,17 @@ t_OR = r'\|'
 #caratteri ignorati, spazi e tab
 t_ignore = ' \t'
 
+# Questa regola serve per poter ricavare elementi del tipo nome[indice].attributo
+# è utile nell'unione di reti per poter definire il nome in cui gli elementi condivisi verranno
+# salvati in modo da far capire a quale rete ci è riferita l'azione o lo stato.
 def t_ID_IN_ID(t):
-    r'[a-zA-Z][_a-zA-Z0-9]*[\[[0-9][0-9]*\]]*.[a-zA-Z][_a-zA-Z0-9]*'
+    r'[a-zA-Z][_a-zA-Z0-9]*[\[[0-9][0-9]*\]]*\.[a-zA-Z][_a-zA-Z0-9]*'
+    return t
+
+# Questa regola serve per poter ricavare elementi del tipo nome.attributo
+# dovrebbe essere possibile integrarla nella precedente.
+def t_ID_IN_ID_NO_ARR(t):
+    r'[a-zA-Z][_a-zA-Z0-9]*\.[a-zA-Z][_a-zA-Z0-9]*'
     return t
 
 # Identificatore di array

@@ -64,11 +64,11 @@ def p_place_list_id(p):
     if p[1].__class__.__name__ == 'list':
         place_name, place_dimension = p[1]
         if not place_name in places and not place_name in transitions:
-            places[place_name] = [PetriNet.Place('{0}[{1}]'.format(place_name, i)) for i in range(place_dimension)]
+            places[place_name] = [PetriNet.Place('{0}[{1}]'.format(place_name, i), argv['default_place_capacity']) for i in range(place_dimension)]
         else:
             print 'It seems that element {0} is already declared'.format(place_name)
     else:
-        place = PetriNet.Place(str(p[1]))
+        place = PetriNet.Place(str(p[1]), argv['default_place_capacity'])
         if not place in places.values() and not place.name in transitions:
             places[place.name] = place
         else:
@@ -224,12 +224,12 @@ def p_place_list_in_net(p):
             # Ultimo ID di array di posti, senza capacità
             p[0] = []
             for i in range(place_dim):
-                p[0] += ['{0}[{1}]'.format(place_name, i), 1]
+                p[0] += ['{0}[{1}]'.format(place_name, i), argv['default_place_capacity']]
         elif p[2] == ',':
             # ID di array di posti senza capacità
             p[0] = []
             for i in range(place_dim):
-                p[0] += ['{0}[{1}]'.format(place_name, i), 1]
+                p[0] += ['{0}[{1}]'.format(place_name, i), argv['default_place_capacity']]
             p[0] += p[3]
         elif len(p)  == 5:
             # Ultimo ID di array di posti con capacità
@@ -245,10 +245,10 @@ def p_place_list_in_net(p):
     else:
         if len(p) == 2:
             # Ultimo ID di posto, senza capacità
-            p[0] = [str(p[1]), 1]
+            p[0] = [str(p[1]), argv['default_place_capacity']]
         elif p[2] == ',':
             # ID di posto senza capacità
-            p[0] = [str(p[1]), 1]
+            p[0] = [str(p[1]), argv['default_place_capacity']]
             p[0] += p[3]
         elif len(p)  == 5:
             # Ultimo ID di posto con capacità
@@ -887,6 +887,7 @@ def p_union_element_list(p):
 def p_element_eq_list(p):
     """ element_eq_list : ID '=' element_eq_list
                                   | ID AS ID_IN_ID
+                                  | ID AS ID_IN_ID_NO_ARR
                                   | ID AS ID
                                   |
     """
@@ -923,8 +924,15 @@ def p_union_net_list(p):
 # # Direttive al preprocessore
 #===============================================================================
 def p_preprocess_directive(p):
-    """expression : '#' ID '=' ID SEMI"""
-    argv[p[2]] = p[4]
+    """expression : '#' ID '=' ID SEMI
+                          | '#' ID '=' NUMBER SEMI"""
+    if p[2] == 'default_place_capacity':
+        if str(p[4]) == 'unlimited':
+            argv[p[2]] = sys.maxint
+        else:
+            argv[p[2]] = p[4]
+    else:
+        argv[p[2]] = p[4]
     print 'p_preprocess_directive'
 
 #===============================================================================
@@ -1074,6 +1082,7 @@ def p_element_value_list(p):
 
 def net_place(net, place_name, place_cap=1):
     """Aggiunge un posto di nome place_name e capacità place_cap alla rete net"""
+    place_cap = argv['default_place_capacity']
     place = PetriNet.Place(place_name, place_cap)
     if not place in net.places and not PetriNet.Transition(place_name) in net.transitions:
         net.add(place)
@@ -1124,6 +1133,7 @@ def main():
     # nella funzione union
     argv['union_type'] = opts.union_type
     argv['union_add_prefix'] = opts.union_add_prefix
+    argv['default_place_capacity'] = 1
     if not opts.interactive:
         try: 
             data=open(opts.input_file, 'r') #apertura del file in lettura

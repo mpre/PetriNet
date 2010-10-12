@@ -17,5 +17,5 @@ else
 fi
 ./pnpre.py -i $input_name -o $output_name
 ./PetriNet_parser.py -f $output_name
-#rm $output_name
+rm $output_name
 exit 0
