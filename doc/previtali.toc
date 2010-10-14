@@ -45,29 +45,33 @@
 \contentsline {subsection}{\numberline {3.1.5}Commenti}{22}
 \contentsline {subsection}{\numberline {3.1.6}Marcatura iniziale}{22}
 \contentsline {section}{\numberline {3.2}Nuove funzionalit\IeC {\`a} di PetriNet}{23}
-\contentsline {subsection}{\numberline {3.2.1}Array di reti}{23}
+\contentsline {subsection}{\numberline {3.2.1}Direttive al parser}{23}
+\contentsline {subsection}{\numberline {3.2.2}Array di reti}{24}
 \contentsline {subsubsection}{Dichiarazione}{24}
-\contentsline {subsubsection}{Modellazione}{24}
-\contentsline {subsection}{\numberline {3.2.2}Dichiarazione di posti}{25}
-\contentsline {subsubsection}{Posti con pesi}{26}
+\contentsline {subsubsection}{Modellazione}{25}
+\contentsline {subsection}{\numberline {3.2.3}Dichiarazione di posti}{26}
+\contentsline {subsubsection}{Posti con pesi}{27}
 \contentsline {subsubsection}{Array di posti}{27}
-\contentsline {subsection}{\numberline {3.2.3}Transizioni}{27}
-\contentsline {subsubsection}{Array di transizioni}{27}
-\contentsline {subsection}{\numberline {3.2.4}Definizione flussi}{28}
-\contentsline {subsubsection}{Archi pesati}{29}
-\contentsline {subsection}{\numberline {3.2.5}Unione di reti}{29}
-\contentsline {section}{\numberline {3.3}Moduli Python}{30}
-\contentsline {subsection}{\numberline {3.3.1}Stile di programmazione}{31}
-\contentsline {subsection}{\numberline {3.3.2}PetriNet.py}{31}
-\contentsline {subsubsection}{PetriNetElement}{31}
-\contentsline {subsubsection}{Place}{32}
-\contentsline {subsubsection}{Transition}{32}
-\contentsline {subsubsection}{Link}{32}
-\contentsline {subsubsection}{PetriNet}{32}
-\contentsline {subsection}{\numberline {3.3.3}PetriNet\_lex.py}{33}
-\contentsline {subsection}{\numberline {3.3.4}PetriNet\_parser.py}{34}
-\contentsline {chapter}{\numberline {4}Esempi di utilizzo}{35}
-\contentsline {section}{\numberline {4.1}Processo sequenziale ciclico}{35}
-\contentsline {section}{\numberline {4.2}Processi concorrenti su di una risorsa}{36}
-\contentsline {section}{\numberline {4.3}Comunicazione tra due processi}{37}
-\contentsline {section}{\numberline {4.4}Problema lettori/scrittori}{38}
+\contentsline {subsection}{\numberline {3.2.4}Transizioni}{28}
+\contentsline {subsubsection}{Array di transizioni}{28}
+\contentsline {subsection}{\numberline {3.2.5}Definizione flussi}{28}
+\contentsline {subsubsection}{Archi pesati}{30}
+\contentsline {subsection}{\numberline {3.2.6}Unione di reti}{31}
+\contentsline {subsection}{\numberline {3.2.7}Ciclo for}{32}
+\contentsline {section}{\numberline {3.3}Moduli Python}{32}
+\contentsline {subsection}{\numberline {3.3.1}Stile di programmazione}{32}
+\contentsline {subsection}{\numberline {3.3.2}PetriNet.py}{32}
+\contentsline {subsubsection}{PetriNetElement}{33}
+\contentsline {subsubsection}{Place}{33}
+\contentsline {subsubsection}{Transition}{33}
+\contentsline {subsubsection}{Link}{34}
+\contentsline {subsubsection}{PetriNet}{34}
+\contentsline {subsection}{\numberline {3.3.3}PetriNet\_lex.py}{34}
+\contentsline {subsection}{\numberline {3.3.4}PetriNet\_parser.py}{36}
+\contentsline {subsection}{\numberline {3.3.5}pnpre.py}{36}
+\contentsline {subsection}{\numberline {3.3.6}pnc}{36}
+\contentsline {chapter}{\numberline {4}Esempi di utilizzo}{37}
+\contentsline {section}{\numberline {4.1}Processo sequenziale ciclico}{37}
+\contentsline {section}{\numberline {4.2}Processi concorrenti su di una risorsa}{38}
+\contentsline {section}{\numberline {4.3}Comunicazione tra due processi}{39}
+\contentsline {section}{\numberline {4.4}Problema lettori/scrittori}{40}

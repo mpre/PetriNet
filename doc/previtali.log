@@ -1,15 +1,20 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.9.6)  8 SEP 2010 18:16
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.5.11)  14 OCT 2010 12:21
 entering extended mode
- restricted \write18 enabled.
  %&-line parsing enabled.
 **previtali
 (./previtali.tex
 LaTeX2e <2009/09/24>
 Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
-yphenation, loaded.
-(/usr/share/texmf-texlive/tex/latex/base/book.cls
+yphenation, german-x-2009-06-19, ngerman-x-2009-06-19, ancientgreek, ibycus, ar
+abic, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danish, dutc
+h, esperanto, estonian, farsi, finnish, french, galician, german, ngerman, mono
+greek, greek, hungarian, icelandic, indonesian, interlingua, irish, italian, ku
+rmanji, latin, latvian, lithuanian, mongolian, mongolian2a, bokmal, nynorsk, po
+lish, portuguese, romanian, russian, sanskrit, serbian, slovak, slovenian, span
+ish, swedish, turkish, ukenglish, ukrainian, uppersorbian, welsh, loaded.
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/book.cls
 Document Class: book 2007/10/19 v1.4h Standard LaTeX document class
-(/usr/share/texmf-texlive/tex/latex/base/bk10.clo
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/bk10.clo
 File: bk10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -25,37 +30,32 @@ File: bk10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/usr/share/texmf-texlive/tex/generic/babel/babel.sty
+(/usr/local/texlive/2009/texmf-dist/tex/generic/babel/babel.sty
 Package: babel 2008/07/06 v3.8l The Babel package
 
-(/usr/share/texmf-texlive/tex/generic/babel/italian.ldf
+(/usr/local/texlive/2009/texmf-dist/tex/generic/babel/italian.ldf
 Language: italian 2008/03/14 v1.2t Italian support from the babel system
 
-(/usr/share/texmf-texlive/tex/generic/babel/babel.def
+(/usr/local/texlive/2009/texmf-dist/tex/generic/babel/babel.def
 File: babel.def 2008/07/06 v3.8l Babel common definitions
 \babel@savecnt=\count88
 \U@D=\dimen103
 )
-
-Package babel Warning: No hyphenation patterns were loaded for
-(babel)                the language `Italian'
-(babel)                I will use the patterns loaded for \language=0 instead.
-
-\l@italian = a dialect from \language0
 Package babel Info: Making " an active character on input line 94.
-)) (/usr/share/texmf-texlive/tex/latex/base/inputenc.sty
+))
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/inputenc.sty
 Package: inputenc 2008/03/30 v1.1d Input encoding file
 \inpenc@prehook=\toks14
 \inpenc@posthook=\toks15
 
-(/usr/share/texmf-texlive/tex/latex/base/utf8.def
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/utf8.def
 File: utf8.def 2008/04/05 v1.1m UTF-8 support for inputenc
 Now handling font encoding OML ...
 ... no UTF-8 mapping file for font encoding OML
 Now handling font encoding T1 ...
 ... processing UTF-8 mapping file for font encoding T1
 
-(/usr/share/texmf-texlive/tex/latex/base/t1enc.dfu
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/t1enc.dfu
 File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00A1 (decimal 161)
    defining Unicode char U+00A3 (decimal 163)
@@ -205,7 +205,7 @@ File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
 Now handling font encoding OT1 ...
 ... processing UTF-8 mapping file for font encoding OT1
 
-(/usr/share/texmf-texlive/tex/latex/base/ot1enc.dfu
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/ot1enc.dfu
 File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00A1 (decimal 161)
    defining Unicode char U+00A3 (decimal 163)
@@ -236,7 +236,7 @@ File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
 Now handling font encoding OMS ...
 ... processing UTF-8 mapping file for font encoding OMS
 
-(/usr/share/texmf-texlive/tex/latex/base/omsenc.dfu
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/omsenc.dfu
 File: omsenc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00A7 (decimal 167)
    defining Unicode char U+00B6 (decimal 182)
@@ -262,29 +262,29 @@ Now handling font encoding LGR ...
    defining Unicode char U+2122 (decimal 8482)
    defining Unicode char U+2423 (decimal 9251)
 ))
-(/usr/share/texmf-texlive/tex/latex/graphics/epsfig.sty
+(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/epsfig.sty
 Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
 
-(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks16
 )
-(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-(/etc/texmf/tex/latex/config/graphics.cfg
+(/usr/local/texlive/2009/texmf-dist/tex/latex/latexconfig/graphics.cfg
 File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
 
-(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
+(/usr/local/texlive/2009/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2009/08/25 v0.04m Graphics/color for pdfTeX
 \Gread@gobject=\count89
 ))
 \Gin@req@height=\dimen104
@@ -293,9 +293,10 @@ File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
 \epsfxsize=\dimen106
 \epsfysize=\dimen107
 )
-(/usr/share/texmf-texlive/tex/latex/graphics/lscape.sty
+(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/lscape.sty
 Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
-) (./previtali.aux
+)
+(./previtali.aux
 
 LaTeX Warning: Label `sec:linguaggio_petrinet' multiply defined.
 
@@ -316,12 +317,12 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 13.
 LaTeX Font Info:    ... okay on input line 13.
 LaTeX Font Info:    Checking defaults for LGR/cmr/m/n on input line 13.
 LaTeX Font Info:    Try loading font information for LGR+cmr on input line 13.
- (/usr/share/texmf-texlive/tex/generic/babel/lgrcmr.fd
-File: lgrcmr.fd 2008/06/17 v2.3 Greek Computer Modern
+ (/usr/local/texlive/2009/texmf-dist/tex/latex/cbfonts/lgrcmr.fd
+File: lgrcmr.fd 2008/01/04 v1.0 Greek Computer Modern
 )
 LaTeX Font Info:    ... okay on input line 13.
 
-(/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
+(/usr/local/texlive/2009/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count90
 \scratchdimen=\dimen108
@@ -343,22 +344,22 @@ LaTeX Font Info:    External font `cmex10' loaded for size
  [1
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
+{/usr/local/texlive/2009/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+[2
 
 ] (./previtali.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 3.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 3.
-
-[3])
+ [3])
 \tf@toc=\write3
 \openout3 = `previtali.toc'.
 
  [4]
 Capitolo 1.
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 45.
-(/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
+(/usr/local/texlive/2009/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
@@ -368,8 +369,8 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
 ] [6] [7]
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 177.
- [8] [9]
-[10] [11] [12
+
+[8] [9] [10] [11] [12
 
 ]
 Capitolo 2.
@@ -403,111 +404,130 @@ Capitolo 3.
 File: img/test_marcature.png Graphic file (type png)
 
 <use img/test_marcature.png> [22] [23 <./img/test_marcature.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 691--698
+Underfull \hbox (badness 10000) in paragraph at lines 726--733
 
  []
 
-[24]
-Underfull \hbox (badness 10000) in paragraph at lines 745--746
+[24] [25]
+Underfull \hbox (badness 10000) in paragraph at lines 780--781
 
  []
 
-[25] [26]
-Underfull \hbox (badness 10000) in paragraph at lines 840--844
+[26] [27]
+Underfull \hbox (badness 10000) in paragraph at lines 876--880
 
  []
 
 
-Overfull \hbox (1.49698pt too wide) in paragraph at lines 846--846
+Overfull \hbox (1.49698pt too wide) in paragraph at lines 882--882
 []\OT1/cmtt/m/n/10 Transition foo{ bar[3], baz}, foo[0]{ tar}, foo::zip, foo[1]
 ::apt;[] 
  []
 
-[27] <img/flussi1.png, id=111, 179.67125pt x 256.96pt>
+[28] <img/flussi1.png, id=114, 179.67125pt x 256.96pt>
 File: img/flussi1.png Graphic file (type png)
  <use img/flussi1.png>
-[28 <./img/flussi1.png>] <img/flussi2.png, id=116, 200.75pt x 289.08pt>
+<img/flussi2.png, id=115, 200.75pt x 289.08pt>
 File: img/flussi2.png Graphic file (type png)
-
-<use img/flussi2.png> <img/flussi3.png, id=117, 388.45125pt x 278.03876pt>
+ <use img/flussi2.png> [29 <./img/flussi1.png>] <img/flussi3.png, id=120, 388.4
+5125pt x 278.03876pt>
 File: img/flussi3.png Graphic file (type png)
 
 <use img/flussi3.png>
-Underfull \hbox (badness 10000) in paragraph at lines 923--926
+Underfull \hbox (badness 10000) in paragraph at lines 959--962
 
  []
 
-[29 <./img/flussi2.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 927--928
+
+Underfull \vbox (badness 1616) has occurred while \output is active []
+
+ [30 <./img/flussi2.png> <./img/flussi3.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 963--966
 
  []
 
-[30 <./img/flussi3.png>] <img/uml_pyth.png, id=126, 399.31pt x 360.61255pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 967--968
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 969--971
+
+ []
+
+
+Overfull \hbox (1.02725pt too wide) in paragraph at lines 972--975
+[]\OT1/cmr/m/it/10 lista-elementi-unione \OT1/cmr/m/n/10 = \OT1/cmr/m/it/10 ele
+mento-rete-1 \OT1/cmr/m/n/10 = \OT1/cmr/m/it/10 elemento-rete-2 \OT1/cmr/m/n/10
+ = ...= \OT1/cmr/m/it/10 elemento-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 972--975
+
+ []
+
+[31] <img/uml_pyth.png, id=130, 399.31pt x 360.61255pt>
 File: img/uml_pyth.png Graphic file (type png)
-
-<use img/uml_pyth.png> [31 <./img/uml_pyth.png (PNG copy)>] [32]
-Overfull \hbox (5.50182pt too wide) in paragraph at lines 1007--1008
-[]\OT1/cmr/m/n/10 che per-me-t-ter^^Ra di stam-pare a video le tran-sizioni dic
-hiarate
- []
-
-[33] [34]
+ <use img/uml_pyth.png>
+[32] [33 <./img/uml_pyth.png (PNG copy)>] [34] [35] [36]
 Capitolo 4.
-<img/processo_seq_concorrenza.png, id=140, 290.08376pt x 190.7125pt>
+<img/processo_seq_concorrenza.png, id=146, 290.08376pt x 190.7125pt>
 File: img/processo_seq_concorrenza.png Graphic file (type png)
 
-<use img/processo_seq_concorrenza.png> [35
+<use img/processo_seq_concorrenza.png> [37
 
  <./img/processo_seq_concorrenza.png (PNG copy)>]
-<img/processi_concorrenti_su_risorsa.png, id=144, 605.26125pt x 264.99pt>
+<img/processi_concorrenti_su_risorsa.png, id=151, 605.26125pt x 264.99pt>
 File: img/processi_concorrenti_su_risorsa.png Graphic file (type png)
 
 <use img/processi_concorrenti_su_risorsa.png>
-Overfull \hbox (74.99634pt too wide) in paragraph at lines 1099--1099
+Overfull \hbox (74.99634pt too wide) in paragraph at lines 1208--1208
 []\OT1/cmtt/m/n/10 agente[0] = union(agente[0], risorsa) on [prendi = prendi, r
 ilascia = rilascia];[] 
  []
 
 
-Overfull \hbox (74.99634pt too wide) in paragraph at lines 1099--1099
+Overfull \hbox (74.99634pt too wide) in paragraph at lines 1208--1208
 []\OT1/cmtt/m/n/10 agente[1] = union(agente[1], risorsa) on [prendi = prendi, r
 ilascia = rilascia];[] 
  []
 
 
-Overfull \hbox (48.74657pt too wide) in paragraph at lines 1099--1099
+Overfull \hbox (48.74657pt too wide) in paragraph at lines 1208--1208
 []\OT1/cmtt/m/n/10 sys = union(agente[0],agente[1]) on [libera = libera, occupa
 ta = occupata];[] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1102--1105
+Underfull \hbox (badness 10000) in paragraph at lines 1211--1214
 
  []
 
-[36 <./img/processi_concorrenti_su_risorsa.png (PNG copy)>]
-<img/send_rec.png, id=148, 514.92375pt x 365.365pt>
+[38 <./img/processi_concorrenti_su_risorsa.png (PNG copy)>]
+<img/send_rec.png, id=155, 514.92375pt x 365.365pt>
 File: img/send_rec.png Graphic file (type png)
  <use img/send_rec.png>
-[37 <./img/send_rec.png (PNG copy)>]
-Overfull \hbox (11.99689pt too wide) in paragraph at lines 1137--1137
+[39 <./img/send_rec.png (PNG copy)>]
+Overfull \hbox (11.99689pt too wide) in paragraph at lines 1246--1246
 []\OT1/cmtt/m/n/10 s = union(s, buffer) on [send_msg = push_msg, receive_ack = 
 pop_ack,[] 
  []
 
-<img/murata_writers_readers.png, id=153, 335.2525pt x 268.00125pt>
+<img/murata_writers_readers.png, id=159, 335.2525pt x 268.00125pt>
 File: img/murata_writers_readers.png Graphic file (type png)
 
-<use img/murata_writers_readers.png> [38 <./img/murata_writers_readers.png (PNG
- copy)>] (./previtali.bbl [39] [40
+<use img/murata_writers_readers.png> [40 <./img/murata_writers_readers.png (PNG
+ copy)>] (./previtali.bbl [41] [42
 
 ]
 Underfull \hbox (badness 1005) in paragraph at lines 23--25
-[]\OT1/cmr/m/n/10 -Gui-do Von Rossum.  http://www.python.org/dev/peps/pep-0008,
-
+[]\OT1/cmr/m/n/10 -Gui-do Von Ros-sum.  http://www.python.org/dev/peps/pep-0008
+,
  []
 
-) [41] (./previtali.aux)
+) [43] (./previtali.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -516,31 +536,33 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 1749 strings out of 495061
- 22844 string characters out of 1182622
- 80471 words of memory out of 3000000
- 4907 multiletter control sequences out of 15000+50000
+ 1747 strings out of 493848
+ 23102 string characters out of 3149207
+ 81215 words of memory out of 3000000
+ 5004 multiletter control sequences out of 15000+200000
  10669 words of font info for 38 fonts, out of 3000000 for 9000
- 28 hyphenation exceptions out of 8191
- 32i,8n,24p,801b,311s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/sha
-re/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-te
-xlive/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texmf-texlive/fon
-ts/type1/public/amsfonts/cm/cmitt10.pfb></usr/share/texmf-texlive/fonts/type1/p
-ublic/amsfonts/cm/cmmi10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfo
-nts/cm/cmmi7.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10
-.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/s
-hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-t
-exlive/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-texlive/fonts/
-type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-texlive/fonts/type1/public/
-amsfonts/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/c
-msl10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
-/usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/
-texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texmf-texli
-ve/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on previtali.pdf (41 pages, 411284 bytes).
+ 714 hyphenation exceptions out of 8191
+ 32i,8n,24p,801b,370s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb
+></usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb
+></usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
+</usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></
+usr/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
+r/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/
+local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/lo
+cal/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local
+/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/te
+xlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texli
+ve/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local/texliv
+e/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive
+/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/
+2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2
+009/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
+Output written on previtali.pdf (43 pages, 419093 bytes).
 PDF statistics:
- 221 PDF objects out of 1000 (max. 8388607)
+ 228 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  61 words of extra memory for PDF output out of 10000 (max. 10000000)
 

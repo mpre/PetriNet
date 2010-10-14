@@ -626,7 +626,8 @@ show_places;
 si otterrebbe un output di questo tipo\footnote{Per comodità sono stati eliminati gli output di 
 debug che vengono comunque stampati del programma} \footnote{Come si può notare viene usata una 
 funzione show\_places, per il suo significato (che può apparire ovvio) si veda il seguito} :
-\begin{verbatim}$ python PetriNet_parser.py -f ~/temp/001.pn 
+\begin{verbatim}
+$ python PetriNet_parser.py -f ~/temp/001.pn 
 It seems that an element named a is already in x
 \end{verbatim}
 
@@ -676,6 +677,40 @@ Ovviamente, nel caso si cercasse di inserire una quantità di marche maggiore al
 
 \section{Nuove funzionalità di PetriNet}
 Nella seguente sezione vengono mostrate le innovazioni apportate al linguaggio PetriNet.
+
+\subsection{Direttive al parser}\label{subsec:direttive_al_parser}
+Durante la progettazione del sistema PetriNet ci si è accorti che non
+necessariamente tutte le reti definite debbano sottostare ad assunti
+uguali. Un esempio abbastanza banale è il fatto che alcune reti
+potrebbero richiedere posti con capacità 1 come default mentre alcune
+potrebbero assumere una capacità illimitata come comportamento
+standard. \\
+Per far fronte a questo problema è stato deciso di inserire la
+possibilità di modificare il comportamento del sistema inserendo
+direttamente nel codice delle direttive\footnote{Chiamate per
+  chiarezza direttive al parser in quanto sono valori che vengono
+  considerati da questa componente del sistema}.\\
+Per poter passare una direttiva al parser lo schema generale è
+banalmente il
+seguente: \\
+{\tt \# nome\_parametro=valore\_parametro;} \footnote{\'E stata
+  scelta questa sintassi in quanto simile alle direttive al
+  preprocessore del linguaggio c e quindi è possibile utilizzare i
+  sintax highlighting di alcuni ambienti di sviluppo} \\
+Attualmente i valori gestiti da PetriNet sono
+\emph{default\_place\_capacity}, \emph{union\_type} e
+\emph{union\_add\_prefix}. Per una trattazione dei due parametri
+relativi all'unione di reti si rimanda alla sezione dedicata
+\ref{subsect:unione_di_reti} mentre la prima verrà spiegata ora. \\
+Il parametro \emph{default\_place\_capacity} influisce sulla
+dichiarazione di posti nel codice. Come precedentemente accennato
+potrebbe essere necessario avere reti con capacità di default diversa,
+grazie a questo parametro è possibile modificare questo comportament
+assegnandovi un numero positivo oppure il valore unlimited. \\
+Nel caso si dichiari \emph{default\_place\_capacity} come unlimited il
+sistema assegnerà ai posti una capacità di default concettualmente
+illimitata ma, in realtà, essa sarà comunque limitata al numero intero
+massimo gestibile dalla versione di python sottostante al sistema.
 
 \subsection{Array di reti}
 Nella specifica di reti è possibile dover realizzare modelli con la stessa struttura base che 
@@ -797,7 +832,8 @@ Place x::p1(-6);
 Place x{a(0)};
 \end{verbatim}
 non sono dichiarazioni valide.\\
-Nel caso non venga dichiarata alcuna capacità il sistema assume il valore 1 di default.
+Nel caso non venga dichiarata alcuna capacità il sistema assume il
+valore di default selezionato nelle direttive al parser.
 
 \subsubsection{Array di posti}
 Come per le reti, è possibile creare array di posti in modo da poter rendere più compatto il codice.
@@ -919,18 +955,86 @@ crea la rete presentata in figura \ref{fig:flussi3.png} nella quale si vede che 
 \caption{Rete con archi pesati}\label{fig:flussi3.png}
 \end{figure}
 
-\subsection{Unione di reti}
+\subsection{Unione di reti}\label{subsect:unione_di_reti}
 Per migliorare la comprensibilità di un codice scritto in linguaggio PetriNet è possibile creare delle reti che descrivano il comportamento di una componente per poi unire tutte queste sottoreti in una rete di Petri.\\
 L'unione di reti era presente anche nella versione precedente del linguaggio PetriNet ma presentava qualche problema sulla gestione della sovrapposizione di posti e transizioni.\\
-È possibile comporre due reti sia per sovrapposizione di posti sia per sovrapposizione di transizioni e lo schema generale dell'unione di due reti è il seguente:\\
+È possibile comporre \emph{n} reti sia per sovrapposizione di posti sia per sovrapposizione di transizioni e lo schema generale dell'unione di \emph{n} reti è il seguente:\\
 
-\emph{rete}  = union{\tt(}\emph{n1,n2}{\tt)} on {\tt[}\emph{e1=e2, e3=e4,\dots}{\tt]};\\
+\emph{rete}  = emph{\tt(}\emph{lista-reti}{\tt)} on
+{\tt[}\emph{lista-elementi-unione-1},\emph{lista-elementi-unione-2},
+\dots \emph{lista-elementi-unione-n},{\tt]};\\
 
-dove {\tt n1} e {\tt n2} sono ID di reti, {\tt e1} ed {\tt e3} sono nomi di posti o transizioni all'interno di {\tt n1}, {\tt e3} ed {\tt e4} sono nomi di posti o transizioni all'interno di {\tt n2} e {\tt on} e {\tt union} sono parole riservate al linguaggio PetriNet.\\
-La lista di elementi sovrapposti è facoltativa, in questo caso si creerà una rete contenente due sottoreti distaccate. \\
-Quando la lista di elementi è presente, invece, nella nuova rete verrà inserito un posto o transizione con il nome del primo elemento nel caso i due nomi siano diversi.\\
-Nel caso ci siano posti con nomi in conflitto appartenenti alle due reti e non sovrapposti nell'unione delle reti il loro nome verrà modificato aggiungendo come prefisso il nome della rete alla quale appartengono\footnote{Nel caso in cui il nome di tale elemento sia ancora in conflitto all'interno delle reti, il prefisso verrà aggiunto ricorsivamente}.\\
-È possibile, per ora, unire solo due reti alla volta.
+dove:\\
+
+\emph{lista-reti} = \emph{nome-rete-1} | \emph{nome-rete-2} | \dots
+\emph{nome-rete-n} \\
+
+\emph{lista-elementi-unione} = \emph{elemento-rete-1} =
+\emph{elemento-rete-2} = \dots = \emph{elemento-rete-n} as
+\emph{nuovo-nome} \\
+
+\'E  possibile lasciare \emph{lista-elementi-unione} vuota. \\
+Il comportamento dell'operazione di unione è diverso a seconda delle
+direttive che vengono passate al parser. Le direttive che riguardano
+l'unione sono due ed esattamente quelle chiamate \emph{union\_type} e
+\emph{union\_add\_prefix}.\\
+La direttiva \emph{union\_type} ha due valori possibili:
+\begin{description}
+\item{{\bf only\_when\_equal}}: in questo caso sarà possibile
+  sovrapporre posti solamente nel caso in cui abbiano marcature e
+  capacità uguali [comportamento di default]
+\item{{\bf override}}: in questo caso sarà possibile sovrapporre i
+  posti sempre e gli elementi avranno la capacità e la marcatura del
+  posto appartente alla prima rete della lista.
+\end{description}
+La direttiva \emph{union\_add\_prefix} è un valore booleano (valori
+"True" e "False") che permette di decidere se durante l'unione i posti
+che non vengono uniti esplicitamente nella
+\emph{lista-elementi-unione} debba venir aggiunto come prefisso il
+nome della rete alla quale appartengono o meno. Nel caso questo valore
+venisse impostato a {\tt False} e nel caso in due reti esistano
+elementi con lo stesso nome essi verranno trattati come uno solo
+nell'unione e, di conseguenza, verranno collegati tutti gli elementi
+delle reti unite.\\
+\'E comunque sconsigliato creare reti partendo da modelli nei quali
+esistano elementi con lo stesso nome che non verranno uniti.\\
+La \emph{lista-elementi-unione} per ora deve necessariamente essere
+un'espressione di {\tt n} elementi dove {\tt n} è il numero di reti
+che partecipano alla procedura di unione. \'E molto facile notare che
+non necessariamente tutte le reti prendano parte con dei propri
+elementi ad una sovrapposizione, in questo caso, nell'elencare gli
+elementi, sarà sufficiente inserire la parola "null" nella posizione
+della rete che non partecipa all'unione.
+
+\subsection{Ciclo for}
+Uno degli obiettivi principali del mio lavoro svolto su PetriNet era
+quello di implementare una funzione simile ai cicli for presenti in
+quasi la totalità dei linguaggi di programmazione. \\
+Questa funzionalità è utile perché permette di diminuire lo sforzo
+nella scrittura del codice, diminuisce la lunghezza dello stesso e
+rende concettualmente più chiaro il flusso delle istruzioni.\\
+La sintassi dei cicli simile a quella classica della maggior parte dei
+linguaggi di programmazione che può essere schematizzata nel seguente
+modo:
+\begin{verbatim}
+for(condizioni_iniziali;condizioni_finali;incrementi){
+istruzione_1;
+istruzione_2;
+...
+istruzione_n;
+}
+\end{verbatim}
+dove: \emph{condizioni\_iniziali} serve ad inizializzare le variabili
+utilizzate come parametri all'interno del codice,
+\emph{condizioni\_finali} serve ad impostare le condizioni di uscita
+dal cilo e \emph{incrementi} sono le istruzioni da eseguire ogni volta
+che un ciclo termina.
+% TODO : scrivere sezione
+
+
+% Quando la lista di elementi è presente, invece, nella nuova rete verrà inserito un posto o transizione con il nome del primo elemento nel caso i due nomi siano diversi.\\
+% Nel caso ci siano posti con nomi in conflitto appartenenti alle due reti e non sovrapposti nell'unione delle reti il loro nome verrà modificato aggiungendo come prefisso il nome della rete alla quale appartengono\footnote{Nel caso in cui il nome di tale elemento sia ancora in conflitto all'interno delle reti, il prefisso verrà aggiunto ricorsivamente}.\\
+% È possibile, per ora, unire solo due reti alla volta.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1048,6 +1152,11 @@ Particolamente interessante può essere la funzione {\tt p\_call\_function\_on\_
 In questo modo è stato possibile eliminare tutti i token e tutte le regole che effettuavano questo lavoro. Un possibile problema di questa funzionalità è che tutti i metodi della classe {\tt PetriNet} sono invocabili dal codice passato al parser. Per evitare questo spiacevole inconveniente sarebbe possibile obbligare a chiamare in qualche particolare modo i metodi ``privati'' (magari aggiungendo un particolare prefisso) e fare una selezione all'interno della funzione {\tt p\_call\_function\_on\_net}.\\
 Al termine di questo file vengono inserite le regole {\tt show\_nets}, {\tt show\_places} {\tt show\_transitions} e {\tt show\_links} utili per il debug del programma ma praticamente inutili al fine del linguaggio PetriNet.
 
+\subsection{pnpre.py}
+% TODO : completare sezione
+
+\subsection{pnc}
+% TODO : completare sezione
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
