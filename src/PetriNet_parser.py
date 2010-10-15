@@ -1115,15 +1115,15 @@ def main():
     arg_par.add_option("-i", "--interactive", action="store_true",
                        dest="interactive", default=False,
                        help="Esegue il parser in modo interattivo (in questo caso il file passato non viene preso in considerazione")
-    arg_par.add_option("-p", "--add-prefix", action="store_true",
-                       dest="union_add_prefix", default=False,
-                       help="Se l'opzione viene scelta, nell'unione viene aggiunto come prefisso il nome della rete ad ogni posto ed ad ogni transizione ")
+    # arg_par.add_option("-p", "--add-prefix", action="store_true",
+    #                    dest="union_add_prefix", default=False,
+    #                    help="Se l'opzione viene scelta, nell'unione viene aggiunto come prefisso il nome della rete ad ogni posto ed ad ogni transizione ")
     opts, args = arg_par.parse_args()
     # Effettuo il seguente passaggio di argomenti perché anche dichiarando
     # opts all'esterno della funzione main() non riesco a vedere i suoi valori
     # nella funzione union
     argv['union_type'] = opts.union_type
-    argv['union_add_prefix'] = opts.union_add_prefix
+    argv['union_add_prefix'] = 'False'
     if not opts.interactive:
         try: 
             data=open(opts.input_file, 'r') #apertura del file in lettura

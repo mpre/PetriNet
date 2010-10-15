@@ -1,4 +1,4 @@
-\documentclass[italian]{book}
+\documentclass[italian,12pt]{book}
 % 
 \usepackage{babel}
 \usepackage[utf8]{inputenc}
@@ -1006,6 +1006,135 @@ elementi ad una sovrapposizione, in questo caso, nell'elencare gli
 elementi, sarà sufficiente inserire la parola "null" nella posizione
 della rete che non partecipa all'unione.
 
+\subsubsection{Esempi}
+Per capire meglio il funzionamento dell'unione portiamo ora alcuni semplici
+esempi facilmente comprendibili. Per esempi più complessi si rimanda al capitolo
+\ref{cap:esempi}.
+\subsubsection{Esempio 1}
+\begin{figure}[htb]
+\centerline{\includegraphics[height=5cm]{img/unione_001.png}}
+\caption{Risultato esempio 1}\label{fig:unione_001.png}
+\end{figure}
+Unione di due reti con posti con lo stesso nome e senza direttiva di aggiunta
+di prefisso.\\
+{\bf Codice}
+\begin{verbatim}
+PetriNet a,b;
+Place a{x,y}, b{x,z};
+Transition a::t, b::k;
+
+a{x ->(3) t -> y};
+b{x -> k -> z};
+
+sys = (a | b) on [];
+\end{verbatim}
+
+
+\subsubsection{Esempio 2}
+\begin{figure}[htb]
+\centerline{\includegraphics[height=5cm]{img/unione_002.png}}
+\caption{Risultato esempio 2}\label{fig:unione_002.png}
+\end{figure}
+Unione di due reti con posti con lo stesso nome e con direttiva di aggiunta
+di prefisso.\\
+{\bf Codice}
+\begin{verbatim}
+PetriNet a,b;
+Place a{x,y}, b{x,z};
+Transition a::t, b::k;
+
+a{x ->(3) t -> y};
+b{x -> k -> z};
+
+#union_add_prefix=True;
+sys = (a | b) on [];
+\end{verbatim}
+
+
+\subsubsection{Esempio 3}
+\begin{figure}[htb]
+\centerline{\includegraphics[height=5cm]{img/unione_003.png}}
+\caption{Risultato esempio 3}\label{fig:unione_003.png}
+\end{figure}
+Unione di due reti con posti con lo stesso nome, con direttiva di aggiunta
+di prefisso e con dichiarazione di unione delle transizioni.\\
+{\bf Codice}
+\begin{verbatim}
+PetriNet a,b;
+Place a{x,y}, b{x,z};
+Transition a::t, b::k;
+
+a{x ->(3) t -> y};
+b{x -> k -> z};
+
+#union_add_prefix=True;
+sys = (a | b) on [t = k as T];
+\end{verbatim}
+
+
+\subsubsection{Esempio 4}
+In questo caso si cerca di sovrapporre due elementi con capacità diverse.\\
+{\bf Codice}
+\begin{verbatim}
+PetriNet a,b;
+Place a{x(75),y}, b{x,z};
+Transition a::t, b::k;
+
+a{x ->(3) t -> y};
+b{x -> k -> z};
+
+#union_add_prefix=False;
+#union_type=only_when_equal;
+sys = (a | b) on [t = k as T, x = x as X];
+\end{verbatim}
+{\bf Risultato esempio 4}\\
+Errore in quanto x della rete a e x della rete b hanno capacità diverse
+
+
+\subsubsection{Esempio 5}
+\begin{figure}[htb]
+\centerline{\includegraphics[height=5cm]{img/unione_004.png}}
+\caption{Risultato esempio 5}\label{fig:unione_004.png}
+\end{figure}
+In questo caso si cerca di sovrapporre due elementi con capacità diverse
+dichiarando correttamente la direttiva union\_type.\\
+{\bf Codice}
+\begin{verbatim}
+PetriNet a,b;
+Place a{x(75),y}, b{x,z};
+Transition a::t, b::k;
+
+a{x ->(3) t -> y};
+b{x -> k -> z};
+
+#union_add_prefix=False;
+#union_type=override;
+sys = (a | b) on [t = k as T, x = x as X];
+\end{verbatim}
+
+\subsubsection{Esempio 6}
+
+In questo esempio vengono sovrapposte tre reti su elementi diversi.\\
+{\bf Codice}
+\begin{verbatim}
+PetriNet a,b,c;
+Place a{x,y}, b{x,z}, c{u,s};
+Transition a::t, b::k, c::r;
+
+a{x ->(3) t -> y};
+b{x -> k -> z};
+c{u -> r ->(2) s};
+
+#union_add_prefix=False;
+sys = (a | b | c) on [t = k = null as T, null = z = s as Z];
+\end{verbatim}
+\begin{figure}[htb]
+\centerline{\includegraphics[height=7cm]{img/unione_006.png}}
+\caption{Risultato esempio 6}\label{fig:unione_006.png}
+\end{figure}
+\newpage
+
+
 \subsection{Ciclo for}
 Uno degli obiettivi principali del mio lavoro svolto su PetriNet era
 quello di implementare una funzione simile ai cicli for presenti in
@@ -1027,8 +1156,65 @@ istruzione_n;
 dove: \emph{condizioni\_iniziali} serve ad inizializzare le variabili
 utilizzate come parametri all'interno del codice,
 \emph{condizioni\_finali} serve ad impostare le condizioni di uscita
-dal cilo e \emph{incrementi} sono le istruzioni da eseguire ogni volta
-che un ciclo termina.
+dal ciclo e \emph{incrementi} sono le istruzioni da eseguire ogni volta
+che un ciclo termina. \\
+Ogni condizione può essere multipla, in questo caso ogni istruzione
+deve essere separata dalle altre utilizzando una virgola. \\
+Per ora il ciclo termina quando tutte le condizioni finali sono verificate. 
+Non è stata per implementata la possibilità di utilizzare operatori logici 
+{\tt or} e {\tt and} in quanto PetriNet è pensato come linguaggio descrittivo
+e non come linguaggio di programmazione. Sarà comunque possibile in futuro
+migliorare questo aspetto.\\
+
+\subsubsection{Espressioni matematiche}
+È possibile, all'interno di un blocco for, utilizzare le variabili dichiarate 
+come indici di array di posti, transizioni o reti. È stato inoltre sviluppato
+un rudimentale sistema che permette di gestire correttamente i calcoli 
+base che vedono coinvolte le variabili. Ciò vuol dire che il seguente estratto 
+di codice è corretto:
+\begin{verbatim}
+for(i=0;i<10;i+=1){
+net{ p[i] -> t[i] -> p[i+1]};
+}
+\end{verbatim}
+In questo caso l'espressione \emph{i+1} viene correttamente interpretata dal 
+sistema PetriNet. \\
+In PetriNet sono gestiti i seguenti operandi tra variabili e valori interi:
+\begin{description}
+\item[+] per la somma 
+\item[-] per la sottrazione
+\item[*] per la moltiplicazione
+\item[/] per la divisione 
+\item[\%] per calcolare il modulo di due valori
+\end{description}
+Non è possibile raggruppare elementi in parentesi tonde per gestire la precedenza
+delle operazioni in quanto non ci si è soffermati troppo sulla gestione
+delle espressioni matematiche. L'ordine in cui le operazioni vengono effettuate 
+è lo stesso in cui sono state presentate nel precedente elenco.\\
+\\
+Anche nelle condizioni di inizio, fine e incremento del ciclo sono presenti
+delle espressioni matematiche. In queste espressioni è possibile utilizzare 
+qualsiasi costrutto matematico conosciuto dalla versione Python utilizzata
+\footnote{Questo vuol dire che il costrutto {\tt ++} non è utilizzabile e che 
+il codice {\tt x++} dovrà essere sostituito dal codice {\tt x+=1}.}.
+
+\subsubsection{Cicli innestati}
+È possibile utilizzare i cicli for in modo annidato. In questo caso tutte le 
+variabili dichiarate nel ciclo esterno saranno utilizzabili anche nel ciclo 
+interno.\\
+Il seguente codice di conseguenza è corretto:
+\begin{verbatim}
+for(i=0; i<5; i+=1){
+  for(j=0; j<i; j+=1){
+    net{p[i] -> t[j] -> p[i+1]}; 
+  }
+}
+\end{verbatim}
+
+\subsubsection{Limitazioni sui pesi degli archi}
+Per ora non è possibile utilizzare le variabili dei cicli come 
+pesi per i posti degli archi.
+
 % TODO : scrivere sezione
 
 
@@ -1144,13 +1330,29 @@ Sono stati anche eliminati e seguenti token presenti precedentemente:
 
 
 \subsection{PetriNet\_parser.py}
+\begin{verbatim}
+$ ./PetriNet_parser.py --help
+Usage: PetriNet_parser.py [-f INPUT_FILE] [-i] 
+
+Options:
+  -h, --help            show this help message and exit
+  -f INPUT_FILE, --file=INPUT_FILE
+                        File su cui richiamare il parser
+  -i, --interactive     Esegue il parser in modo interattivo 
+                        (in questo caso il file passato non 
+                        viene preso in considerazione)
+\end{verbatim}
 Questo modulo si occupa della definizione della grammatica formale del linguaggio analizzando la sequenza di token trasmessa del lexer.\\
 In questo modulo sono state eliminate le variabili globali inutili precedentemente presenti ({\tt UnionA} e {\tt UnionB}).\\
 Essendo stato eliminato il concetto di rete corrente è stata eliminata la variabile {\tt actualNet} e la definizione della classe {\tt rete}. Il dizionario {\tt net} è poi stato rinominato in {\tt nets} e sono stati creati dei dizionari chiamati {\tt places}, {\tt transitions} e {\tt links} che contengono rispettivamente i posti, le transizioni e gli archi dichiarati non appartenenti ad alcuna rete\footnote{Esisite attualmente, in PetriNet, la possibilità di dichiarare posti, transizioni e archi non appartenenti ad alcuna rete. Elementi dichiarati in questo modo non hanno molta utilità se non nel caso si volessero poi aggiungere a svariate reti attraverso il metodo {\tt  add}. È comunque sconsigliata la dichiarazione di posti e transizioni in questo modo}.\\
 Vengono successivamente dichiarate le regole per la dichiarazione di reti, posti e transizioni nelle modalità viste nelle sezioni precedenti.\\
 Particolamente interessante può essere la funzione {\tt p\_call\_function\_on\_net} che permette di richiamare tutti metodi della classe {\tt PetriNet}. Questa funzione crea una regola che verifica la presenza del token {\tt DDOT} e del token {\tt ID} successivamente ad un token {\tt ID} o un token {\tt ARRAY\_ID}. Successivamente viene dinamicamente valutata l'esecuzione della funzione scelta sulla rete selezionata. \\
 In questo modo è stato possibile eliminare tutti i token e tutte le regole che effettuavano questo lavoro. Un possibile problema di questa funzionalità è che tutti i metodi della classe {\tt PetriNet} sono invocabili dal codice passato al parser. Per evitare questo spiacevole inconveniente sarebbe possibile obbligare a chiamare in qualche particolare modo i metodi ``privati'' (magari aggiungendo un particolare prefisso) e fare una selezione all'interno della funzione {\tt p\_call\_function\_on\_net}.\\
-Al termine di questo file vengono inserite le regole {\tt show\_nets}, {\tt show\_places} {\tt show\_transitions} e {\tt show\_links} utili per il debug del programma ma praticamente inutili al fine del linguaggio PetriNet.
+Al termine di questo file vengono inserite le regole {\tt show\_nets}, {\tt show\_places} {\tt show\_transitions} e {\tt show\_links} utili per il debug del programma ma praticamente inutili al fine del linguaggio PetriNet.\\
+Come si può vedere dall'help fornito all'inizio della sezione, per poter
+richiamare il parser interattivo è ora necessario passare il parametro {\tt -i}.\\
+Il modulo ora ricava i parametri passati tramite il modulo Python {\tt optparse} che 
+permette più flessibilità nella gestione degli stessi.
 
 \subsection{pnpre.py}
 % TODO : completare sezione
@@ -1160,7 +1362,7 @@ Al termine di questo file vengono inserite le regole {\tt show\_nets}, {\tt show
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
-\chapter{Esempi di utilizzo}
+\chapter{Esempi di utilizzo}\label{cap:esempi}
 Nel seguente capitolo verranno mostrati e spiegati esempi di utilizzo didattici del linguaggio PetriNet.
 
 \section{Processo sequenziale ciclico}

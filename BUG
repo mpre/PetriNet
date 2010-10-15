@@ -1,0 +1,5 @@
+- Seppur venga dichiarata la direttiva 'union_type' equivalente a only_when_equal
+  se due elementi vengono uniti in modo non dichiarato ma semplicemente perché hanno 
+  lo stesso nome (caso in cui la direttiva 'union_add_prefix' sia settata a False) 
+  la procedura di unione si comporta come se 'union_type' fosse equivalente a 
+  ovverride
