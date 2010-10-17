@@ -227,7 +227,7 @@ def dictionarize(conds):
 # print find_expand(t).replace(";",";\n")
 
 def main():
-    usage = "usage: %prog -i INPUT_FILE -o OUTPUT_FILE"
+    usage = "usage: %prog -i INPUT_FILE [-o OUTPUT_FILE] [-p]"
     arg_par = optparse.OptionParser(usage=usage)
     arg_par.add_option("-i", "--input", action="store",
                        type="string", dest="input_file",
@@ -236,7 +236,8 @@ def main():
                        type="string", dest="output_file",
                        help="Destination file")
     arg_par.add_option("-p", "--print-output", action="store_true",
-                       dest="print_output", default=False)
+                       dest="print_output", default=False,
+                       help="Print the output to console instead output file")
     opts, args = arg_par.parse_args()
     
     file_content = ""

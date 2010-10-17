@@ -1354,10 +1354,114 @@ richiamare il parser interattivo è ora necessario passare il parametro {\tt -i}
 Il modulo ora ricava i parametri passati tramite il modulo Python {\tt optparse} che 
 permette più flessibilità nella gestione degli stessi.
 
-\subsection{pnpre.py}
-% TODO : completare sezione
+\subsection{Il preprocessore: pnpre.py}
+\begin{verbatim}
+$ ./pnpre.py --help
+Usage: pnpre.py -i INPUT_FILE [-o OUTPUT_FILE] [-p]
+
+Options:
+  -h, --help            show this help message and exit
+  -i INPUT_FILE, --input=INPUT_FILE
+                        Source file
+  -o OUTPUT_FILE, --output=OUTPUT_FILE
+                        Destination file
+  -p, --print-output    Print the output to console 
+                        instead output file
+\end{verbatim}
+Per poter far fronte alla necessità di fornire un costrutto for al
+linguaggio PetriNet è stato necessario implementare un modulo che 
+preprocessasse i file in ingresso interpretando correttamente le
+condizioni, gli incrementi e le variabili all'interno dei cicli.\\
+Il modulo pnpre.py\footnote{pnpre sta per Petri Net PREprocessor} 
+effettua esattamente questo compito permettendo
+all'utente di passare il proprio file contenente codice corretto
+secondo le specifiche di PetriNet ed ottenendo un file espanso
+correttamente. \\
+Le opzioni che questo modulo accetta sono:
+\begin{description}
+\item[-i] per fornire il file
+di input al modulo
+\item[-o] per dire al modulo su quale file salvare l'output
+\item[-p] per dire al modulo di stampare l'output sulla console
+  invece che su di un file
+\end{description}
+Come precedentemente accennato questo modulo permette di espandere i
+valori delle variabili presenti all'interno del ciclo for in modo
+corretto quando le stesse sono utilzzate come indici in array ma non
+quando vengono utilizzate come pesi degli archi. \\
+Portiamo ora qualche esempio per mostrare come il modulo si comporta
+con diversi file di input.
+
+\subsubsection{Esempio 1}
+Il primo esempio mostra semplicemente come il modulo espanda gli
+elementi all'interno del codice. \\
+Passando il seguente codice al modulo:
+\begin{verbatim}
+for(i=0;i<5;i+=1){
+  rete{ posto -> transizione -> posto2};
+}
+\end{verbatim}
+si ottiene
+\begin{verbatim}
+rete{ posto -> transizione -> posto2};
+rete{ posto -> transizione -> posto2};
+rete{ posto -> transizione -> posto2};
+rete{ posto -> transizione -> posto2};
+rete{ posto -> transizione -> posto2};
+\end{verbatim}
+
+\subsubsection{Esempio 2}
+Questo esempio mostra come i le variabili all'interno di un ciclo
+vengano espanse correttamente e come la parte del preprocessore che si
+occupa delle espressioni matematiche gestisca le precedenze fra gli
+operatori.\\
+Passando il seguente codice al modulo:
+\begin{verbatim}
+for(i = 0; i < 5; i+=1){
+  rete{p[i] -> t[i] -> p[i+1 % 5]};
+}
+\end{verbatim}
+si ottiene
+\begin{verbatim}
+rete{p[0] -> t[0] -> p[1]};
+rete{p[1] -> t[1] -> p[2]};
+rete{p[2] -> t[2] -> p[3]};
+rete{p[3] -> t[3] -> p[4]};
+rete{p[4] -> t[4] -> p[0]};
+\end{verbatim}
+
+\subsubsection{Esempio 3}
+In questo esempio viene mostrato com il preprocessore gestisca
+correttamente i cicli innestati. \\
+Passando il seguente codice al modulo:
+\begin{verbatim}
+for(i=0; i<3; i+=1){
+  for(j=i; j<3; j+=1){
+    rete[i]{p[j] -> t[j-1 % 3] -> p[j+1]};
+  }
+}
+\end{verbatim}
+si ottiene:
+\begin{verbatim}
+rete[0]{p[0] -> t[2] -> p[1]};
+rete[0]{p[1] -> t[0] -> p[2]};
+rete[0]{p[2] -> t[1] -> p[3]};
+    
+rete[1]{p[1] -> t[0] -> p[2]};
+rete[1]{p[2] -> t[1] -> p[3]};
+    
+rete[2]{p[2] -> t[1] -> p[3]};
+\end{verbatim}
+
 
 \subsection{pnc}
+Per poter gestire più comodamente i passaggi per poter ottenere il
+risultato voluto è stato creato uno script bash che permette di
+preprocessare e fare il parsing del file. Questo script è stato
+chiamato pnc\footnote{acronimo di Petri Net Compiler} ed accetta in
+ingresso un solo argomento (il file su cui fare il parsing). \'E
+necessario eseguire questo script dall'interno della cartella che
+contiene i file {\tt PetriNet\_parser.py} e {\tt pnpre.py}.
 % TODO : completare sezione
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
