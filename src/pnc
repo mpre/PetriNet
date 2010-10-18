@@ -16,10 +16,6 @@ else
     fi
 fi
 ./pnpre.py -i $input_name -o $output_name
-<<<<<<< HEAD
-./PetriNet_parser.py -f $output_name 
-=======
 ./PetriNet_parser.py -f $output_name
->>>>>>> max_place_capacity
 rm $output_name
 exit 0
