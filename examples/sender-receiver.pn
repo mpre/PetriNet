@@ -1,9 +1,13 @@
+#default_place_capacity=unlimited;
 PetriNet sender, receiver, buffer;
 Place sender{ready, waiting, hold_over}, receiver{waiting, busy, hold_over};
+#default_place_capacity=1;
 Place buffer{msg_free, msg_busy, ack_free, ack_busy};
 
 Transition sender{produce_msg, send_msg, receive_ack}, receiver{receive_msg, send_ack, consume_msg};
 Transition buffer{push_msg, pop_msg, push_ack, pop_ack};
+
+show_places;
 
 sender{hold_over -> produce_msg -> ready -> send_msg -> waiting -> receive_ack -> hold_over};
 receiver{waiting -> receive_msg -> busy -> send_ack -> hold_over -> consume_msg -> waiting};
@@ -13,11 +17,8 @@ sender{ready=1};
 receiver{waiting=1};
 buffer{msg_free=1, ack_free=1};
 
-show_places;
+#union_add_prefix=True;
+sys = ( sender | receiver | buffer ) on [ send_msg=null=push_msg as sender.send_msg, receive_ack=null=pop_ack as sender.receive_ack, null=receive_msg=pop_msg as receiver.receive_msg, null=send_ack=push_ack as receiver.send_ack ];
 
-s = union(sender, receiver);
-show_places;
-
-s = union(s, buffer) on [send_msg = push_msg, receive_ack = pop_ack, send_ack = push_ack, receive_msg = pop_msg];
-s::to_dot("~/Desktop/send_rec", "png");
-//s::to_pnml_pipe("~/reti/send_rec.xml");
+sys::to_dot("~/Desktop/send_rec", "png");
+sys::to_pnml_pipe("~/Desktop/send_rec.xml");

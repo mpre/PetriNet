@@ -61,7 +61,7 @@ def expand(text, var):
         if "[" in text:
             expanded_txt = expanded_txt + text[:text.find("[") + 1]
             #print text[text.find("["): find_balanced_rsqbrace(text[text.find("["))]
-            print text[text.find("[") + 1: find_balanced_rsqbrace(text, text.find("["))]
+            #print text[text.find("[") + 1: find_balanced_rsqbrace(text, text.find("["))]
             expanded_txt = expanded_txt + str(simplify(expand(text[text.find("[") + 1: find_balanced_rsqbrace(text, text.find("["))], var), var)) + "]"
             text = text[find_balanced_rsqbrace(text,text.find("[")) + 1:]
         else:
@@ -111,7 +111,7 @@ def simplify(exp, vars):
     # Se leggendo qui sotto ti chiedi cosa stiano a significare
     # car e cdr... beh, è meglio che ti dai una ripassata
     # al corso di Linguaggi di programmazione
-    print exp
+    #print exp
     try:
         exp = int(exp)
         return exp

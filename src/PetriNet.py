@@ -410,7 +410,7 @@ class PetriNet(object):
         f.write('\nnode [shape=circle];' ) #specifica che gli stati sono rappresentati come nodi circolari
         for place in self.places:
             f.write(place.name.replace('.','_').replace(' ','').replace('[','___').replace(']','___') + '[label = "' + place.name)
-            if place.capacity > 1:
+            if place.capacity != sys.maxint:
                 f.write('[{0}]'.format(place.capacity))
             f.write('"]')
         f.write('\nnode [shape=box];') 
