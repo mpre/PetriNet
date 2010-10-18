@@ -1505,12 +1505,16 @@ risorsa{libera -> prendi -> occupata -> rilascia -> libera};
 agente{attesa=1};
 risorsa{libera=1};
 
-agente[0] = union(agente[0], risorsa) on [prendi = prendi, rilascia = rilascia];
-agente[1] = union(agente[1], risorsa) on [prendi = prendi, rilascia = rilascia];
+#union_add_prefix=True;
+for(i=0;i<2;i+=1){
+  agente[i] = (agente[i] | risorsa) on 
+     [rilascia = rilascia as agente[i].rilascia, 
+      prendi = prendi as agente[i].prendi];
+ }
+#union_add_prefix=False;
+sys = (agente[0] | agente[1]) on [];
 
-sys = union(agente[0],agente[1]) on [libera = libera, occupata = occupata];
-
-sys::to_pnml_pipe("~/reti/conc.xml");
+sys::to_pnml_pipe("~/Desktop/conc.xml");
 \end{verbatim}
 
 \section{Comunicazione tra due processi}
@@ -1529,7 +1533,7 @@ Place sender{ready, waiting, hold_over},
 Place buffer{msg_free, msg_busy, ack_free, ack_busy};
 
 Transition sender{produce_msg, send_msg, receive_ack}, 
-	   receiver{receive_msg, send_ack, consume_msg};
+           receiver{receive_msg, send_ack, consume_msg};
 Transition buffer{push_msg, pop_msg, push_ack, pop_ack};
 
 // Modellazione processo sender
@@ -1538,17 +1542,22 @@ sender{hold_over -> produce_msg -> ready ->
        hold_over};
 // Modellazione processo receiver
 receiver{waiting -> receive_msg -> busy -> 
-         send_ack -> hold_over -> consume_msg -> 
-	 waiting};
+         send_ack -> hold_over -> consume_msg ->
+         waiting};
 // Modellazione buffer
-buffer{msg_free -> push_msg -> msg_busy -> pop_msg -> msg_free 
-      | ack_free -> push_ack -> ack_busy -> pop_ack -> ack_free};
+buffer{msg_free -> push_msg -> msg_busy -> pop_msg -> 
+       msg_free | ack_free -> push_ack -> ack_busy -> 
+       pop_ack -> ack_free};
 
-s = union(sender, receiver);
-s = union(s, buffer) on [send_msg = push_msg, receive_ack = pop_ack, 
-			send_ack = push_ack, receive_msg = pop_msg];
+#union_add_prefix = True;
+s = (sender | receiver | buffer) on [send_msg = null = 
+         push_msg as sender_send_msg, 
+         receive_ack = null = pop_ack as sender_receive_ack, 
+         null = send_ack = push_ack as receiver_send_ack,  
+         null = receive_msg = pop_msg as receiver_receive_ack];
 
-s::to_pnml_pipe("~/reti/send_rec.xml");
+s::to_pnml_pipe("~/Desktop/send_rec.xml");
+
 \end{verbatim}
 
 Il risultato della compilazione di tale codice è mostrato nell'immagine \ref{fig:send_rec.png}.
@@ -1575,6 +1584,62 @@ net::to_pnml_pipe("~/reti/murata_writers_readers.xml");
 \end{verbatim}
 
 Nalla figura \ref{fig:let_scrit.png} si può vedere il peso degli archi è stampato a video mentre non si vede la capacità dei posti. Con il software pipe è possibile verificare che la capacità viene inserita correttamente all'interno del file {\tt pnml}.
+
+\section{I cinque filosofi}
+Il seguente esempio mostra come si può modellare il classico problema
+dei cinque filosofi proposto da Edsger Dijkstra nel 1965. Si può
+notare come nell'ultima unione di reti si formi un conflitto sulle
+forchette in quanto ogni filosofo modella già al suo interno la
+presenza delle risorse e che quindi il parser fornisca qualche
+avvertimento durante l'esecuzione del codice. Ciò però è ininfluente
+ai fini del risultato in quanto gli archi necessari vengono inseriti
+correttamente nella rete risultante.
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=12cm]{img/philosophers.png}}
+\caption{Modellazione del problema lettori/scrittori}\label{fig:philosophers.png}
+\end{figure}
+
+\begin{verbatim}PetriNet philo[5], fork[5];
+Place philo{munch_munch, think}, fork{free};
+Transition philo{take, release}, fork{get, release};
+
+philo{think=1};
+fork{free=1};
+
+philo{think -> take -> munch_munch -> release -> think};
+fork{free -> get | release -> free};
+
+#union_add_prefix=True;
+for(i=0;i<5;i+=1){
+philo[i] = (philo[i] | fork[i] | fork[i+1 % 5] ) on 
+        [take = get = get as philo[i].take, 
+         release = release = release as 
+            philo[i].release ];
+ }
+#union_add_prefix=False;
+sys = (philo[0] | philo[1] | philo[2] 
+     | philo[3] | philo[4]) on [ ];
+sys::to_dot("~/Desktop/philo", "png");
+sys::to_pnml_pipe("~/Desktop/philo.pnml");
+\end{verbatim}
+
+\section{Rete con contatore di cicli}
+Il seguente semplice esempio serve a mostare come gestire i posti di
+capacità illimitata. In questo caso un posto viene utilizzato come
+contatore dei cicli eseguiti dal sistema.
+
+\begin{verbatim}PetriNet net;
+Place net{istr1, istr2};
+Transition net{t1, t2};
+#default_place_capacity=unlimited;
+Place net{contatore};
+net{istr1 = 1};
+net{istr1 -> t1 -> contatore | istr1 -> t1 -> istr2 -> t2 -> istr1};
+
+net::to_pnml_pipe("~/Desktop/cont.pnml");
+
+\end{verbatim}
 
 %
 \bibliography{bibliografia}

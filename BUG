@@ -3,3 +3,5 @@
   lo stesso nome (caso in cui la direttiva 'union_add_prefix' sia settata a False) 
   la procedura di unione si comporta come se 'union_type' fosse equivalente a 
   ovverride
+- Nell'unione, il nuovo nome può contenere un punto solo se prima ci sono delle parentesi
+  quadre. Philo[1].receive è accettato mentre Philo.receive no.
