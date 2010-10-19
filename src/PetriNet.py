@@ -455,8 +455,11 @@ class PetriNet(object):
             place_name_pos = ET.SubElement(ET.SubElement(ET.SubElement(place_el, 'name'), 'graphics'), 'offset', x = '22', y = '-10')
             # Capacità del posto
 	    place_cap = ET.SubElement(ET.SubElement(place_el, 'capacity'), 'text')
-	    place_cap.text = str(place.capacity)
-        
+            if place.capacity == sys.maxint:
+                place_cap.text = str(0)
+            else:
+                place_cap.text = str(place.capacity)
+                
         for trans in self.transitions:
             trans_el = ET.SubElement(net, 'transition', id = '{0}.{1}'.format(self.name, trans.name))
             # Posizione della transizione, tutto a 0 perché manca un algoritmo di posizionamento.
@@ -504,7 +507,10 @@ class PetriNet(object):
             place_name_pos = ET.SubElement(ET.SubElement(ET.SubElement(place_el, 'name'), 'graphics'), 'offset', x = '22', y = '-10')
 	    # Capacità del posto
 	    place_cap = ET.SubElement(ET.SubElement(place_el, 'capacity'), 'value')
-	    place_cap.text = str(place.capacity)
+            if place.capacity == sys.maxint:
+                place_cap.text = str(0)
+            else:
+                place_cap.text = str(place.capacity)
 	    #place_cap_pos = ET.SubElement(ET.SubElement(ET.SubElement(place_el, 'name'), 'graphics'), 'offset', x = '22', y = '-10')
         
         for trans in self.transitions:

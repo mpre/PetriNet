@@ -1132,12 +1132,8 @@ def main():
     # opts all'esterno della funzione main() non riesco a vedere i suoi valori
     # nella funzione union
     argv['union_type'] = opts.union_type
-<<<<<<< HEAD
-    argv['union_add_prefix'] = 'False'
-=======
-    argv['union_add_prefix'] = opts.union_add_prefix
+    argv['union_add_prefix'] = "False"
     argv['default_place_capacity'] = 1
->>>>>>> max_place_capacity
     if not opts.interactive:
         try: 
             data=open(opts.input_file, 'r') #apertura del file in lettura
