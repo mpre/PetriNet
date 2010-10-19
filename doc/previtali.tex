@@ -4,6 +4,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage{epsfig}
 \usepackage{lscape}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\newtheorem{mydef}{Definizione}
 
 \title{Strumenti testuali e grafici per la specifica delle reti di
   Petri}
@@ -17,6 +22,117 @@
 %
 \chapter{Attuale stato dell'arte}\label{cha:stato_arte}
 %
+\section{Introduzione alle reti di Petri}
+Le reti di Petri (conosciute anche come reti di Posti/Transizioni)
+sono uno dei metodi di rappresentazione matematica di sistemi
+distribuiti che devono il loro nome al matematico ed informatico
+tedesco Carl Adam Petri (1926 - 2010)  che le inventò durante la sua
+tesi di dottorato nel 1962. \\
+Queste reti sono grafi bipartiti cioè grafi nei
+quali i vertici possono essere disgiunti in due insiemi $U$ e $V$ tali
+che ogni arco colleghi un vertice di $U$ con un vertice di $V$. Nel
+caso delle reti di Petri questi due insiemi sono gli insiemi delle
+{\bf transizioni} ($T$) e dei {\bf posti} ($P$). Gli elementi di
+questi due insiemi vengono collegati da archi direzionati che fanno
+parte di un insieme chiamato {\bf relazione di flusso}
+($F$). L'elemento dal quale l'arco parte viene detto precondizione
+mentre l'elemento nel quale l'arco arriva viene chiamato
+postcondizione. \\
+Più formalmente è possibile dire che 
+\begin{mydef}\label{def:pn1}
+Una rete di Petri è una tupla $N = (P, T, F)$ per la quale valgono le
+seguenti condizioni:
+\begin{itemize}
+\item $P$ è un insieme finito di posti
+\item $T$ è un insieme finito di transizioni
+\item $P \cap T = \emptyset $
+\item $F \subseteq P \times T \cup T \times P $
+\end{itemize}
+\end{mydef}
+
+\begin{figure}[htb]
+\centerline{\includegraphics[height=7cm]{img/pnetbase.png}}
+\caption{Semplice rete di Petri che mostra tutte le componenti
+  principali: posti, capacità dei posti, transizioni, archi, archi
+  pesati e marcatura}\label{fig:pnetbase.png}
+\end{figure}
+
+Una marcatura di una rete di Petri è un multiinsieme dell'insieme dei
+Posti ($M$) e viene chiamata marcatura iniziale o $m_0$ la marcatura
+relativa allo stato inziale della rete. La marcatura può essere vista
+come una funzione \[M : P \to \mathbb{N}\] che associa ad ogni posto il numero
+di token contenuti.\\
+Ogni posto può avere una \emph{capacità} associata che assegna ad ogni
+posto di $P$ un valore in $\mathbb{N}$ che indica quanti token possono
+essere contenuti al massimo all'interno del posto stesso. La capacità
+può essere vista come una funzione $K : P \to \mathbb{N}$. \\
+Ogni arco può avere un \emph{peso} associato che assegna ad ogni arco
+di $F$ un valore in $\mathbb{N}$ che indica quanti token sono
+consumati in un posto da una transizione o quanti token sono prodotti
+in un posto da una transizione. Il peso può essere visto come una
+funzione $W : F \to \mathbb{N}$. \\
+Dopo aver aggiunto queste definizioni è possibile ridefinire una rete
+di Petri nel seguente modo:
+\begin{mydef}
+Una rete di Petri è una sestupla $N = (P,T,F,m_0,W,K)$ per la quale
+valgono le condizioni della definizione \ref{def:pn1} e in più:
+\begin{itemize}
+\item $K : P \to \mathbb{N}$ è una funzione che associa ad ogni posto
+  la sua capacità
+\item $W : F \to \mathbb{N}$ è una funzione che associa ad ogni arco
+  il suo peso
+\item $m_0 : P \to \mathbb{N} : \forall p \in P \Rightarrow 0 \leq m_0(p)
+  \leq K(p)$ è una funzione che associa ad ogni posto il numero di
+  marche contenute
+\end{itemize}
+\end{mydef}
+
+\subsection{Grafo delle marcature}
+Per poter descrivere il comportamento di un sistema modellato da una
+rete di petri è possibile creare un grafo di tutti gli stati
+raggiungibili da una generica rete $N$ partendo da una marcatura
+inziale $m_0$. Gli elementi di questo grafo possono essere collegati
+tra di loro da archi che rappresentano la transizione che venendo
+eseguita fa passare la rete di Petri dalla marcatura $m_i$ alla
+marcatura $m_k$
+\begin{figure}[htb]
+\centerline{\includegraphics[height=4cm]{img/reach_grap.png}}
+\caption{Rete di raggiungibilità della rete di Petri mostrata in
+  figura \ref{fig:pnetbase.png}}\label{fig:reach_grap_pnetbase.png}
+\end{figure}
+Questo grafo viene chiamato Grafo delle marcature o grafo di
+raggiungibilità.
+
+\subsection{Proprietà di una rete di Petri}
+\subsubsection{Liveness}
+Una rete di Petri viene detta viva se, qualunque marcatura $m_i$
+raggiunta a partire da $m_0$, è sempre possibile far scattare
+qualunque transizione della rete a seguita di una sequenza di
+scatti. \\
+La vivezza è una proprietà non monotona nelle reti di Petri.
+
+\subsubsection{Boundness}
+Una rete viene detta k-limitata se esiste un numero intero positivo
+$k$  tale che il numero di token in ogni posto della rete è minore o
+uguale a $k$ per orni marcatura raggiungibile da $m_0$. Una rete di
+Petri si dice {\bf safe} se è 1-limitata (1-bounded). Come è
+facilmente intuibile, la limitatezza di una rete dipende dalla sua
+marcatura iniziale.
+
+% \subsubsection{P-Invariante}
+% I p-invarianti sono dei vettori di cardinalità $|P|$ nei quali ogni
+% elemento è un numero $p_i \in \mathbb{N}$. Un vettore si dice essere
+% un p-invariante se la sommatoria dei prodotti del valore $i$-esimo e
+% il numero di marche del posto $i$-esimo di una rete di Petri è
+% costante.
+
+% \subsubsection{T-Invariante}
+% I t-invarianti sono dei vettori di cardinalità $|T|$ nei quali ogni
+% elemento è un numero $t_i \in \mathbb{N}$. Un vettore t-invariante
+% fornisce un'informazione sul numero di volte che le transizioni
+% debbano scattare prima di poter tornare alla stessa marcatura
+% all'interno della rete di Petri\footnote{Non è necessario che 
+
 \section{Linguaggio PetriNet}\label{sec:linguaggio_petrinet}
 PetriNet è un linguaggio di specifica testuale per le reti di Petri
 sviluppato da Sara Faggioni. Attualmente il linguaggio permette la
@@ -670,8 +786,8 @@ net{p1 -> t1 ->(3) p2 ->(3) t2 -> p3 -> t3 -> p1};
 net{p1=1, p2=3};
 \end{verbatim}
 
-Nell'esempio appena scritto viene create una rete contenente 3 posti ({\tt p2] con capacità 5} e 3 transizione. 
-Successivamente viene definito il flusso della rete descrivendo una rete circolare e dopodiché viene istanziata la marcatura iniziale della rete con il codice {\tt net{p1=1, p2=3}}
+Nell'esempio appena scritto viene create una rete contenente 3 posti ({\tt p2} con capacità 5) e 3 transizioni. 
+Successivamente viene definito il flusso della rete descrivendo una rete circolare e dopodiché viene istanziata la marcatura iniziale della rete con il codice {\tt net\{p1=1, p2=3\}}
  che inserisce una marca in {\tt p1} e 3 marche in {\tt p2}. Una rappresentazione di questa rete è mostrata in figura \ref{fig:test_marcature.png}.\\
 Ovviamente, nel caso si cercasse di inserire una quantità di marche maggiore alla capacità di un posto, il sistema fornirà un errore.
 
@@ -1585,7 +1701,7 @@ net::to_pnml_pipe("~/reti/murata_writers_readers.xml");
 
 Nalla figura \ref{fig:let_scrit.png} si può vedere il peso degli archi è stampato a video mentre non si vede la capacità dei posti. Con il software pipe è possibile verificare che la capacità viene inserita correttamente all'interno del file {\tt pnml}.
 
-\section{I cinque filosofi}
+\section{Il problema dei cinque filosofi}
 Il seguente esempio mostra come si può modellare il classico problema
 dei cinque filosofi proposto da Edsger Dijkstra nel 1965. Si può
 notare come nell'ultima unione di reti si formi un conflitto sulle
@@ -1597,7 +1713,7 @@ correttamente nella rete risultante.
 
 \begin{figure}[htb]
 \centerline{\includegraphics[width=12cm]{img/philosophers.png}}
-\caption{Modellazione del problema lettori/scrittori}\label{fig:philosophers.png}
+\caption{Modellazione del problema dei 5 filosofi}\label{fig:philosophers.png}
 \end{figure}
 
 \begin{verbatim}PetriNet philo[5], fork[5];
@@ -1629,13 +1745,19 @@ Il seguente semplice esempio serve a mostare come gestire i posti di
 capacità illimitata. In questo caso un posto viene utilizzato come
 contatore dei cicli eseguiti dal sistema.
 
+\begin{figure}[htb]
+\centerline{\includegraphics[width=5cm]{img/contatore.png}}
+\caption{Rete con contatore}\label{fig:contatore.png}
+\end{figure}
+
 \begin{verbatim}PetriNet net;
 Place net{istr1, istr2};
 Transition net{t1, t2};
 #default_place_capacity=unlimited;
 Place net{contatore};
 net{istr1 = 1};
-net{istr1 -> t1 -> contatore | istr1 -> t1 -> istr2 -> t2 -> istr1};
+net{istr1 -> t1 -> contatore | 
+    istr1 -> t1 -> istr2 -> t2 -> istr1};
 
 net::to_pnml_pipe("~/Desktop/cont.pnml");
 

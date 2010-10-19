@@ -1,91 +1,97 @@
 \select@language {italian}
 \contentsline {chapter}{\numberline {1}Attuale stato dell'arte}{5}
-\contentsline {section}{\numberline {1.1}Linguaggio PetriNet}{5}
-\contentsline {subsection}{\numberline {1.1.1}Linguaggio di specifica}{5}
-\contentsline {subsubsection}{Rete}{5}
-\contentsline {subsubsection}{Marche}{5}
-\contentsline {subsubsection}{Relazione di flusso}{6}
-\contentsline {subsubsection}{Operazioni sulle reti}{6}
-\contentsline {section}{\numberline {1.2}Strumenti}{7}
-\contentsline {subsection}{\numberline {1.2.1}Lexer}{7}
-\contentsline {subsection}{\numberline {1.2.2}Parser}{7}
-\contentsline {section}{\numberline {1.3}Utilizzo dei moduli}{8}
-\contentsline {subsection}{\numberline {1.3.1}PetriNet.py}{8}
-\contentsline {subsection}{\numberline {1.3.2}Parser}{8}
-\contentsline {section}{\numberline {1.4}GraphViz}{9}
-\contentsline {section}{\numberline {1.5}PNML}{9}
-\contentsline {subsection}{\numberline {1.5.1}Formato generale}{10}
-\contentsline {subsection}{\numberline {1.5.2}Sintassi}{13}
-\contentsline {subsection}{\numberline {1.5.3}Graphics}{13}
-\contentsline {chapter}{\numberline {2}Analisi di PetriNet}{15}
-\contentsline {section}{\numberline {2.1}Linguaggio PetriNet}{15}
-\contentsline {subsection}{\numberline {2.1.1}Classe di reti trattate}{15}
-\contentsline {subsection}{\numberline {2.1.2}Rete corrente}{15}
-\contentsline {subsubsection}{Problemi}{17}
-\contentsline {subsection}{\numberline {2.1.3}Nomi dei posti}{17}
-\contentsline {subsection}{\numberline {2.1.4}Creazione grafo delle marcature}{18}
-\contentsline {subsubsection}{Funzione per creare l'immagine del grafo delle marcature}{19}
-\contentsline {subsection}{\numberline {2.1.5}Commenti}{19}
-\contentsline {section}{\numberline {2.2}Moduli Python}{20}
-\contentsline {subsection}{\numberline {2.2.1}Stile di programmazione}{20}
-\contentsline {subsection}{\numberline {2.2.2}PetriNet.py}{20}
-\contentsline {subsubsection}{Obj}{20}
-\contentsline {subsubsection}{State}{21}
-\contentsline {subsubsection}{Trans}{21}
-\contentsline {subsubsection}{Link}{21}
-\contentsline {subsubsection}{PetriNet}{21}
-\contentsline {subsection}{\numberline {2.2.3}PetriNet\_lex.py}{22}
-\contentsline {subsection}{\numberline {2.2.4}PetriNet\_parser.py}{23}
-\contentsline {chapter}{\numberline {3}Sviluppo di PetriNet}{25}
-\contentsline {section}{\numberline {3.1}Modifiche vecchie funzionalit\IeC {\`a} di PetriNet}{25}
-\contentsline {subsection}{\numberline {3.1.1}Classe di reti trattate}{25}
-\contentsline {subsection}{\numberline {3.1.2}Rete Corrente}{25}
-\contentsline {subsection}{\numberline {3.1.3}Nomi dei posti}{26}
-\contentsline {subsection}{\numberline {3.1.4}Creazione del grafo delle marcature}{26}
-\contentsline {subsection}{\numberline {3.1.5}Commenti}{27}
-\contentsline {subsection}{\numberline {3.1.6}Marcatura iniziale}{27}
-\contentsline {section}{\numberline {3.2}Nuove funzionalit\IeC {\`a} di PetriNet}{28}
-\contentsline {subsection}{\numberline {3.2.1}Direttive al parser}{28}
-\contentsline {subsection}{\numberline {3.2.2}Array di reti}{29}
-\contentsline {subsubsection}{Dichiarazione}{29}
-\contentsline {subsubsection}{Modellazione}{30}
-\contentsline {subsection}{\numberline {3.2.3}Dichiarazione di posti}{31}
-\contentsline {subsubsection}{Posti con pesi}{32}
-\contentsline {subsubsection}{Array di posti}{33}
-\contentsline {subsection}{\numberline {3.2.4}Transizioni}{33}
-\contentsline {subsubsection}{Array di transizioni}{34}
-\contentsline {subsection}{\numberline {3.2.5}Definizione flussi}{34}
-\contentsline {subsubsection}{Archi pesati}{35}
-\contentsline {subsection}{\numberline {3.2.6}Unione di reti}{36}
-\contentsline {subsubsection}{Esempi}{38}
-\contentsline {subsubsection}{Esempio 1}{38}
-\contentsline {subsubsection}{Esempio 2}{39}
-\contentsline {subsubsection}{Esempio 3}{39}
-\contentsline {subsubsection}{Esempio 4}{40}
-\contentsline {subsubsection}{Esempio 5}{41}
-\contentsline {subsubsection}{Esempio 6}{41}
-\contentsline {subsection}{\numberline {3.2.7}Ciclo for}{43}
-\contentsline {subsubsection}{Espressioni matematiche}{43}
-\contentsline {subsubsection}{Cicli innestati}{44}
-\contentsline {subsubsection}{Limitazioni sui pesi degli archi}{45}
-\contentsline {section}{\numberline {3.3}Moduli Python}{45}
-\contentsline {subsection}{\numberline {3.3.1}Stile di programmazione}{45}
-\contentsline {subsection}{\numberline {3.3.2}PetriNet.py}{45}
-\contentsline {subsubsection}{PetriNetElement}{45}
-\contentsline {subsubsection}{Place}{46}
-\contentsline {subsubsection}{Transition}{46}
-\contentsline {subsubsection}{Link}{46}
-\contentsline {subsubsection}{PetriNet}{47}
-\contentsline {subsection}{\numberline {3.3.3}PetriNet\_lex.py}{47}
-\contentsline {subsection}{\numberline {3.3.4}PetriNet\_parser.py}{49}
-\contentsline {subsection}{\numberline {3.3.5}Il preprocessore: pnpre.py}{50}
-\contentsline {subsubsection}{Esempio 1}{51}
-\contentsline {subsubsection}{Esempio 2}{52}
-\contentsline {subsubsection}{Esempio 3}{52}
-\contentsline {subsection}{\numberline {3.3.6}pnc}{53}
-\contentsline {chapter}{\numberline {4}Esempi di utilizzo}{55}
-\contentsline {section}{\numberline {4.1}Processo sequenziale ciclico}{55}
-\contentsline {section}{\numberline {4.2}Processi concorrenti su di una risorsa}{56}
-\contentsline {section}{\numberline {4.3}Comunicazione tra due processi}{57}
-\contentsline {section}{\numberline {4.4}Problema lettori/scrittori}{59}
-\contentsline {section}{\numberline {4.5}I cinque filosofi}{60}
+\contentsline {section}{\numberline {1.1}Introduzione alle reti di Petri}{5}
+\contentsline {subsection}{\numberline {1.1.1}Grafo delle marcature}{7}
+\contentsline {subsection}{\numberline {1.1.2}Propriet\IeC {\`a} di una rete di Petri}{7}
+\contentsline {subsubsection}{Liveness}{7}
+\contentsline {subsubsection}{Boundness}{7}
+\contentsline {section}{\numberline {1.2}Linguaggio PetriNet}{8}
+\contentsline {subsection}{\numberline {1.2.1}Linguaggio di specifica}{8}
+\contentsline {subsubsection}{Rete}{8}
+\contentsline {subsubsection}{Marche}{8}
+\contentsline {subsubsection}{Relazione di flusso}{9}
+\contentsline {subsubsection}{Operazioni sulle reti}{9}
+\contentsline {section}{\numberline {1.3}Strumenti}{10}
+\contentsline {subsection}{\numberline {1.3.1}Lexer}{10}
+\contentsline {subsection}{\numberline {1.3.2}Parser}{10}
+\contentsline {section}{\numberline {1.4}Utilizzo dei moduli}{10}
+\contentsline {subsection}{\numberline {1.4.1}PetriNet.py}{10}
+\contentsline {subsection}{\numberline {1.4.2}Parser}{11}
+\contentsline {section}{\numberline {1.5}GraphViz}{11}
+\contentsline {section}{\numberline {1.6}PNML}{12}
+\contentsline {subsection}{\numberline {1.6.1}Formato generale}{12}
+\contentsline {subsection}{\numberline {1.6.2}Sintassi}{14}
+\contentsline {subsection}{\numberline {1.6.3}Graphics}{14}
+\contentsline {chapter}{\numberline {2}Analisi di PetriNet}{17}
+\contentsline {section}{\numberline {2.1}Linguaggio PetriNet}{17}
+\contentsline {subsection}{\numberline {2.1.1}Classe di reti trattate}{17}
+\contentsline {subsection}{\numberline {2.1.2}Rete corrente}{17}
+\contentsline {subsubsection}{Problemi}{19}
+\contentsline {subsection}{\numberline {2.1.3}Nomi dei posti}{19}
+\contentsline {subsection}{\numberline {2.1.4}Creazione grafo delle marcature}{20}
+\contentsline {subsubsection}{Funzione per creare l'immagine del grafo delle marcature}{21}
+\contentsline {subsection}{\numberline {2.1.5}Commenti}{21}
+\contentsline {section}{\numberline {2.2}Moduli Python}{22}
+\contentsline {subsection}{\numberline {2.2.1}Stile di programmazione}{22}
+\contentsline {subsection}{\numberline {2.2.2}PetriNet.py}{22}
+\contentsline {subsubsection}{Obj}{22}
+\contentsline {subsubsection}{State}{23}
+\contentsline {subsubsection}{Trans}{23}
+\contentsline {subsubsection}{Link}{23}
+\contentsline {subsubsection}{PetriNet}{23}
+\contentsline {subsection}{\numberline {2.2.3}PetriNet\_lex.py}{24}
+\contentsline {subsection}{\numberline {2.2.4}PetriNet\_parser.py}{25}
+\contentsline {chapter}{\numberline {3}Sviluppo di PetriNet}{27}
+\contentsline {section}{\numberline {3.1}Modifiche vecchie funzionalit\IeC {\`a} di PetriNet}{27}
+\contentsline {subsection}{\numberline {3.1.1}Classe di reti trattate}{27}
+\contentsline {subsection}{\numberline {3.1.2}Rete Corrente}{27}
+\contentsline {subsection}{\numberline {3.1.3}Nomi dei posti}{28}
+\contentsline {subsection}{\numberline {3.1.4}Creazione del grafo delle marcature}{28}
+\contentsline {subsection}{\numberline {3.1.5}Commenti}{29}
+\contentsline {subsection}{\numberline {3.1.6}Marcatura iniziale}{29}
+\contentsline {section}{\numberline {3.2}Nuove funzionalit\IeC {\`a} di PetriNet}{30}
+\contentsline {subsection}{\numberline {3.2.1}Direttive al parser}{30}
+\contentsline {subsection}{\numberline {3.2.2}Array di reti}{31}
+\contentsline {subsubsection}{Dichiarazione}{31}
+\contentsline {subsubsection}{Modellazione}{32}
+\contentsline {subsection}{\numberline {3.2.3}Dichiarazione di posti}{33}
+\contentsline {subsubsection}{Posti con pesi}{34}
+\contentsline {subsubsection}{Array di posti}{35}
+\contentsline {subsection}{\numberline {3.2.4}Transizioni}{35}
+\contentsline {subsubsection}{Array di transizioni}{36}
+\contentsline {subsection}{\numberline {3.2.5}Definizione flussi}{36}
+\contentsline {subsubsection}{Archi pesati}{37}
+\contentsline {subsection}{\numberline {3.2.6}Unione di reti}{38}
+\contentsline {subsubsection}{Esempi}{40}
+\contentsline {subsubsection}{Esempio 1}{40}
+\contentsline {subsubsection}{Esempio 2}{41}
+\contentsline {subsubsection}{Esempio 3}{41}
+\contentsline {subsubsection}{Esempio 4}{42}
+\contentsline {subsubsection}{Esempio 5}{43}
+\contentsline {subsubsection}{Esempio 6}{43}
+\contentsline {subsection}{\numberline {3.2.7}Ciclo for}{45}
+\contentsline {subsubsection}{Espressioni matematiche}{45}
+\contentsline {subsubsection}{Cicli innestati}{46}
+\contentsline {subsubsection}{Limitazioni sui pesi degli archi}{47}
+\contentsline {section}{\numberline {3.3}Moduli Python}{47}
+\contentsline {subsection}{\numberline {3.3.1}Stile di programmazione}{47}
+\contentsline {subsection}{\numberline {3.3.2}PetriNet.py}{47}
+\contentsline {subsubsection}{PetriNetElement}{47}
+\contentsline {subsubsection}{Place}{48}
+\contentsline {subsubsection}{Transition}{48}
+\contentsline {subsubsection}{Link}{48}
+\contentsline {subsubsection}{PetriNet}{49}
+\contentsline {subsection}{\numberline {3.3.3}PetriNet\_lex.py}{49}
+\contentsline {subsection}{\numberline {3.3.4}PetriNet\_parser.py}{51}
+\contentsline {subsection}{\numberline {3.3.5}Il preprocessore: pnpre.py}{52}
+\contentsline {subsubsection}{Esempio 1}{53}
+\contentsline {subsubsection}{Esempio 2}{54}
+\contentsline {subsubsection}{Esempio 3}{54}
+\contentsline {subsection}{\numberline {3.3.6}pnc}{55}
+\contentsline {chapter}{\numberline {4}Esempi di utilizzo}{57}
+\contentsline {section}{\numberline {4.1}Processo sequenziale ciclico}{57}
+\contentsline {section}{\numberline {4.2}Processi concorrenti su di una risorsa}{58}
+\contentsline {section}{\numberline {4.3}Comunicazione tra due processi}{59}
+\contentsline {section}{\numberline {4.4}Problema lettori/scrittori}{61}
+\contentsline {section}{\numberline {4.5}Il problema dei cinque filosofi}{62}
+\contentsline {section}{\numberline {4.6}Rete con contatore di cicli}{63}
