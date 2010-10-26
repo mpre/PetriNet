@@ -1,3 +1,4 @@
+%% -*- coding: utf-8 -*-
 \documentclass[italian,12pt]{book}
 % 
 \usepackage{babel}
@@ -7,19 +8,86 @@
 \usepackage{amsthm}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+%\usepackage[pdftex]{graphicx}
+
 
 \newtheorem{mydef}{Definizione}
-
+%% Dato che ho inserito \input{fronte.tex} la definizione del titolo e
+%% dell'autore è inutile ora.
 \title{Strumenti testuali e grafici per la specifica delle reti di
   Petri}
 \author{Marco Previtali}
 \date{}
 % 
 \begin{document}
-\maketitle
+\input{fronte.tex}
 %
 \tableofcontents
-%
+% %
+% \chapter{Introduzione}\label{cha:introduzione}
+% L'obbiettivo di questo stage è portare avanti lo sviluppo di un
+% linguaggio di specifica testuale per la definizione delle reti di
+% Petri utilizzabile anche da utenti senza nozioni di programmazione. \\
+% Le reti di Petri sono uno dei metodi di rappresentazione matematica di
+% sistemi distribuiti inventate dal matematico tedesco Carl Adam Petri
+% nel 1962. Queste reti hanno tre diversi elementi grafici utili alla
+% loro definizione: i posti, le transizioni e gli archi.\\
+% I posti (il quale insieme è solitamente indicato con la lettera $P$)
+% vengono generalmente rappresentati attraverso dei cerchi e possono o
+% meno contenere degli elementi (chiamati token o marche) che
+% rappresentano il fatto che un dato posto sia considerato attivo all'interno
+% dello stato attuale del sistema. \'E possibile inoltre considerare i
+% posti come condizioni di un sistema e, in presenza di marche, pensare
+% a queste condizioni come soddisfatte o vere.\\
+% Gli archi sono archi direzionati che vanno da un posto ad una
+% transizione o viceversa, le reti di Petri vengono definite come grafi
+% bipartiti e quindi non è possibile collegare posti con posti e
+% transizioni con transizioni. Gli archi vengono detti pesati quando
+% agiscono su di un posto aggiungendo o togliendo più di una marca dai
+% posti una volta attivati.\\
+% Le transizioni (insieme $T$) invece vengono generalmente rappresentate
+% graficamente attraverso rettangoli o sbarre e rappresentano azioni
+% compiute dal sistema. Le transizioni agiscono su gruppi di posti e
+% togliendo marche da alcuni e aggiungendone ad altri. Si dice che un
+% posto è \emph{di ingresso} rispetto ad una transizione se l'arco che
+% collega i due elementi è direzionato verso la transizione, viceversa
+% si dice che il posto è \emph{di uscita}.\\ 
+% Una transizione si dice abilitata se tutti i posti di ingresso
+% hanno almeno tante marche quanto è il peso dell'arco stesso. Quando
+% una transizione \emph{scatta} vengono tolte marche dai posti in
+% ingresso solidalmente al peso degli archi ed equivalentemente ne
+% vengono aggiunti ai posti in uscita.\\
+% Una delle prime modifche apportate al linguaggio è stata quella di
+% passare dal trattare reti elementari (formate ciò da posti contenenti
+% al più una marca e archi con peso uno) alle reti posti e transizioni
+% che ha richiesto la riscrittura di gran parte del codice che gestisce
+% le strutture dati basilari al funzionamento del sistema.\\
+% Lo sviluppo di un sistema testuale per la specifica di reti di Petri
+% permette di svincolarsi dall'utilizzo di editor grafici e permette di
+% sviluppare concettualmente il sistema. Sebbene sviluppare una rete di
+% Petri in modo grafico permette di avere immediatamente un riscontro di
+% facile comprensione (grafico) la modellazione di reti di grande
+% dimensione è molto laborioso e con ogni porbabilità viene impiegato
+% parecchio tempo nella creazione della struttura.\\
+% L'utilizzo di una definizione delle reti basate su strumenti testuali
+% permette, attraverso l'utilizzo di semplici costrutti quali \emph{for}
+% ed \emph{array}, di semplificare decisamente il processo di creazione
+% soprattutto in casi in cui siano presenti componenti ridondanti
+% all'interno del sistema. \\
+% La mancanza di un posizionamento manuale degli elementi della rete da
+% una parte diminuisce il tempo necessario all'utente per definire il
+% sistema ma dall'altra fa sorgere un problema non indifferente relativo
+% alla scelta automatica della posizione dei nodi una volta esportato il
+% sistema in un formato grafico. Durante questo stage non è stato
+% possibile sviluppare un algoritmo di posizionamento adatto alle reti
+% di Petri ma la struttura del progetto sviluppato permette facilmente
+% l'implementazione di un metodo all'interno del codice.\\
+% La versione attuale del software sviluppato permette di esportare la
+% struttura creata in due diversi modi. Il primo metodo è quello di
+% utilizzare il pacchetto \emph{Graphviz} che, attraverso gli algoritmi
+% forniti all'utente, permette di creare reti con posizioni scelte in
+% modo corretto.
+% %
 \chapter{Attuale stato dell'arte}\label{cha:stato_arte}
 %
 \section{Introduzione alle reti di Petri}
@@ -59,8 +127,8 @@ seguenti condizioni:
 
 Una marcatura di una rete di Petri è un multiinsieme dell'insieme dei
 Posti ($M$) e viene chiamata marcatura iniziale o $m_0$ la marcatura
-relativa allo stato inziale della rete. La marcatura può essere vista
-come una funzione \[M : P \to \mathbb{N}\] che associa ad ogni posto il numero
+relativa allo stato iniziale della rete. La marcatura può essere vista
+come una funzione $M : P \to \mathbb{N}$ che associa ad ogni posto il numero
 di token contenuti.\\
 Ogni posto può avere una \emph{capacità} associata che assegna ad ogni
 posto di $P$ un valore in $\mathbb{N}$ che indica quanti token possono
@@ -87,11 +155,16 @@ valgono le condizioni della definizione \ref{def:pn1} e in più:
 \end{itemize}
 \end{mydef}
 
+\subsubsection{Rappresentazione delle reti di Petri}
+Come già mostrato in figura \ref{fig:pnetbase.png} le reti di Petri
+vengono solitamente rappresentate graficamente utilizzando dei cerchi
+per i posti e dei rettangoli (o delle semplici sbarre) per le transizioni.
+
 \subsection{Grafo delle marcature}
 Per poter descrivere il comportamento di un sistema modellato da una
-rete di petri è possibile creare un grafo di tutti gli stati
+rete di Petri è possibile creare un grafo di tutti gli stati
 raggiungibili da una generica rete $N$ partendo da una marcatura
-inziale $m_0$. Gli elementi di questo grafo possono essere collegati
+iniziale $m_0$. Gli elementi di questo grafo possono essere collegati
 tra di loro da archi che rappresentano la transizione che venendo
 eseguita fa passare la rete di Petri dalla marcatura $m_i$ alla
 marcatura $m_k$
@@ -102,6 +175,27 @@ marcatura $m_k$
 \end{figure}
 Questo grafo viene chiamato Grafo delle marcature o grafo di
 raggiungibilità.
+
+\subsection{Matrice di incidenza}
+Oltre che alla rappresentazione grafica, le reti di Petri, sono dotate
+di una semplice rappresentazioni matematica. Attraverso questa
+rappresentazione è possibile eseguire analisi automatiche della
+rete. \\
+La matrice di incidenza $C$ ha $|P|$ righe e $|T|$ colonne e la
+generica casella $(i, k)$ rappresenta il peso dell'arco che collega il
+posto $p_i$ e la transizione $t_k$ con segno positivo nel caso che
+entri nel posto e con segno negativo nel caso esca dal posto. \\
+\'E possibile notare che esiste la possibilità (in presenza di
+autoanelli\footnote{Si definisce autoanello una situazione nella quale
+  un arco di peso $k$ va dal posto $i$-esimo alla transizione $k$-esima e un altro
+  arco con lo stesso peso $k$ fa il tragitto inverso}) che la matrice
+di incidenza indichi il valore zero sia in caso di presenza o assenza
+di archi tra $p_i$ e $t_k$.
+\begin{figure}[htb]
+\centerline{\includegraphics[height=4cm]{img/incid_matrix.png}}
+\caption{Matrice di incidenza della rete di Petri mostrata in
+  figura \ref{fig:pnetbase.png}}\label{fig:incid_matrix_pnetbase.png}
+\end{figure}
 
 \subsection{Proprietà di una rete di Petri}
 \subsubsection{Liveness}
@@ -119,12 +213,19 @@ Petri si dice {\bf safe} se è 1-limitata (1-bounded). Come è
 facilmente intuibile, la limitatezza di una rete dipende dalla sua
 marcatura iniziale.
 
-% \subsubsection{P-Invariante}
-% I p-invarianti sono dei vettori di cardinalità $|P|$ nei quali ogni
-% elemento è un numero $p_i \in \mathbb{N}$. Un vettore si dice essere
-% un p-invariante se la sommatoria dei prodotti del valore $i$-esimo e
-% il numero di marche del posto $i$-esimo di una rete di Petri è
-% costante.
+\subsubsection{P-Invarianti}
+I p-invarianti sono dei vettori di cardinalità $|P|$ nei quali ogni
+elemento è un numero $p_i \in \mathbb{N}$. Un vettore si dice essere
+un p-invariante se la sommatoria dei prodotti del valore $i$-esimo e
+il numero di marche del posto $i$-esimo di una rete di Petri è
+costante.
+\begin{mydef}
+Si dice p-invariante un vettore $p = (p_1, p_2, \dots, p_n)$ con
+cardinalità $n = |P|$ tale che:
+\[ \forall M \in R(N, m_0) , p\prime \times M = p\prime \times m_0 \]
+dove $R(N, m_0)$ è il grafo delle marcature della reti di Petri $N$
+partendo dalla marcatura iniziale $m_0$.
+\end{mydef}
 
 % \subsubsection{T-Invariante}
 % I t-invarianti sono dei vettori di cardinalità $|T|$ nei quali ogni
@@ -133,9 +234,29 @@ marcatura iniziale.
 % debbano scattare prima di poter tornare alla stessa marcatura
 % all'interno della rete di Petri\footnote{Non è necessario che 
 
+\subsubsection{T-Invarianti}
+In modo duale ai P-invarianti, i T-invarianti si riferiscono alle
+transizioni. Sono rappresentati da vettori di cardinalità $|T|$, i cui
+elementi contengono il numero di volte in cui una transizione deve
+scattare per riprodurre una data marcatura.\\
+I T-invarianti rappresentano {\bf possibili} sequenze di scatti che
+riportano la rete nella marcatura iniziale. \\
+La presenza di un T-invariante non implica che è davvero possibile
+ritornare alla marcatura iniziale, qualunque essa sia. Infatti la
+marcatura iniziale potrebbe non soddisfare la condizione di
+abilitazione per nessuna transizione, ovvero potrebbe non esistere
+nessuna sequenza di scatti tale che il relativo vettore delle
+occorrenze sia proprio il T-invariante. \\
+Più propriamente, quindi, un T-invariante y indica che, se fosse
+possibile far scattare ogni transizione del supporto di y in un ordine
+qualunque, allora lo stato della rete potrebbe tornare al valore
+iniziale al termine della sequenza.
+
+\newpage
+
 \section{Linguaggio PetriNet}\label{sec:linguaggio_petrinet}
 PetriNet è un linguaggio di specifica testuale per le reti di Petri
-sviluppato da Sara Faggioni. Attualmente il linguaggio permette la
+sviluppato da Sara Faggioni\cite{FAG10}. Attualmente il linguaggio permette la
 creazione di sole reti elementari nelle quali ogni posto può contenere
 al più una marca e gli archi che connettono posti e transizioni
 utilizzano una e una sola marca per volta.
@@ -172,7 +293,7 @@ fase di creazione del grafo, aggiungerà le marche
 adeguate.
 % 
 \subsubsection{Relazione di flusso}
-Esistono due metodi per indicare relazioni di flusso, il
+Esistono due metodi per indicare le relazioni di flusso, il
 primo è definendo collegamenti singoli tra stati e
 transizioni mentre il secondo è utilizzando la sintassi
 della regola di scatto.\\
@@ -189,15 +310,15 @@ marcati prima dello scatto di una transizione e quelli
 marcati successivamente allo scatto della stessa.
 \begin{verbatim}{p_k,...,p_k} [transizione_x> {p_q,...,p_n}
 \end{verbatim}
-Equivalentemente è possibile cambiare le liste degli
-stati con i nome di una marcature:
+Equivalentemente è possibile cambiare le liste dei
+posti con il nome di una marcatura:
 \begin{verbatim}marcatura_a [transizione_x> marcatura_b
 \end{verbatim}
 %
 \subsubsection{Operazioni sulle reti}
 \begin{description}
 \item[net.toDot(nomeFile, ext)] crea il file
-  dot della rete su cui viene chiamto il metodo e un
+  dot della rete su cui viene chiamato il metodo e un
   file immagine con estensione ext
 \item[net.isOccurrency()] controlla che la rete sia
   una rete di occorrenze
@@ -211,19 +332,19 @@ stati con i nome di una marcature:
   e il file immagine con estensione ext.
 \item[\emph{PetriNet} net.union(A,B) on
   $ p_{1n}=p_{1m}, p_{1k}=p_{2h}, \dots $]  esegue l'unione delle reti A e
-  B, opzionalmente è possibile indicare su quali posti
-  o transizioni devono essere unite all'interno della
+  B, opzionalmente è possibile indicare quali posti
+  o transizioni devono essere uniti all'interno della
   nuova rete. É necessario prestare attenzione sul
   fatto che il primo elemento appartenga alla prima
   rete e il secondo alla seconda. Se i due elementi
-  sono una transizione e un posto, l'unione non li
+  sono di tipo diverso, l'unione non li
   prende in considerazione.
 \end{description}
 %       
 \section{Strumenti}
 \subsection{Lexer}
 Il lexer si occupa di analizzare un flusso di caratteri di input e di 
-produrre in output uno stream di tokens. I tokens sono degli strutture che hanno 
+produrre in output uno stream di tokens. I tokens sono delle strutture che hanno 
 un tipo ed un valore e sono gli elementi base su cui il Parser andrà 
 ad operare.\\
 Solitamente gli analizzatori lessicali basano il proprio lavoro su degli 
@@ -241,18 +362,18 @@ formale del linguaggio di specifica.
 \subsection{PetriNet.py}
 Tramite il modulo PetriNet.py è possibile creare una rete di Petri e il 
 relativo grafo delle marcature da riga di comando. Dopo aver aperto una 
-sessione della shell interattiva di python basterà importare il modulo
+sessione della shell interattiva di Python basterà importare il modulo
 PetriNet e creare una rete.\\
-È possibile accedere alla documentazinoe di questo modulo richiamando il 
+È possibile accedere alla documentazione di questo modulo richiamando il 
 comando \begin{verbatim}>>> help(PetriNet)\end{verbatim} all'interno dell'interprete.
 \subsection{Parser}
-Un altro modo per definire una rete di Petri è utilizzando il liguaggio
+Un altro modo per definire una rete di Petri è quello di utilizzare il linguaggio
 di specifica definito in \ref{subsec:componenti_del_linguaggio}. Esistono due 
 metodi per poter creare reti in questo modo: tramite l'ambiente fornito dal
 modulo PetriNet\_parser.py oppure scrivendo un file di testo in linguaggio 
 \emph{PetriNet} e compilarlo tramite il parser.\\
 Per eseguire il parser basterà fornire il nome del modulo a Python come 
-variabile di esecuzione. Questo comando farà partire l'interprete el parser 
+variabile di esecuzione. Questo comando farà partire l'interprete del parser 
 che mostrerà un ambiente di questo genere:
 \begin{verbatim}
 $ python PetriNet_parser.py 
@@ -260,7 +381,7 @@ $ python PetriNet_parser.py
 petriNet > 
 \end{verbatim} 
 Da questo momento il parser accetterà comandi strutturati 
-come percedentemente mostrato.\\
+come precedentemente mostrato.\\
 Come già accennato, è possibile compilare un file di testo
 scritto precedentemente con sintassi \emph{PetriNet} nel seguente modo:
 \begin{verbatim}
@@ -284,8 +405,8 @@ relativa.
 %
 %
 \section{PNML}
-PNML\footnote{Petri Net Markup Langage} è un formato di documenti basato su XML 
-ed è stato inventato per la rappresentazione di reti di Petri pensando alla 
+PNML\footnote{Petri Net Markup Language} è un formato di documenti basato su XML 
+ed è stato definito per la rappresentazione di reti di Petri pensando alla 
 possibilità di venire usato come mezzo di scambio tra strumenti differenti. 
 PNML ha subito una fase di standardizzazione ed ora è standard ISO.\\
 La progettazione di PNML è stata fatta seguendo tre principi:
@@ -358,7 +479,7 @@ un file PNML.
   \emph{Petri net file} e può contenere più reti di Petri. Ogni rete
   è formata da oggetti che possono essere \emph{posti, transizioni,
     archi, pagine, riferimenti a posti e riferimenti a
-    transizioni}. Ogni oggetti all'interno di una rete di Petri ha
+    transizioni}. Ogni oggetto all'interno di una rete di Petri ha
   un identificatore univoco.
 \item[Etichette] Per poter assegnare significati ad un oggetto,
   allo stesso possono venir assegnate delle etichette (label)
@@ -456,20 +577,21 @@ Il tag {\tt<dimension>}  definisce altezza e larghezza di un nodo. I due element
 {\tt<fill>}  e {\tt<line>}  definiscono il colore interno e quello del bordo 
 di un elemento. I valori di questi attributi devono essere secondo formato RGB.
 Per le annotazioni il tag {\tt<font>} definisce il carattere 
-che deve venire usato per visualizzare il testo delle etichette.
-
+che deve venire usato per visualizzare il testo delle etichette.\\
 Per una trattazione approfondita di PNML si rimanda a
 \cite{WEB-KINDLER} o \cite{KINDLER}.
 
 \chapter{Analisi di PetriNet}
-Nel seguente capitolo si analizzerà il linugaggio PetriNet e il funzionamento
-dei moduli sviluppati precendetemente evidenziandone errori e accenando possibili soluzioni
+Nel seguente capitolo si analizzerà il linguaggio PetriNet e il funzionamento
+dei moduli sviluppati precedentemente evidenziandone errori e accennando possibili soluzioni
 
 \section{Linguaggio PetriNet}\label{sec:linguaggio_petrinet}
-Nella seguente sezione viene analizzato il linguaggio PetriNet come sviluppato finora.
+Nella seguente sezione viene analizzato il linguaggio PetriNet come sviluppato durante il lavoro di tesi di Sara Faggioni.
+ Vengono riportate delle considerazioni mostrando alcuni problemi che si sono presentati durante
+ l'utilizzo e accennando a possibili soluzioni applicabili.
 
 \subsection{Classe di reti trattate}
-PetriNet permette la specifica di reti di occorrenze e non delle più generali reti P/T.
+PetriNet permette la specifica di reti elementari e non delle più generali reti P/T.
 Ciò limita l'utilizzo del linguaggio in quanto non permette di definire capacità per i posti
 e pesi per gli archi ma assume entrambi a valore 1. Questa decisione viene riflessa anche sulle 
 strutture dati create nei moduli Python il che rende necessario una riscrittura del codice o, almeno, 
@@ -497,7 +619,7 @@ Place p3;
     e come il linguaggio sia in un certo modo triviale in quanto ad una prima lettura del codice potrebbe
     non essere ovvio il fatto che {\tt p3} appartenga a {\tt b}.
   \item {\bf Utilizzo della direttiva WorkOn}\\
-    Un metodo altrenativo per cambiare la rete corrente è quello di utilizzare la funzione 
+    Un metodo alternativo per cambiare la rete corrente è quello di utilizzare la funzione 
     {\tt WorkOn(net)}. Dalla chiamata a questa funzione in poi si lavorerà sulla rete
     di nome {\tt net}.
     Per esempio, il seguente codice:
@@ -523,7 +645,7 @@ Secondo una lettura ``umana'' del codice l'ultima
 rete dichiarata sarebbe {\tt b} e, di conseguenza, {\tt p1} e {\tt p2} dovrebbero venir aggiunti a
 questa rete. \\
 Ciò, invece, non avviene in quanto la regola interna al parser del linguaggio si basa su una definizione 
-ricorsiva che vede l'ordine delle reti in modo inverso e, di coseguenza, l'ultima rete dichiarata per 
+ricorsiva che vede l'ordine delle reti in modo inverso e, di conseguenza, l'ultima rete dichiarata per 
 il sistema è {\tt a} e i posti {\tt p1} e {\tt p2} vengono aggiunti alla prima rete dichiarata.\\
 L'utilizzo del concetto di rete corrente inoltre non rende il codice corretto in quanto non è sempre chiaro
 a quale rete ci si vuole riferire.
@@ -573,7 +695,7 @@ M0 = {x};
 m={x};
 g = a.createCaseGraph(m);
 \end{verbatim}
-sarebbe corretto attendersi un grafo dei casi {\tt g} a cappio tra un posto relativo alla marcatura 
+sarebbe corretto attendersi un grafo dei casi {\tt g} con un cappio tra un posto relativo alla marcatura 
 {\tt \{x\} } con arco chiamato {\tt t}. In realtà il grafo ottenuto sarà un grafo come quello mostrato
 in figura \ref{fig:err_grafo_casi_1}.
 \begin{figure}[htb]
@@ -598,7 +720,7 @@ Dato il carattere descrittivo del linguaggio sarebbe opportuno prevedere questa 
 per aiutare il lettore nella comprensione del codice.
 
 \section{Moduli Python}
-In questa sezione verranno analizzati i moduli python sviluppati.
+In questa sezione verranno analizzati i moduli Python sviluppati.
 
 \subsection{Stile di programmazione}
 All'interno di tutti i moduli sviluppati è stato usato uno stile di programmazione simile a quello
@@ -615,7 +737,7 @@ cambiarne i nomi e inserire i relativi getters e setters. \\
 Le definizioni del metodo {\tt \_\_repr\_\_()} in ogni classe sono scorrette in quanto si cerca di 
 utilizzare questo metodo speciale come se fosse il metodo {\tt \_\_str\_\_()}
 \footnote{Il metodo {\tt \_\_repr\_\_()} serve a creare una rappresentazione dell'oggetto in modo che
-la valutazione della stringa ritornata crei una copia dell'oggetto stesso. Praticamente si averà che 
+la valutazione della stringa ritornata crei una copia dell'oggetto stesso. Praticamente si avrà che 
 {\tt eval(repr(x)) == x}.}. \\
 Per una trattazione completa degli attributi privati e dei metodi speciali 
 si rimanda a \cite{PYTH} o \cite {SUMMERFIELD}.\\
@@ -623,13 +745,13 @@ Verranno ora analizzate una per una le classi di questo modulo.
 
 \subsubsection{Obj}
 La classe {\tt Obj} è una superclasse dalla quale erediteranno sia le classi {\tt State} e 
-{\tt Trans}. Contiene al suo interno siolemente due variabili ({\tt index} e {\tt name}). La 
+{\tt Trans}. Contiene al suo interno solamente due variabili ({\tt index} e {\tt name}). La 
 scelta di inserire il valore indice all'interno degli oggetti verrà rivista nella reimplementazione 
 dei moduli in quanto potrebbe creare problemi di inconsistenza.
 
 \subsubsection{State}
 State è la classe rappresentante uno stato all'interno del modulo PetriNet.\\
-State aggiunge alla classe {\tt Obj} una sola variabile {\tt token} e il metod {\tt \_\_repr\_\_}.
+State aggiunge alla classe {\tt Obj} una sola variabile {\tt token} e il metodo {\tt \_\_repr\_\_}.
 Non si capisce se token sia una variabile booleana che informa se il posto sia pieno o vuoto (si
 ricorda che la classe di reti trattate permette posti di capacità 1) oppure se sia un valore intero. 
 All'istanziazione dell'oggetto non viene fatto alcun controllo sul valore che assumo le variabili 
@@ -652,15 +774,15 @@ vada da un posto ad una transizione o viceversa durante l'inserimento.
 
 \subsubsection{PetriNet}
 PetriNet è la classe rappresentante una rete di Petri all'interno del modulo PetriNet. \\
-In questa classse vengono definiti metodi diversi per aggiungere posti, transizioni e link. Nella 
+In questa classe vengono definiti metodi diversi per aggiungere posti, transizioni e link. Nella 
 reimplementazione del modulo si è trovato più usabile l'unire queste funzioni all'interno di un semplice
 metodo {\tt add} generico che si occupa di inserire l'oggetto passato nel modo corretto.\\
-Le strutture dati utilizate per posti, transizioni e archi sono liste; questa scelta implica il fatto
+Le strutture dati utilizzate per posti, transizioni e archi sono liste; questa scelta implica il fatto
 che all'interno del codice si cicli parecchie volte su queste strutture per verificare la presenza 
 di un dato oggetto. Se si fosse scelto di utilizzare strutture quali dizionari (forniti nelle librerie 
 standard di Python) si sarebbe potuto guadagnare espressività e comprensibilità del codice.
-Prendiamop come esempio i seguenti codici che effettuano una ricerca all'interno di una struttura 
-dati e stamapano il contenuto se presente.\\
+Prendiamo come esempio i seguenti codici che effettuano una ricerca all'interno di una struttura 
+dati e stampano il contenuto se presente.\\
 Utilizzando le liste il risultato sarebbe qualcosa di simile:
 \begin{verbatim}x = []
 [...]
@@ -748,7 +870,7 @@ It seems that an element named a is already in x
 \end{verbatim}
 
 \subsection{Creazione del grafo delle marcature}\label{ssect:creazione_grafo_marcature}
-Nell'implementazione percedente di PetriNet era possibile creare il grafo delle 
+Nell'implementazione precedente di PetriNet era possibile creare il grafo delle 
 marcature della rete definita. Dato che questo è un aspetto di simulazione mentre 
 l'obiettivo di questo sistema è quello di fornire un linguaggio di specifica per la rete,
 dato che l'implementazione della creazione di grafi delle marcature era errata e quindi
@@ -761,7 +883,7 @@ grafi delle marcature in modo corretto.
 
 \subsection{Commenti}\label{ssect:new_commenti}
 Nella nuova implementazione di PetriNet è stata aggiunta la possibilità di inserire commenti all'interno del 
-codice. Volendo mantenere uno stile {\tt c}-like (decisione presa precendetemente al mio stage) si è optato 
+codice. Volendo mantenere uno stile {\tt c}-like (decisione presa precedentemente al mio stage) si è optato 
 per la possibilità di inserire commenti monoriga preceduti dai caratteri {\tt //}. Il seguente esempio mostra 
 dei commenti innestati nel codice:
 \begin{verbatim}PetriNet net;
@@ -821,12 +943,12 @@ relativi all'unione di reti si rimanda alla sezione dedicata
 Il parametro \emph{default\_place\_capacity} influisce sulla
 dichiarazione di posti nel codice. Come precedentemente accennato
 potrebbe essere necessario avere reti con capacità di default diversa,
-grazie a questo parametro è possibile modificare questo comportament
+grazie a questo parametro è possibile modificare questo comportamento
 assegnandovi un numero positivo oppure il valore unlimited. \\
 Nel caso si dichiari \emph{default\_place\_capacity} come unlimited il
 sistema assegnerà ai posti una capacità di default concettualmente
 illimitata ma, in realtà, essa sarà comunque limitata al numero intero
-massimo gestibile dalla versione di python sottostante al sistema.
+massimo gestibile dalla versione di Python sottostante al sistema.
 
 \subsection{Array di reti}
 Nella specifica di reti è possibile dover realizzare modelli con la stessa struttura base che 
@@ -878,7 +1000,7 @@ crea la struttura base di ogni rete di philosophers in modo che ogni componente 
 stesso modo.\\
 È ragionevole pensare che in alcuni casi qualche componente abbia un comportamento particolare  pur basandosi 
 sullo stesso schema delle sue reti "simili". Per questo è possibile aggiungere posti, transizioni e archi di 
-flusso ad ogni singola rete appartentente ad un array.\\
+flusso ad ogni singola rete appartenente ad un array.\\
 Il seguente codice:
 \begin{verbatim}PetriNet philosophers[5];
 [...]
@@ -901,13 +1023,13 @@ Nella nuova implementazione di PetriNet è possibile definire posti in diverse m
 \begin{verbatim}PetriNet x;
 Place x::a;
 \end{verbatim}
-dopo aver eseguito tale codice si avrà una rete {\tt x} contentente un posto {\tt a}.
+dopo aver eseguito tale codice si avrà una rete {\tt x} contenente un posto {\tt a}.
 È ovviamente possibile dichiarare più posti in successione sulla stessa riga separati da 
 virgole. Il codice seguente è corretto secondo la nuova specifica di PetriNet:
 \begin{verbatim}PetriNet x;
 Place x::a, x::b;
 \end{verbatim}
-È anche possibile dichiarare posti appartenti a reti diverse sulla stessa riga nel seguente modo:
+È anche possibile dichiarare posti appartenenti a reti diverse sulla stessa riga nel seguente modo:
 \begin{verbatim}PetriNet x, y;
 Place x::a, y::a, x::b, y::c;
 \end{verbatim}
@@ -919,7 +1041,7 @@ Place x{a, b, c};
 che creerà una rete contenente i posti {\tt a}, {\tt b} e {\tt c}.
 
 \item Esiste una terza possibilità, della quale si scoraggia l'utilizzo, per inserire posti in una rete.
-Questa modalità sfrutta la capacità del sistema di fornire le funzioni dei moduli python al linguaggio PetriNet
+Questa modalità sfrutta la capacità del sistema di fornire le funzioni dei moduli Python al linguaggio PetriNet
 (verrà mostrato in seguito questo aspetto). Di conseguenza è possibile definire posti ``generici'' slegati da 
 ogni rete e poi andare ad aggiungerli alle reti che ci interessano. Il seguente codice potrà aiutare a chiarire
 le idee a riguardo:
@@ -928,7 +1050,7 @@ Place y;
 x::add(y);
 \end{verbatim}
 come si può notare viene chiamata la funzione {\tt add} sulla rete {\tt x} passando come parametro {\tt y}.
-Andando a guardare il codice python dell'implementazione delle reti di Petri si può vedere come la classe 
+Andando a guardare il codice Python dell'implementazione delle reti di Petri si può vedere come la classe 
 {\tt PetriNet} (che definisce ovviamente il concetto di rete di Petri) ha al suo interno la funzione {\tt add}
 alla quale è possibile passare un qualsiasi elemento.\\
 Questo metodo è scoraggiato in quanto poco funzionale e complica inutilmente il codice.
@@ -961,7 +1083,7 @@ Place foo::zip(7), foo[1]::apt(3);
 come si può notare le combinazioni possibili per poter dichiarare posti in una rete sono molto varie
 e sono abbastanza comprensibili.\\
 È stato scelto nell'implementazione che tutti i posti appartenenti ad un array debbano avere la stessa capacità 
-in quanto un array di posti rappresente una collezione di posti uguali e sarebbe poco logico averne con capacità 
+in quanto un array di posti rappresenta una collezione di posti uguali e sarebbe poco logico averne con capacità 
 diverse.
 
 \subsection{Transizioni}
@@ -999,13 +1121,13 @@ Transition foo{ bar[3], baz}, foo[0]{ tar}, foo::zip, foo[1]::apt;
 
 
 \subsection{Definizione flussi}\label{ssect:nuovi_archi}
-La sintatssi per la definizione di flussi in PetriNet è stata rivista completamente ed è stata 
+La sintassi per la definizione di flussi in PetriNet è stata rivista completamente ed è stata 
 reimplementata ispirandosi leggermente al linguaggio di specifica FSP\footnote{ Si veda 
 http://www.doc.ic.ac.uk/~jnm/LTSdocumention/FSP-notation.html per maggiori dettagli}.\\
 Per poter definire un flusso all'interno di una rete sarà necessario ora specificare su quale rete si stia 
 lavorando in questo momento e successivamente raccogliere tra parentesi graffe una lista di posti e transizioni
 collegati tra di loro dai caratteri {\tt ->}. In questo modo si specificheranno percorsi all'interno della 
-rete e il comportamente di ogni componenete sarà facilmente intuibile.
+rete e il comportamento di ogni componente sarà facilmente intuibile.
 È possibile definire più flussi in due modi:
 \begin{itemize}
 
@@ -1101,7 +1223,7 @@ La direttiva \emph{union\_type} ha due valori possibili:
   capacità uguali [comportamento di default]
 \item{{\bf override}}: in questo caso sarà possibile sovrapporre i
   posti sempre e gli elementi avranno la capacità e la marcatura del
-  posto appartente alla prima rete della lista.
+  posto appartenente alla prima rete della lista.
 \end{description}
 La direttiva \emph{union\_add\_prefix} è un valore booleano (valori
 "True" e "False") che permette di decidere se durante l'unione i posti
@@ -1124,16 +1246,17 @@ della rete che non partecipa all'unione.
 
 \subsubsection{Esempi}
 Per capire meglio il funzionamento dell'unione portiamo ora alcuni semplici
-esempi facilmente comprendibili. Per esempi più complessi si rimanda al capitolo
+esempi facilmente comprensibili. Per esempi più complessi si rimanda al capitolo
 \ref{cap:esempi}.
 \subsubsection{Esempio 1}
+Unione di due reti con posti con lo stesso nome e senza direttiva di aggiunta
+di prefisso.\\
 \begin{figure}[htb]
 \centerline{\includegraphics[height=5cm]{img/unione_001.png}}
 \caption{Risultato esempio 1}\label{fig:unione_001.png}
 \end{figure}
-Unione di due reti con posti con lo stesso nome e senza direttiva di aggiunta
-di prefisso.\\
-{\bf Codice}
+
+\subsubsection{Codice}
 \begin{verbatim}
 PetriNet a,b;
 Place a{x,y}, b{x,z};
@@ -1153,7 +1276,7 @@ sys = (a | b) on [];
 \end{figure}
 Unione di due reti con posti con lo stesso nome e con direttiva di aggiunta
 di prefisso.\\
-{\bf Codice}
+\subsubsection{Codice}
 \begin{verbatim}
 PetriNet a,b;
 Place a{x,y}, b{x,z};
@@ -1174,7 +1297,7 @@ sys = (a | b) on [];
 \end{figure}
 Unione di due reti con posti con lo stesso nome, con direttiva di aggiunta
 di prefisso e con dichiarazione di unione delle transizioni.\\
-{\bf Codice}
+\subsubsection{Codice}
 \begin{verbatim}
 PetriNet a,b;
 Place a{x,y}, b{x,z};
@@ -1190,7 +1313,7 @@ sys = (a | b) on [t = k as T];
 
 \subsubsection{Esempio 4}
 In questo caso si cerca di sovrapporre due elementi con capacità diverse.\\
-{\bf Codice}
+\subsubsection{Codice}
 \begin{verbatim}
 PetriNet a,b;
 Place a{x(75),y}, b{x,z};
@@ -1214,7 +1337,7 @@ Errore in quanto x della rete a e x della rete b hanno capacità diverse
 \end{figure}
 In questo caso si cerca di sovrapporre due elementi con capacità diverse
 dichiarando correttamente la direttiva union\_type.\\
-{\bf Codice}
+\subsubsection{Codice}
 \begin{verbatim}
 PetriNet a,b;
 Place a{x(75),y}, b{x,z};
@@ -1231,7 +1354,7 @@ sys = (a | b) on [t = k as T, x = x as X];
 \subsubsection{Esempio 6}
 
 In questo esempio vengono sovrapposte tre reti su elementi diversi.\\
-{\bf Codice}
+\subsubsection{Codice}
 \begin{verbatim}
 PetriNet a,b,c;
 Place a{x,y}, b{x,z}, c{u,s};
@@ -1371,7 +1494,7 @@ In questa classe viene definito un attributo di nome name che sta ad indicare il
 getter e setter.
 
 \subsubsection{Place}
-Place è la classe rappresentante un posto all'interno del modulo PetriNet. L'unico attributo aggiunto da questa classe alla classe PetriNetElement (dalla quale deriva) è capacity che sta ad indicare, appunto, la capacità del posto. Vengono definiti i metodi speciali {\tt \_\_repr()\_\_}, {\tt \_\_str()\_\_} e {\tt \_\_eq\_\_()} e il gettere e il setter per l'attributo capacity.
+Place è la classe rappresentante un posto all'interno del modulo PetriNet. L'unico attributo aggiunto da questa classe alla classe PetriNetElement (dalla quale deriva) è capacity che sta ad indicare, appunto, la capacità del posto. Vengono definiti i metodi speciali {\tt \_\_repr()\_\_}, {\tt \_\_str()\_\_} e {\tt \_\_eq\_\_()} e il getter e il setter per l'attributo capacity.
 
 \subsubsection{Transition}
 Transition è la classe rappresentante una transizione all'interno del modulo PetriNet. Deriva dalla classe PetriNetElement e ridefinisce i metodi {\tt \_\_repr()\_\_} e {\tt \_\_str()\_\_} senza aggiungere alcun altro attributo.
@@ -1436,8 +1559,6 @@ Sono stati anche eliminati e seguenti token presenti precedentemente:
 
 \item[{\tt 'ADD'}] per lo stesso motivo del token {\tt toDot}
 
-\item[{\tt 'for'}] in quanto inutilizzato anche precedentemente e non ancora implementati i cicli
-
 \item[{\tt 'to'}] in quanto inutilizzato
 
 \item[{\tt 'in'}] in quanto inutilizzato
@@ -1460,9 +1581,9 @@ Options:
 \end{verbatim}
 Questo modulo si occupa della definizione della grammatica formale del linguaggio analizzando la sequenza di token trasmessa del lexer.\\
 In questo modulo sono state eliminate le variabili globali inutili precedentemente presenti ({\tt UnionA} e {\tt UnionB}).\\
-Essendo stato eliminato il concetto di rete corrente è stata eliminata la variabile {\tt actualNet} e la definizione della classe {\tt rete}. Il dizionario {\tt net} è poi stato rinominato in {\tt nets} e sono stati creati dei dizionari chiamati {\tt places}, {\tt transitions} e {\tt links} che contengono rispettivamente i posti, le transizioni e gli archi dichiarati non appartenenti ad alcuna rete\footnote{Esisite attualmente, in PetriNet, la possibilità di dichiarare posti, transizioni e archi non appartenenti ad alcuna rete. Elementi dichiarati in questo modo non hanno molta utilità se non nel caso si volessero poi aggiungere a svariate reti attraverso il metodo {\tt  add}. È comunque sconsigliata la dichiarazione di posti e transizioni in questo modo}.\\
+Essendo stato eliminato il concetto di rete corrente è stata eliminata la variabile {\tt actualNet} e la definizione della classe {\tt rete}. Il dizionario {\tt net} è poi stato rinominato in {\tt nets} e sono stati creati dei dizionari chiamati {\tt places}, {\tt transitions} e {\tt links} che contengono rispettivamente i posti, le transizioni e gli archi dichiarati non appartenenti ad alcuna rete\footnote{Esiste attualmente, in PetriNet, la possibilità di dichiarare posti, transizioni e archi non appartenenti ad alcuna rete. Elementi dichiarati in questo modo non hanno molta utilità se non nel caso si volessero poi aggiungere a svariate reti attraverso il metodo {\tt  add}. È comunque sconsigliata la dichiarazione di posti e transizioni in questo modo}.\\
 Vengono successivamente dichiarate le regole per la dichiarazione di reti, posti e transizioni nelle modalità viste nelle sezioni precedenti.\\
-Particolamente interessante può essere la funzione {\tt p\_call\_function\_on\_net} che permette di richiamare tutti metodi della classe {\tt PetriNet}. Questa funzione crea una regola che verifica la presenza del token {\tt DDOT} e del token {\tt ID} successivamente ad un token {\tt ID} o un token {\tt ARRAY\_ID}. Successivamente viene dinamicamente valutata l'esecuzione della funzione scelta sulla rete selezionata. \\
+Particolarmente interessante può essere la funzione {\tt p\_call\_function\_on\_net} che permette di richiamare tutti metodi della classe {\tt PetriNet}. Questa funzione crea una regola che verifica la presenza del token {\tt DDOT} e del token {\tt ID} successivamente ad un token {\tt ID} o un token {\tt ARRAY\_ID}. Successivamente viene dinamicamente valutata l'esecuzione della funzione scelta sulla rete selezionata. \\
 In questo modo è stato possibile eliminare tutti i token e tutte le regole che effettuavano questo lavoro. Un possibile problema di questa funzionalità è che tutti i metodi della classe {\tt PetriNet} sono invocabili dal codice passato al parser. Per evitare questo spiacevole inconveniente sarebbe possibile obbligare a chiamare in qualche particolare modo i metodi ``privati'' (magari aggiungendo un particolare prefisso) e fare una selezione all'interno della funzione {\tt p\_call\_function\_on\_net}.\\
 Al termine di questo file vengono inserite le regole {\tt show\_nets}, {\tt show\_places} {\tt show\_transitions} e {\tt show\_links} utili per il debug del programma ma praticamente inutili al fine del linguaggio PetriNet.\\
 Come si può vedere dall'help fornito all'inizio della sezione, per poter
@@ -1503,7 +1624,7 @@ di input al modulo
 \end{description}
 Come precedentemente accennato questo modulo permette di espandere i
 valori delle variabili presenti all'interno del ciclo for in modo
-corretto quando le stesse sono utilzzate come indici in array ma non
+corretto quando le stesse sono utilizzate come indici in array ma non
 quando vengono utilizzate come pesi degli archi. \\
 Portiamo ora qualche esempio per mostrare come il modulo si comporta
 con diversi file di input.
@@ -1635,7 +1756,7 @@ sys::to_pnml_pipe("~/Desktop/conc.xml");
 
 \section{Comunicazione tra due processi}
 In questo classico esempio verrà modellato un sistema che simula l'azione di due processi {\tt sender} e {\tt receiver}.\\
-Il processo {\tt sender} produrrà un messaggio, poi lo depositerà all'interno di un buffer e attenderà di ricevere un ack per poi rieffettuare lo stesso ciclo.\\
+Il processo {\tt sender} produrrà un messaggio, poi lo depositerà all'interno di un buffer e attenderà di ricevere un ack per poi reiterare lo stesso ciclo.\\
 Il processo {\tt receiver} attenderà di ricevere un messaggio, invierà l'ack e consumerà il messaggio per poi effettuare lo stesso ciclo.\\
 
 \begin{figure}[htb]
@@ -1699,7 +1820,7 @@ net{p1=5, p3=5};
 net::to_pnml_pipe("~/reti/murata_writers_readers.xml");
 \end{verbatim}
 
-Nalla figura \ref{fig:let_scrit.png} si può vedere il peso degli archi è stampato a video mentre non si vede la capacità dei posti. Con il software pipe è possibile verificare che la capacità viene inserita correttamente all'interno del file {\tt pnml}.
+Nella figura \ref{fig:let_scrit.png} si può vedere il peso degli archi è stampato a video mentre non si vede la capacità dei posti. Con il software pipe è possibile verificare che la capacità viene inserita correttamente all'interno del file {\tt pnml}.
 
 \section{Il problema dei cinque filosofi}
 Il seguente esempio mostra come si può modellare il classico problema
