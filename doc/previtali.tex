@@ -23,71 +23,142 @@
 \input{fronte.tex}
 %
 \tableofcontents
-% %
-% \chapter{Introduzione}\label{cha:introduzione}
-% L'obbiettivo di questo stage è portare avanti lo sviluppo di un
-% linguaggio di specifica testuale per la definizione delle reti di
-% Petri utilizzabile anche da utenti senza nozioni di programmazione. \\
-% Le reti di Petri sono uno dei metodi di rappresentazione matematica di
-% sistemi distribuiti inventate dal matematico tedesco Carl Adam Petri
-% nel 1962. Queste reti hanno tre diversi elementi grafici utili alla
-% loro definizione: i posti, le transizioni e gli archi.\\
-% I posti (il quale insieme è solitamente indicato con la lettera $P$)
-% vengono generalmente rappresentati attraverso dei cerchi e possono o
-% meno contenere degli elementi (chiamati token o marche) che
-% rappresentano il fatto che un dato posto sia considerato attivo all'interno
-% dello stato attuale del sistema. \'E possibile inoltre considerare i
-% posti come condizioni di un sistema e, in presenza di marche, pensare
-% a queste condizioni come soddisfatte o vere.\\
-% Gli archi sono archi direzionati che vanno da un posto ad una
-% transizione o viceversa, le reti di Petri vengono definite come grafi
-% bipartiti e quindi non è possibile collegare posti con posti e
-% transizioni con transizioni. Gli archi vengono detti pesati quando
-% agiscono su di un posto aggiungendo o togliendo più di una marca dai
-% posti una volta attivati.\\
-% Le transizioni (insieme $T$) invece vengono generalmente rappresentate
-% graficamente attraverso rettangoli o sbarre e rappresentano azioni
-% compiute dal sistema. Le transizioni agiscono su gruppi di posti e
-% togliendo marche da alcuni e aggiungendone ad altri. Si dice che un
-% posto è \emph{di ingresso} rispetto ad una transizione se l'arco che
-% collega i due elementi è direzionato verso la transizione, viceversa
-% si dice che il posto è \emph{di uscita}.\\ 
-% Una transizione si dice abilitata se tutti i posti di ingresso
-% hanno almeno tante marche quanto è il peso dell'arco stesso. Quando
-% una transizione \emph{scatta} vengono tolte marche dai posti in
-% ingresso solidalmente al peso degli archi ed equivalentemente ne
-% vengono aggiunti ai posti in uscita.\\
-% Una delle prime modifche apportate al linguaggio è stata quella di
-% passare dal trattare reti elementari (formate ciò da posti contenenti
-% al più una marca e archi con peso uno) alle reti posti e transizioni
-% che ha richiesto la riscrittura di gran parte del codice che gestisce
-% le strutture dati basilari al funzionamento del sistema.\\
-% Lo sviluppo di un sistema testuale per la specifica di reti di Petri
-% permette di svincolarsi dall'utilizzo di editor grafici e permette di
-% sviluppare concettualmente il sistema. Sebbene sviluppare una rete di
-% Petri in modo grafico permette di avere immediatamente un riscontro di
-% facile comprensione (grafico) la modellazione di reti di grande
-% dimensione è molto laborioso e con ogni porbabilità viene impiegato
-% parecchio tempo nella creazione della struttura.\\
-% L'utilizzo di una definizione delle reti basate su strumenti testuali
-% permette, attraverso l'utilizzo di semplici costrutti quali \emph{for}
-% ed \emph{array}, di semplificare decisamente il processo di creazione
-% soprattutto in casi in cui siano presenti componenti ridondanti
-% all'interno del sistema. \\
-% La mancanza di un posizionamento manuale degli elementi della rete da
-% una parte diminuisce il tempo necessario all'utente per definire il
-% sistema ma dall'altra fa sorgere un problema non indifferente relativo
-% alla scelta automatica della posizione dei nodi una volta esportato il
-% sistema in un formato grafico. Durante questo stage non è stato
-% possibile sviluppare un algoritmo di posizionamento adatto alle reti
-% di Petri ma la struttura del progetto sviluppato permette facilmente
-% l'implementazione di un metodo all'interno del codice.\\
-% La versione attuale del software sviluppato permette di esportare la
-% struttura creata in due diversi modi. Il primo metodo è quello di
-% utilizzare il pacchetto \emph{Graphviz} che, attraverso gli algoritmi
-% forniti all'utente, permette di creare reti con posizioni scelte in
-% modo corretto.
-% %
+ %
+ \chapter{Introduzione}\label{cha:introduzione}
+ L'obiettivo di questo stage è continuare lo sviluppo di un
+ linguaggio di specifica testuale per la definizione delle reti di
+ Petri chiamato PetriNet sviluppato per essere utilizzabile anche da utenti 
+ senza nozioni di programmazione. \\
+ Le reti di Petri sono uno dei metodi di rappresentazione matematica di
+ sistemi distribuiti inventate dal matematico tedesco Carl Adam Petri durante il suo dottorato
+ nel 1962. \\
+ Lo sviluppo di un sistema testuale per la specifica di reti di Petri
+ permette di svincolarsi dall'utilizzo di editor grafici e permette di
+ sviluppare concettualmente il sistema. Sebbene sviluppare una rete di
+ Petri in modo grafico permette di avere immediatamente un riscontro di
+ facile comprensione (grafico) la modellazione di reti di grande
+ dimensione è molto laboriosa e con ogni probabilità il guadagno in termini di tempo
+ nel dichiarare una rete in modo testuale è netto.\\
+ L'utilizzo di una definizione delle reti basate su strumenti testuali
+ permette, attraverso l'utilizzo di semplici costrutti quali \emph{for}
+ ed \emph{array}, di semplificare decisamente il processo di creazione
+ soprattutto in casi in cui siano presenti componenti ridondanti
+ all'interno del sistema. \\
+ Le reti di Petri sono dei grafi direzionati formati da tre elementi fondamentali:
+ i posti, le transizioni e gli archi. \\
+ I posti (il quale insieme è solitamente indicato con la lettera $P$)
+ vengono generalmente rappresentati attraverso dei cerchi e possono o
+ meno contenere degli elementi (chiamati token o marche) che
+ rappresentano il fatto che un dato posto sia considerato attivo all'interno
+ dello stato attuale del sistema. \'E possibile inoltre considerare i
+ posti come precondizioni o postcondizioni di un'azione e, in presenza di marche, pensare
+ a queste condizioni come soddisfatte o vere.\\
+ Gli archi sono archi direzionati che vanno da un posto ad una
+ transizione o viceversa; le reti di Petri vengono definite come grafi
+ bipartiti e quindi non è possibile collegare posti con posti e
+ transizioni con transizioni. Gli archi vengono detti pesati quando
+ agiscono su di un posto aggiungendo o togliendo più di una marca dai
+ posti una volta attivati.\\
+ Le transizioni (insieme $T$) invece vengono generalmente rappresentate
+ graficamente attraverso rettangoli o sbarre e rappresentano azioni
+ compiute dal sistema. Le transizioni agiscono su gruppi di posti 
+ togliendo marche da alcuni e aggiungendone ad altri. Si dice che un
+ posto è \emph{di ingresso} rispetto ad una transizione se l'arco che
+ collega i due elementi è direzionato verso la transizione, viceversa
+ si dice che il posto è \emph{di uscita}.\\ 
+ Una transizione si dice abilitata se tutti i posti di ingresso
+ hanno almeno tante marche quanto è il peso dell'arco stesso. Quando
+ una transizione \emph{scatta} vengono tolte marche dai posti in
+ ingresso solidalmente al peso degli archi ed equivalentemente ne
+ vengono aggiunti ai posti in uscita.\\
+ Una delle prime modifiche apportate al linguaggio è stata quella di
+ passare dal trattare reti elementari (formate cioè da posti contenenti
+ al più una marca e archi con peso uno) alle più complesse reti posti e transizioni
+ che ha richiesto la riscrittura di gran parte del codice che gestisce
+ le strutture dati basilari al funzionamento del sistema.\\
+ La mancanza di un posizionamento manuale degli elementi della rete da
+ una parte diminuisce il tempo necessario all'utente per definire il
+ sistema ma dall'altra fa sorgere un problema non indifferente relativo
+ alla scelta automatica della posizione dei nodi una volta esportato il
+ sistema in un formato grafico. Durante questo stage non è stato
+ possibile sviluppare un algoritmo di posizionamento adatto alle reti
+ di Petri ma la struttura del progetto sviluppato permette facilmente
+ l'implementazione di un metodo all'interno del codice.\\
+ La versione attuale del software sviluppato permette di esportare la
+ struttura creata in due diversi modi. Il primo metodo è quello di
+ utilizzare il pacchetto \emph{Graphviz} che, attraverso gli algoritmi
+ forniti all'utente, permette di creare reti con posizioni scelte in
+ modo corretto. Un secondo metodo è quello di esportare la rete secondo le 
+ direttive del formato {\bf PNML} che è stato standardizzato negli ultimi anni e
+ sul quale parecchi tool di sviluppo a analisi per reti di Petri si basano. \\
+ Altra modifica apportata al linguaggio è stata l'aggiunta della possibilità di gestire array
+ monodimensionali di Posti, Transizioni o Reti. Avere vettori di elementi fornisce la possibilità 
+ di utilizzare gli stessi all'interno di cicli potendo in questo modo evitare di dover scrivere 
+ comandi molto simili tra di loro compattandoli viceversa in espressioni generiche. \\
+ Una delle aggiunte con più ampio impatto sulla capacità espressiva del linguaggio
+  è stata la definizione di un costrutto che ricalca 
+ il funzionamento del ciclo {\tt for} dei più utilizzati linguaggi di programmazione. La combinazione 
+ di questo costrutto e dei vettori, come precedentemente accennato, permette di aumentare 
+ decisamente la potenza espressiva del linguaggio e di diminuire le forze impiegate nella 
+ stesura del codice. Si è cercato di mantenere la sintassi di questo costrutto il più possibile simile
+ a quanto presente in altri linguaggi di programmazione per rendere l'apprendimento del linguaggio
+ semplice. \\
+ Uno degli aspetti principali del linguaggio è la possibilità di sviluppare un sistema 
+ in modo modulare, sviluppando una alla volta le componenti per poi unirle in una nuova 
+ rete generica. \\\
+ La procedura di unione era già presente in PetriNet all'inizio del mio lavoro e permetteva di unire due 
+ reti ma, come si mostrerà nei prossimi capitoli, commetteva degli errori in particolari casi. Una
+ parte del mio stage è stata dedicata al ridefinire questo costrutto in modo da avere la possibilità di 
+ unire un numero generico di reti e verificarne il corretto funzionamento. Dato che durante lo sviluppo di
+ questa funzionalità sono sorte considerazioni contrastanti riguardo al comportamento di default 
+ del sistema è fornita all'utente la possibilità di decidere come il software sviluppato gestisca questi casi.
+ Per fare ciò è stato necessario sviluppare un metodo per fornire direttive al parser sulla falsariga 
+ di come i maggiori compilatori C gestiscono le direttive al compilatore. \\
+ Per poter assecondare la natura descrittiva di PetriNet è stato inoltre deciso di inserire la possibilità di 
+ gestire i commenti all'interno del codice mantenendo il più possibile la similarità di PetriNet con 
+ il linguaggio C. Per ora sono permessi solo commenti monoriga o alla fine di ogni istruzione e non 
+ commenti dislocati su righe diverse. \\
+ Lo strumento software fornito per poter gestire il linguaggio sviluppato è formato da quttro componenti
+ principali. \\
+ Il lexer chiamato già nella versione precedente {\tt PetriNet\_lex.py} permette di suddividere il codice 
+ fornito al modulo in token e di verificarne la correttezza lessicale. Una volta che il suddetto modulo 
+ esegue correttamente il suo lavoro passa gli elementi al parser (chiamato {\tt PetriNet\_parser.py}) 
+ che si occupa di verificare la correttezza sintattica dei comandi gestiti.\\
+ Sia parser che lexer sono sviluppati basandosi fortemente sul modulo {\tt ply}
+ che è un'implementazione dei classici strumenti \emph{lex} e \emph{yacc} implementato 
+ completamente in Python e sviluppato in ambito accademico da David Beazley. \\
+ Un terzo componente è il modulo {\tt PetriNet.py} che contiene tutte le classi Python 
+ di gestione degli elementi di una rete di Petri. Questo modulo, come precedentemente scritto, è stato
+ quasi completamente riscritto per poter funzionare con la nuova classe di reti trattate. \\
+ Ultimo modulo Python sviluppato è il modulo {\tt pnpre.py} (Petri Net PREprocessor) che, come 
+ facilmente comprensibile dal nome, si occupa di preprocessare il file prima che lexer e parser
+ inizino il loro lavoro. Il compito principale di questo modulo è quello di espandere correttamente 
+ i cicli for creando un numero corretto di istruzioni ed sostituendo le variabili utilizzate in modo corretto. \\
+ \'E stato inoltre creato un semplice script bash che permette di richiamare in modo corretto e semplice
+ preprocessore, parser e lexer. Questo comando ha preso il nome di {\tt pnc} (PetriNet complier) e non 
+ fa nient'altro che chiamare il preprocessore sul file passato e passare il risultato al parser che si occupa 
+ di comprendere ed eseguire il codice.\\
+ Alcune funzionalità fornite dalla precedente versione di PetriNet sono state eliminate in quanto 
+ implementate incorrettamente o comunque gestibili in modo più corretto, completo e veloce da 
+ altri tool (un esempio è la possibilità di creare il grafo delle marcature di una rete che generava 
+ grafi errati e può essere facilmente sostituito con il tool {\tt pipe}). \\
+ 
+ I prossimi capitoli di questo documento sono suddivisi nel seguente modo:
+ \begin{description}
+ \item[Capitolo \ref{cha:stato_arte}] si occupa di presentare il linguaggio sviluppato fino al momento
+ in cui è subentrato il mio lavoro di stage, gli strumenti utilizzati per sviluppare il software e dà una 
+ panoramica sulla struttura dei file in formato PNML.
+ \item[Capitolo \ref{cha:analisi_petrinet}] si occupa di analizzare e di portare una critica alle scelte 
+ prese nello sviluppo di PetriNet nel formato in cui si presentava all'inizio del mio stage. In questo 
+ capitolo vengono presentati anche i problemi che affliggevano il sistema e si è cercato di dare un'idea 
+ sulle possibili soluzioni.
+ \item[Capitolo \ref{cha:sviluppo_petrinet}] si occupa di mostrare come il linguaggio è stato modificato,
+ come è stato scelto di trattare i problemi sorti nell'analisi mostrata nel capitolo \ref{cha:analisi_petrinet} 
+ e mostra le aggiunte apportate sia al linguaggio che allo strumento software sviluppato.
+ \item[Capitolo \ref{cap:esempi}] si occupa di presentare qualche esempio di come PetriNet 
+ può essere utilizzato per descrivere problemi tipici.
+ \end{description}
+ %
 \chapter{Attuale stato dell'arte}\label{cha:stato_arte}
 %
 \section{Introduzione alle reti di Petri}
@@ -581,12 +652,52 @@ che deve venire usato per visualizzare il testo delle etichette.\\
 Per una trattazione approfondita di PNML si rimanda a
 \cite{WEB-KINDLER} o \cite{KINDLER}.
 
-\chapter{Analisi di PetriNet}
+\section{Python}
+Il software sviluppato durante questo stage è stato scritti nel linguaggio di programmazione
+Python.\\
+Python è un linguaggio di programmazione di alto livello adatto a venir utilizzato in svariati
+ambiti applicativi. Lo sviluppo di questo linguaggio è iniziato alla fine degli anni '80 ad opera 
+di Guido van Rossum che ne segue tuttora l'avanzamento. \\
+Python supporta diversi paradigmi di programmazione: ad oggetti, procedurale e, seppur in 
+modo meno esteso, il paradigma funzionale. A differenza di altri linguaggi fornisce una gestione
+automatica della memoria, un garbage collector e la tipizzazione dinamica e forte delle variabili. \\
+Essendo un linguaggio interpretato necessita della presenza di un programma interprete per 
+poter eseguire il codice evitando in questo modo la fase di linking classica dei linguaggi compilati.
+\'E comunque possibile, impostando correttamente il compilatore, ottenere il file eseguibile 
+anziché eseguire il codice. \\
+L'implementazione più utilizzata del linguaggio è CPython sviluppato
+dalla Python Software Foundation ed è scritta in C ma sono largamente utilizzate anche 
+implementazioni in Java (Jython), implementazioni che si interfacciano con l'architettura 
+.NET di Microsoft (IronPython) nonché implementazioni scritte in Python (PyPy) che si prestano
+alla modifica da parte degli utenti e permettono 
+facilmente di identificare aree nelle quali il linguaggio può venir migliorato. L'architettura di
+Python è stata sviluppata sin dalla sua prima implementazione in modo da 
+rendere il linguaggio facilmente estensibile con C o C++. \\
+Una delle caratteristiche più note di questo linguaggio è il fatto che la delimitazione dei 
+blocchi di codice non avviene come nella maggior parte dei linguaggi con parentesi
+o keyword bensì tramite l'indentazione. Questa caratteristica migliora la leggibilità del codice
+e obbliga chi sviluppa in questo linguaggio a mantenere un certo standard nello stile di 
+scrittura del codice a differenza di altri linguaggi che lasciano questo aspetto alla discrezionalità 
+dell'utilizzatore. \\
+Uno dei punti di forza di Python è certamente la libreria standard fornita con le implementazioni 
+che dota l'utente di utili funzionalità e strutture dati complesse.  Avendo inoltre una comunità 
+molto sviluppata è possibile trovare librerie adatte ad ogni necessità già sviluppate. \\
+Essendo Python un linguaggio interpretato le performance in termini di esecuzione del codice 
+non sono uno dei suoi punti di forza allineandosi sostanzialmente con altri linguaggi di questo 
+genere. L'utilizzo della libreria standard comunque permette di avere ottimi risultati in quanto
+la macchina virtuale è dotata di una serie di ottimizzazioni interne. \\
+L'ostacolo delle performance inoltre può essere aggirato inserendo direttamente del codice 
+C all'interno dei sorgenti Python sfruttando le prestazioni di un linguaggio compilato 
+solamente nelle parti dove la rapidità di esecuzione è un requisito fondamentale.
+
+
+\chapter{Analisi di PetriNet}\label{cha:analisi_petrinet}
 Nel seguente capitolo si analizzerà il linguaggio PetriNet e il funzionamento
 dei moduli sviluppati precedentemente evidenziandone errori e accennando possibili soluzioni
 
 \section{Linguaggio PetriNet}\label{sec:linguaggio_petrinet}
-Nella seguente sezione viene analizzato il linguaggio PetriNet come sviluppato durante il lavoro di tesi di Sara Faggioni.
+Nella seguente sezione viene analizzato il linguaggio PetriNet come sviluppato durante il lavoro 
+di tesi di Sara Faggioni.
  Vengono riportate delle considerazioni mostrando alcuni problemi che si sono presentati durante
  l'utilizzo e accennando a possibili soluzioni applicabili.
 
@@ -828,7 +939,7 @@ in modo sostanzialmente corretto con quanto finora sviluppato.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{Sviluppo di PetriNet}
+\chapter{Sviluppo di PetriNet}\label{cha:sviluppo_petrinet}
 Nel seguente capitolo verranno mostrate le modifiche apportate al formalismo del linguaggio per ovviare 
 ai problemi riportati nel capitolo precedente e le nuove funzionalità dello stesso.
 
@@ -880,17 +991,6 @@ La decisione presa non limita le possibilità fornite dall'utilizzo di PetriNet 
 si vedrà in seguito, è stata aggiunta la possibilità di esportare le reti in un formato adatto a 
 software di simulazione\footnote{Vedi programma pipe a http://pipe2.sourceforge.net/} che creano 
 grafi delle marcature in modo corretto.
-
-\subsection{Commenti}\label{ssect:new_commenti}
-Nella nuova implementazione di PetriNet è stata aggiunta la possibilità di inserire commenti all'interno del 
-codice. Volendo mantenere uno stile {\tt c}-like (decisione presa precedentemente al mio stage) si è optato 
-per la possibilità di inserire commenti monoriga preceduti dai caratteri {\tt //}. Il seguente esempio mostra 
-dei commenti innestati nel codice:
-\begin{verbatim}PetriNet net;
-Place net::a, net::b; // Commento a fine riga
-// Commento che prende tutta la riga
-Transition net::x, net::y;
-\end{verbatim}
 
 \subsection{Marcatura iniziale}
 \begin{figure}[htb]
@@ -1192,6 +1292,17 @@ crea la rete presentata in figura \ref{fig:flussi3.png} nella quale si vede che 
 \centerline{\includegraphics[height=5cm]{img/flussi3.png}}
 \caption{Rete con archi pesati}\label{fig:flussi3.png}
 \end{figure}
+
+\subsection{Commenti}\label{ssect:new_commenti}
+Nella nuova implementazione di PetriNet è stata aggiunta la possibilità di inserire commenti all'interno del 
+codice. Volendo mantenere uno stile {\tt c}-like (decisione presa precedentemente al mio stage) si è optato 
+per la possibilità di inserire commenti monoriga preceduti dai caratteri {\tt //}. Il seguente esempio mostra 
+dei commenti innestati nel codice:
+\begin{verbatim}PetriNet net;
+Place net::a, net::b; // Commento a fine riga
+// Commento che prende tutta la riga
+Transition net::x, net::y;
+\end{verbatim}
 
 \subsection{Unione di reti}\label{subsect:unione_di_reti}
 Per migliorare la comprensibilità di un codice scritto in linguaggio PetriNet è possibile creare delle reti che descrivano il comportamento di una componente per poi unire tutte queste sottoreti in una rete di Petri.\\

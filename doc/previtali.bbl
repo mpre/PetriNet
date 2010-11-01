@@ -2,18 +2,19 @@
 
 \bibitem[Fag10]{FAG10}
 "Sara Faggioni".
-\newblock "strumenti testuali e grafici per la specifica di reti di petri".
+\newblock {Strumenti Testuali e grafici per la specifica di reti di Petri}.
 \newblock Master's thesis, "Universit\'a degli Studi di Milano Bicocca", 2010.
 
 \bibitem[Kin06]{KINDLER}
 "Ekkart Kindler".
-\newblock "concepts, status, and future directionse".
-\newblock 2006.
+\newblock {Concepts, Status, and Future Directions}.
+\newblock {\em "Entwurf Komplexer Automatisierungssysteme (EKA)"}, 9:35--55,
+  2006.
 
-\bibitem[Mur88]{MURATA}
+\bibitem[Mur89]{MURATA}
 "Tadao Murata".
-\newblock "petri nets: Properties, analysis and applications".
-\newblock 1988.
+\newblock {Petri nets: Properties, analysis and applications}.
+\newblock {\em {Proceedings of the IEEE}}, 77(4):541--580, {April} 1989.
 
 \bibitem["Py]{PYTH}
 "Python".
@@ -25,11 +26,13 @@
 
 \bibitem[Sum09]{SUMMERFIELD}
 "Mark Summerfield".
-\newblock {\em "Programming in Python3"}.
+\newblock {\em {Programming in Python3}}.
 \newblock Addison Wesley, 2009.
 
-\bibitem[WK]{WEB-KINDLER}
+\bibitem[WK03]{WEB-KINDLER}
 "Michael Weber and Ekkart Kindler".
-\newblock "the petri net markup language".
+\newblock {The Petri Net Markup Language}.
+\newblock {\em "Petri Net Technology for Communication-Based Systems –
+  Advances in Petri Nets"}, 2472:122--144, 2003.
 
 \end{thebibliography}
