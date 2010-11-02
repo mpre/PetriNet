@@ -436,11 +436,15 @@ class PetriNet(object):
         # Nodo della rete
         net = ET.SubElement(root, 'net', id = 'PetriNet.{0}'.format(self.name), type = 'http://www.pnml.org/version-2009/grammar/ptnet')
         # Nome della rete
+        if self.name.__class__.__name__ == 'list':
+            provv_name = '{0}[{1}]'.format(self.name[0], self.name[1])
+        else:
+            provv_name = self.name
         net_name_text = ET.SubElement(ET.SubElement(net, 'name'), 'text')
-        net_name_text.text = self.name
+        net_name_text.text = provv_name
         # Aggiunta dei posti
         for place in self.places:
-            place_el = ET.SubElement(net, 'place', id = '{0}.{1}'.format(self.name, place.name))
+            place_el = ET.SubElement(net, 'place', id = '{0}.{1}'.format(provv_name, place.name))
             # Posizione del posto, tutto a 0 perché manca un algoritmo di posizionamento.
             # Sarà tutto sovrapposto
             place_pos = ET.SubElement(ET.SubElement(place_el, 'graphics'), 'position', x = '0', y = '0')
@@ -461,7 +465,7 @@ class PetriNet(object):
                 place_cap.text = str(place.capacity)
                 
         for trans in self.transitions:
-            trans_el = ET.SubElement(net, 'transition', id = '{0}.{1}'.format(self.name, trans.name))
+            trans_el = ET.SubElement(net, 'transition', id = '{0}.{1}'.format(provv_name, trans.name))
             # Posizione della transizione, tutto a 0 perché manca un algoritmo di posizionamento.
             # Sarà tutto sovrapposto
             trans_pos = ET.SubElement(ET.SubElement(trans_el, 'graphics'), 'position', x = '0', y = '0')
@@ -471,8 +475,8 @@ class PetriNet(object):
             trans_name_pos = ET.SubElement(ET.SubElement(ET.SubElement(trans_el, 'name'), 'graphics'), 'offset', x = '22', y = '-10')
         
         for link in self.links:
-            link_el = ET.SubElement(net, 'arc', id = '{0}.{1} ->{2} {3}'.format(self.name, link.pre.name, link.weight, link.post.name),
-                                    source = '{0}.{1}'.format(self.name, link.pre.name),
+            link_el = ET.SubElement(net, 'arc', id = '{0}.{1} ->{2} {3}'.format(provv_name, link.pre.name, link.weight, link.post.name),
+                                    source = '{0}.{1}'.format(provv_name, link.pre.name),
                                     target = '{0}.{1}'.format(self.name, link.post.name))
             link_weight_text = ET.SubElement(ET.SubElement(link_el, 'inscription'), 'text')
             link_weight_text.text = str(link.weight)
@@ -486,13 +490,17 @@ class PetriNet(object):
         root = ET.Element('pnml')
         root.name = 'pnml'
         # Nodo della rete
-        net = ET.SubElement(root, 'net', id = 'PetriNet.{0}'.format(self.name), type = 'http://www.pnml.org/version-2009/grammar/ptnet')
+        if self.name.__class__.__name__ == 'list':
+            provv_name = '{0}[{1}]'.format(self.name[0], self.name[1])
+        else:
+            provv_name = self.name
+        net = ET.SubElement(root, 'net', id = 'PetriNet.{0}'.format(provv_name), type = 'http://www.pnml.org/version-2009/grammar/ptnet')
         # Nome della rete
         net_name_text = ET.SubElement(ET.SubElement(net, 'name'), 'text')
-        net_name_text.text = self.name
+        net_name_text.text = provv_name
         # Aggiunta dei posti
         for place in self.places:
-            place_el = ET.SubElement(net, 'place', id = '{0}.{1}'.format(self.name, place.name))
+            place_el = ET.SubElement(net, 'place', id = '{0}.{1}'.format(provv_name, place.name))
             # Posizione del posto, tutto a 0 perché manca un algoritmo di posizionamento.
             # Sarà tutto sovrapposto
             place_pos = ET.SubElement(ET.SubElement(place_el, 'graphics'), 'position', x = '100', y = '100')
@@ -514,7 +522,7 @@ class PetriNet(object):
 	    #place_cap_pos = ET.SubElement(ET.SubElement(ET.SubElement(place_el, 'name'), 'graphics'), 'offset', x = '22', y = '-10')
         
         for trans in self.transitions:
-            trans_el = ET.SubElement(net, 'transition', id = '{0}.{1}'.format(self.name, trans.name))
+            trans_el = ET.SubElement(net, 'transition', id = '{0}.{1}'.format(provv_name, trans.name))
             # Posizione della transizione, tutto a 0 perché manca un algoritmo di posizionamento.
             # Sarà tutto sovrapposto
             trans_pos = ET.SubElement(ET.SubElement(trans_el, 'graphics'), 'position', x = '0', y = '0')
@@ -524,9 +532,9 @@ class PetriNet(object):
             trans_name_pos = ET.SubElement(ET.SubElement(ET.SubElement(trans_el, 'name'), 'graphics'), 'offset', x = '22', y = '-10')
         
         for link in self.links:
-            link_el = ET.SubElement(net, 'arc', id = '{0}.{1} ->{2} {3}'.format(self.name, link.pre.name, link.weight, link.post.name),
-                                    source = '{0}.{1}'.format(self.name, link.pre.name),
-                                    target = '{0}.{1}'.format(self.name, link.post.name))
+            link_el = ET.SubElement(net, 'arc', id = '{0}.{1} ->{2} {3}'.format(provv_name, link.pre.name, link.weight, link.post.name),
+                                    source = '{0}.{1}'.format(provv_name, link.pre.name),
+                                    target = '{0}.{1}'.format(provv_name, link.post.name))
             link_weight_text = ET.SubElement(ET.SubElement(link_el, 'inscription'), 'value')
             link_weight_text.text = str(link.weight)
         ET.ElementTree(root).write(file_name)
