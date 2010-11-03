@@ -8,6 +8,7 @@
 \usepackage{amsthm}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{subfigure}
 %\usepackage[pdftex]{graphicx}
 
 
@@ -794,7 +795,7 @@ In realtà il grafo creato è quello mostrato nell'immagine \ref{fig:err_gen_ret
 nel quale compaiono due posti con lo stesso identico nome.
 
 
-\subsection{Creazione grafo delle marcature}
+\subsection{Creazione grafo delle marcature}\label{analisi:grafo}
 In PetriNet è possibile creare il grafo delle marcature. Tale procedura è errata e produce 
 grafi non corretti. \\
 Prendiamo ad esempio il seguente codice:
@@ -982,11 +983,10 @@ It seems that an element named a is already in x
 
 \subsection{Creazione del grafo delle marcature}\label{ssect:creazione_grafo_marcature}
 Nell'implementazione precedente di PetriNet era possibile creare il grafo delle 
-marcature della rete definita. Dato che questo è un aspetto di simulazione mentre 
-l'obiettivo di questo sistema è quello di fornire un linguaggio di specifica per la rete,
-dato che l'implementazione della creazione di grafi delle marcature era errata e quindi
-sarebbe stato necessario riscrivere anche questo pezzo di codice è stato deciso di 
-eliminare queste funzionalità.\\
+marcature della rete definita. Come mostrato nella sezione \ref{analisi:grafo} erano presenti 
+dei casi in cui questo compito veniva svolto in modo scorretto. \\
+Siccome questo è un aspetto di simulazione mentre PetriNet 
+si prefigge di essere un linguaggio di specifica è stato scelto di eliminare questa funzionalità. \\
 La decisione presa non limita le possibilità fornite dall'utilizzo di PetriNet in quanto, come
 si vedrà in seguito, è stata aggiunta la possibilità di esportare le reti in un formato adatto a 
 software di simulazione\footnote{Vedi programma pipe a http://pipe2.sourceforge.net/} che creano 
@@ -997,7 +997,7 @@ grafi delle marcature in modo corretto.
 \centerline{\includegraphics[width=7cm]{img/test_marcature.png}}
 \caption{Esempio di semplice rete con marche}\label{fig:test_marcature.png}
 \end{figure}
-Il modo di definire una marcatura in PetriNet è stato modificato totalmente per poter essere utilizzabile con reti che hanno posti con capacità maggiore di 1.
+Il modo di definire una marcatura in PetriNet è stato modificato totalmente per poter essere utilizzato con reti che hanno posti con capacità maggiore di 1.
 Il modo migliore per poter spiegare questo nuovo metodo è mostrando un esempio.
 \begin{verbatim}PetriNet net;
 Place net{p1, p2(5), p3};
@@ -1008,7 +1008,7 @@ net{p1 -> t1 ->(3) p2 ->(3) t2 -> p3 -> t3 -> p1};
 net{p1=1, p2=3};
 \end{verbatim}
 
-Nell'esempio appena scritto viene create una rete contenente 3 posti ({\tt p2} con capacità 5) e 3 transizioni. 
+Nell'esempio appena scritto viene creata una rete contenente 3 posti ({\tt p2} con capacità 5) e 3 transizioni. 
 Successivamente viene definito il flusso della rete descrivendo una rete circolare e dopodiché viene istanziata la marcatura iniziale della rete con il codice {\tt net\{p1=1, p2=3\}}
  che inserisce una marca in {\tt p1} e 3 marche in {\tt p2}. Una rappresentazione di questa rete è mostrata in figura \ref{fig:test_marcature.png}.\\
 Ovviamente, nel caso si cercasse di inserire una quantità di marche maggiore alla capacità di un posto, il sistema fornirà un errore.
@@ -1028,8 +1028,7 @@ possibilità di modificare il comportamento del sistema inserendo
 direttamente nel codice delle direttive\footnote{Chiamate per
   chiarezza direttive al parser in quanto sono valori che vengono
   considerati da questa componente del sistema}.\\
-Per poter passare una direttiva al parser lo schema generale è
-banalmente il
+Per poter passare una direttiva al parser lo schema generale è il
 seguente: \\
 {\tt \# nome\_parametro=valore\_parametro;} \footnote{\'E stata
   scelta questa sintassi in quanto simile alle direttive al
@@ -1050,7 +1049,7 @@ sistema assegnerà ai posti una capacità di default concettualmente
 illimitata ma, in realtà, essa sarà comunque limitata al numero intero
 massimo gestibile dalla versione di Python sottostante al sistema.
 
-\subsection{Array di reti}
+\subsection{Array di reti}\label{sviluppo:array}
 Nella specifica di reti è possibile dover realizzare modelli con la stessa struttura base che 
 definiscono componenti del sistema che si comportano nello stesso modo. Finora per poter modellare 
 una situazione simile era necessario creare una componente alla volta ripetendo svariate volte 
@@ -1079,9 +1078,9 @@ creerà 5 reti che potrebbero successivamente venire modellate come nel classico
 è da considerarsi corretto:
 \begin{verbatim}PetriNet philosophers[5], monitor, fork[5];
 \end{verbatim}
-Si può fin da ora notare come ci sia già un marcato guadagno in lunghezza e chiarezza del codice derivante 
-da questa nuova funzionalità dovuto anche alla sola dichiarazione di reti (precedentemente sarebbero dovute 
-venir dichiarate una per una tutte le reti).
+Si può fin da ora notare come questa nuova funzionalità permetta di diminuire la quantità
+necessaria di codice e permetta di usare una sintassi che favorisce il raggruppamento
+di reti in modo concettuale.
 
 \subsubsection{Modellazione}
 È possibile, come precedentemente accennato, modellare il comportamento di tutte le reti appartenenti ad un 
@@ -1099,7 +1098,7 @@ philosophers{think -> get_ready -> ready -> get_left
 crea la struttura base di ogni rete di philosophers in modo che ogni componente si comporti esattamente nello
 stesso modo.\\
 È ragionevole pensare che in alcuni casi qualche componente abbia un comportamento particolare  pur basandosi 
-sullo stesso schema delle sue reti "simili". Per questo è possibile aggiungere posti, transizioni e archi di 
+sullo stesso schema delle altre reti. Per questo è possibile aggiungere posti, transizioni e archi di 
 flusso ad ogni singola rete appartenente ad un array.\\
 Il seguente codice:
 \begin{verbatim}PetriNet philosophers[5];
@@ -1111,8 +1110,9 @@ philosophers{think -> get_ready -> ready -> get_left
 philosophers[0]{get_ready -> times};
 [...]
 \end{verbatim}
-aggiunge arco alla prima rete dell'array {\tt philosophers} che va da una (possibile) transizione {\tt get\_ready}
-ad un (possibile) posto {\tt times} che potrebbe funzionare come contatore per questo componente.
+aggiunge un arco alla prima rete dell'array {\tt philosophers} che va da una (possibile) transizione 
+{\tt get\_ready}
+ad un (possibile) posto {\tt times} che potrebbe funzionare come contatore per questa componente.
 
 \subsection{Dichiarazione di posti}\label{ssect:nuovi_posti}
 Nella nuova implementazione di PetriNet è possibile definire posti in diverse modalità.\\
@@ -1134,7 +1134,7 @@ Place x::a, x::b;
 Place x::a, y::a, x::b, y::c;
 \end{verbatim}
 
-\item Il secondo metodo è dichiarando una lista di posti appartenenti ad una rete nel seguente modo:
+\item Il secondo metodo permette di dichiarare una lista di posti appartenenti ad una rete nel seguente modo:
 \begin{verbatim}PetriNet x;
 Place x{a, b, c};
 \end{verbatim}
@@ -1144,7 +1144,7 @@ che creerà una rete contenente i posti {\tt a}, {\tt b} e {\tt c}.
 Questa modalità sfrutta la capacità del sistema di fornire le funzioni dei moduli Python al linguaggio PetriNet
 (verrà mostrato in seguito questo aspetto). Di conseguenza è possibile definire posti ``generici'' slegati da 
 ogni rete e poi andare ad aggiungerli alle reti che ci interessano. Il seguente codice potrà aiutare a chiarire
-le idee a riguardo:
+le idee al riguardo:
 \begin{verbatim}PetriNet x;
 Place y;
 x::add(y);
@@ -1220,10 +1220,10 @@ Transition foo{ bar[3], baz}, foo[0]{ tar}, foo::zip, foo[1]::apt;
 \end{verbatim}
 
 
-\subsection{Definizione flussi}\label{ssect:nuovi_archi}
-La sintassi per la definizione di flussi in PetriNet è stata rivista completamente ed è stata 
+\subsection{Definizione del flusso}\label{ssect:nuovi_archi}
+La sintassi per la definizione del flusso in PetriNet è stata rivista completamente ed è stata 
 reimplementata ispirandosi leggermente al linguaggio di specifica FSP\footnote{ Si veda 
-http://www.doc.ic.ac.uk/~jnm/LTSdocumention/FSP-notation.html per maggiori dettagli}.\\
+http://www.doc.ic.ac.uk/$\sim$jnm/LTSdocumention/FSP-notation.html per maggiori dettagli}.\\
 Per poter definire un flusso all'interno di una rete sarà necessario ora specificare su quale rete si stia 
 lavorando in questo momento e successivamente raccogliere tra parentesi graffe una lista di posti e transizioni
 collegati tra di loro dai caratteri {\tt ->}. In questo modo si specificheranno percorsi all'interno della 
@@ -1276,7 +1276,8 @@ per ottenere quanto mostrato in figura \ref{fig:flussi2.png}.
 
 \subsubsection{Archi pesati}
 Come detto nella sezione \ref{ssect:classe_di_reti_trattate_new} il sistema è stato portato a definire 
-classi P/T e quindi deve essere possibile definire archi con pesi diversi da 1. Ciò è possibile inserendo, dopo
+classi di reti P/T e quindi deve essere possibile definire archi con pesi diversi da 1. 
+Ciò è possibile inserendo, dopo
 i caratteri {\tt ->} un numero intero positivo racchiuso all'interno di parentesi tonde. Per esempio la seguente
 porzione di codice:
 \begin{verbatim}PetriNet net;
@@ -1305,23 +1306,26 @@ Transition net::x, net::y;
 \end{verbatim}
 
 \subsection{Unione di reti}\label{subsect:unione_di_reti}
-Per migliorare la comprensibilità di un codice scritto in linguaggio PetriNet è possibile creare delle reti che descrivano il comportamento di una componente per poi unire tutte queste sottoreti in una rete di Petri.\\
+Per migliorare la comprensibilità di un codice scritto in linguaggio PetriNet è possibile creare delle reti che descrivono il comportamento di una componente per poi unire tutte queste sottoreti in una rete di Petri.\\
 L'unione di reti era presente anche nella versione precedente del linguaggio PetriNet ma presentava qualche problema sulla gestione della sovrapposizione di posti e transizioni.\\
 È possibile comporre \emph{n} reti sia per sovrapposizione di posti sia per sovrapposizione di transizioni e lo schema generale dell'unione di \emph{n} reti è il seguente:\\
 
-\emph{rete}  = emph{\tt(}\emph{lista-reti}{\tt)} on
-{\tt[}\emph{lista-elementi-unione-1},\emph{lista-elementi-unione-2},
-\dots \emph{lista-elementi-unione-n},{\tt]};\\
+{\small 
+{\bf rete}  = {\tt(}\emph{lista-reti}{\tt)} {\bf on}
+{\tt[}\emph{lista-elem-unione-1},
+\dots, \emph{lista-elem-unione-n}{\tt]};\\
+}
 
 dove:\\
 
-\emph{lista-reti} = \emph{nome-rete-1} | \emph{nome-rete-2} | \dots
-\emph{nome-rete-n} \\
+{\small
+{\bf lista\-reti} := \emph{rete-1} $|$ \emph{rete-2} $|$ \dots $|$
+\emph{rete-n} \\
 
-\emph{lista-elementi-unione} = \emph{elemento-rete-1} =
-\emph{elemento-rete-2} = \dots = \emph{elemento-rete-n} as
+{\bf lista-elem-unione} := \emph{elemento-1} = \dots = \emph{elemento-n} {\bf as}
 \emph{nuovo-nome} \\
 
+}
 \'E  possibile lasciare \emph{lista-elementi-unione} vuota. \\
 Il comportamento dell'operazione di unione è diverso a seconda delle
 direttive che vengono passate al parser. Le direttive che riguardano
@@ -1341,23 +1345,22 @@ La direttiva \emph{union\_add\_prefix} è un valore booleano (valori
 che non vengono uniti esplicitamente nella
 \emph{lista-elementi-unione} debba venir aggiunto come prefisso il
 nome della rete alla quale appartengono o meno. Nel caso questo valore
-venisse impostato a {\tt False} e nel caso in due reti esistano
+venisse impostato a {\tt False} e nel caso in due reti diverse esistano
 elementi con lo stesso nome essi verranno trattati come uno solo
-nell'unione e, di conseguenza, verranno collegati tutti gli elementi
-delle reti unite.\\
+nell'unione.\\
 \'E comunque sconsigliato creare reti partendo da modelli nei quali
-esistano elementi con lo stesso nome che non verranno uniti.\\
+esistono elementi con lo stesso nome che non verranno sovrapposti.\\
 La \emph{lista-elementi-unione} per ora deve necessariamente essere
 un'espressione di {\tt n} elementi dove {\tt n} è il numero di reti
 che partecipano alla procedura di unione. \'E molto facile notare che
-non necessariamente tutte le reti prendano parte con dei propri
+non necessariamente tutte le reti prendono parte con dei propri
 elementi ad una sovrapposizione, in questo caso, nell'elencare gli
 elementi, sarà sufficiente inserire la parola "null" nella posizione
 della rete che non partecipa all'unione.
 
 \subsubsection{Esempi}
 Per capire meglio il funzionamento dell'unione portiamo ora alcuni semplici
-esempi facilmente comprensibili. Per esempi più complessi si rimanda al capitolo
+esempi. Per esempi più complessi si rimanda al capitolo
 \ref{cap:esempi}.
 \subsubsection{Esempio 1}
 Unione di due reti con posti con lo stesso nome e senza direttiva di aggiunta
@@ -1492,7 +1495,7 @@ quasi la totalità dei linguaggi di programmazione. \\
 Questa funzionalità è utile perché permette di diminuire lo sforzo
 nella scrittura del codice, diminuisce la lunghezza dello stesso e
 rende concettualmente più chiaro il flusso delle istruzioni.\\
-La sintassi dei cicli simile a quella classica della maggior parte dei
+La sintassi dei cicli è simile a quella classica della maggior parte dei
 linguaggi di programmazione che può essere schematizzata nel seguente
 modo:
 \begin{verbatim}
@@ -1511,7 +1514,7 @@ che un ciclo termina. \\
 Ogni condizione può essere multipla, in questo caso ogni istruzione
 deve essere separata dalle altre utilizzando una virgola. \\
 Per ora il ciclo termina quando tutte le condizioni finali sono verificate. 
-Non è stata per implementata la possibilità di utilizzare operatori logici 
+Non è stata implementata la possibilità di utilizzare operatori logici 
 {\tt or} e {\tt and} in quanto PetriNet è pensato come linguaggio descrittivo
 e non come linguaggio di programmazione. Sarà comunque possibile in futuro
 migliorare questo aspetto.\\
@@ -1624,10 +1627,10 @@ In questa classe sono stati rimossi i metodi per la creazione del grafo delle ma
 
 \subsection{PetriNet\_lex.py}
 Come precedentemente detto questo modulo si occupa della suddivisione in token del codice basandosi sul modulo {\tt lex.py} di {\tt ply}.\\
-Nella reimplementazione sono stati eliminati i token inutilizzati precedentemente e sono state inserite seguenti regole:
+Nella reimplementazione sono stati eliminati i token inutilizzati precedentemente e sono state inserite le seguenti regole:
 \begin{description}
 
-\item[{\tt '|'}] per consentire di riconoscere l'{\tt or} nella descrizione di flussi1
+\item[{\tt '|'}] per consentire di riconoscere l'{\tt or} nella descrizione di flussi
 
 \item[{\tt 'COMMENT'}] per riconoscere i commenti all'interno del codice (si veda la sezione \ref{ssect:new_commenti})
 
@@ -1690,7 +1693,7 @@ Options:
                         (in questo caso il file passato non 
                         viene preso in considerazione)
 \end{verbatim}
-Questo modulo si occupa della definizione della grammatica formale del linguaggio analizzando la sequenza di token trasmessa del lexer.\\
+Questo modulo si occupa della definizione della grammatica formale del linguaggio analizzando la sequenza di token trasmessa dal lexer.\\
 In questo modulo sono state eliminate le variabili globali inutili precedentemente presenti ({\tt UnionA} e {\tt UnionB}).\\
 Essendo stato eliminato il concetto di rete corrente è stata eliminata la variabile {\tt actualNet} e la definizione della classe {\tt rete}. Il dizionario {\tt net} è poi stato rinominato in {\tt nets} e sono stati creati dei dizionari chiamati {\tt places}, {\tt transitions} e {\tt links} che contengono rispettivamente i posti, le transizioni e gli archi dichiarati non appartenenti ad alcuna rete\footnote{Esiste attualmente, in PetriNet, la possibilità di dichiarare posti, transizioni e archi non appartenenti ad alcuna rete. Elementi dichiarati in questo modo non hanno molta utilità se non nel caso si volessero poi aggiungere a svariate reti attraverso il metodo {\tt  add}. È comunque sconsigliata la dichiarazione di posti e transizioni in questo modo}.\\
 Vengono successivamente dichiarate le regole per la dichiarazione di reti, posti e transizioni nelle modalità viste nelle sezioni precedenti.\\
@@ -1759,7 +1762,7 @@ rete{ posto -> transizione -> posto2};
 \end{verbatim}
 
 \subsubsection{Esempio 2}
-Questo esempio mostra come i le variabili all'interno di un ciclo
+Questo esempio mostra come le variabili all'interno di un ciclo
 vengano espanse correttamente e come la parte del preprocessore che si
 occupa delle espressioni matematiche gestisca le precedenze fra gli
 operatori.\\
@@ -1779,7 +1782,7 @@ rete{p[4] -> t[4] -> p[0]};
 \end{verbatim}
 
 \subsubsection{Esempio 3}
-In questo esempio viene mostrato com il preprocessore gestisca
+In questo esempio viene mostrato come il preprocessore gestisca
 correttamente i cicli innestati. \\
 Passando il seguente codice al modulo:
 \begin{verbatim}
@@ -1818,7 +1821,7 @@ contiene i file {\tt PetriNet\_parser.py} e {\tt pnpre.py}.
 Nel seguente capitolo verranno mostrati e spiegati esempi di utilizzo didattici del linguaggio PetriNet.
 
 \section{Processo sequenziale ciclico}
-In questo semplicissimo esempio viene mostrato come modellare un comune processo ciclico che presenta un caso di concorrenza.
+In questo semplicissimo esempio viene mostrato come modellare un comune processo ciclico che presenta un caso di conflitto.
 \begin{figure}[htb]
 \centerline{\includegraphics[height=5cm]{img/processo_seq_concorrenza.png}}
 \caption{Processo sequenziale che presenta concorrenza sul posto p1}\label{fig:processo_seq_concorrenza.png}
@@ -1836,11 +1839,11 @@ net::to_pnml_pipe("~/reti/processo_seq_concorrenza.xml");
 
 Il risultato della compilazione di tale codice è mostrato nella fugura \ref{fig:processo_seq_concorrenza.png}\footnote{Il file è stato modificato con il software pipe per poter avere un layout corretto}.
 
-\section{Processi concorrenti su di una risorsa}
+\section{Processi che si contendono una risorsa}
 In questo esempio si modellano due processi con lo stesso comportamento e li si combina con un processo che descrive una generica risorsa che può essere libera oppure occupata. Il risultato è mostrato in figura \ref{fig:processi_concorrenti_su_risorsa.png}.
 \begin{figure}[htb]
 \centerline{\includegraphics[height=5.5cm]{img/processi_concorrenti_su_risorsa.png}}
-\caption{Rete che descrive due processi che concorrono per l'utilizzo di una risorsa}\label{fig:processi_concorrenti_su_risorsa.png}
+\caption{Rete che descrive due processi che competono per l'utilizzo di una risorsa}\label{fig:processi_concorrenti_su_risorsa.png}
 \end{figure}
 
 \begin{verbatim}PetriNet agente[2], risorsa;
@@ -1931,46 +1934,7 @@ net{p1=5, p3=5};
 net::to_pnml_pipe("~/reti/murata_writers_readers.xml");
 \end{verbatim}
 
-Nella figura \ref{fig:let_scrit.png} si può vedere il peso degli archi è stampato a video mentre non si vede la capacità dei posti. Con il software pipe è possibile verificare che la capacità viene inserita correttamente all'interno del file {\tt pnml}.
-
-\section{Il problema dei cinque filosofi}
-Il seguente esempio mostra come si può modellare il classico problema
-dei cinque filosofi proposto da Edsger Dijkstra nel 1965. Si può
-notare come nell'ultima unione di reti si formi un conflitto sulle
-forchette in quanto ogni filosofo modella già al suo interno la
-presenza delle risorse e che quindi il parser fornisca qualche
-avvertimento durante l'esecuzione del codice. Ciò però è ininfluente
-ai fini del risultato in quanto gli archi necessari vengono inseriti
-correttamente nella rete risultante.
-
-\begin{figure}[htb]
-\centerline{\includegraphics[width=12cm]{img/philosophers.png}}
-\caption{Modellazione del problema dei 5 filosofi}\label{fig:philosophers.png}
-\end{figure}
-
-\begin{verbatim}PetriNet philo[5], fork[5];
-Place philo{munch_munch, think}, fork{free};
-Transition philo{take, release}, fork{get, release};
-
-philo{think=1};
-fork{free=1};
-
-philo{think -> take -> munch_munch -> release -> think};
-fork{free -> get | release -> free};
-
-#union_add_prefix=True;
-for(i=0;i<5;i+=1){
-philo[i] = (philo[i] | fork[i] | fork[i+1 % 5] ) on 
-        [take = get = get as philo[i].take, 
-         release = release = release as 
-            philo[i].release ];
- }
-#union_add_prefix=False;
-sys = (philo[0] | philo[1] | philo[2] 
-     | philo[3] | philo[4]) on [ ];
-sys::to_dot("~/Desktop/philo", "png");
-sys::to_pnml_pipe("~/Desktop/philo.pnml");
-\end{verbatim}
+Nella figura \ref{fig:let_scrit.png} si può vedere che il peso degli archi è stampato a video mentre non si vede la capacità dei posti. Con il software pipe è possibile verificare che la capacità viene inserita correttamente all'interno del file {\tt pnml}.
 
 \section{Rete con contatore di cicli}
 Il seguente semplice esempio serve a mostare come gestire i posti di
@@ -1993,6 +1957,170 @@ net{istr1 -> t1 -> contatore |
 
 net::to_pnml_pipe("~/Desktop/cont.pnml");
 
+\end{verbatim}
+
+\newpage
+
+\section{Il problema dei cinque filosofi}
+Il seguente esempio mostra come si può modellare il classico problema
+dei cinque filosofi proposto da Edsger Dijkstra nel 1965. \\
+Si cercherà di costruire l'esempio passo passo mostrando 
+i risultati intermedi e facendo qualche considerazione sui risultati raggiunti.\\
+
+\begin{figure}[htbp] 
+\centering% 
+\subfigure[\label{es:philo1}] 
+{\includegraphics[width=5cm]{img/philo1.png}}\hspace{1cm}\vspace{1cm}% 
+\subfigure[\label{es:philo2}] 
+{\includegraphics[width=5cm]{img/philo2.png}}\hspace{1cm}\vspace{1cm}% 
+\subfigure[\label{es:philo3}] 
+{\includegraphics[width=5cm]{img/philo3.png}}\hspace{2cm}% 
+\caption{Modelli parziali del problema dei cinque filosofi relativi ai filosofi\label{fig:modelli_parziali}} 
+\end{figure} 
+
+La prima istruzione da fornire al sistema sarà quella di definire le reti
+che verranno utilizzate durante l'esercizio. A livello concettuale all'interno di questo problema 
+esistono due componenti distinte: i filosofi e le forchette. Sarà comodo, come vedremo proseguendo
+l'esempio, dichiarare queste reti come facenti parte di due array.
+
+\begin{verbatim}PetriNet philo[5], fork[5];
+\end{verbatim}
+
+In questo momento il sistema ha creato 10 contenitori pronti a gestire posti e transizioni.\\
+Riflettendo sulla componente che descrive il comportamento dei filosofi è sensato pensare 
+che possa essere definita come una rete circolare che effettua due transizioni: pensa e prendi
+le forchette. I posti utili in questo momento sono solo quelli che descrivono lo stato 
+temporaneo tra le due transizioni.\\
+Verrà utilizzato il costrutto mostrato nella sezione \ref{sviluppo:array} che permette di 
+dichiarare i posti e le transizioni come appartenenti all'array di reti per poter aggiungere 
+questi elementi ad ogni rete.
+
+\begin{verbatim}Place philo{ munch_munch, think};
+Transition philo{ take, release};
+\end{verbatim}
+
+In questo momento \emph{ogni} rete appartenente all'array {\tt philo} contiene due posti
+e due transizioni slegate tra di loro. \'E quindi necessario ora creare gli archi che li collegano. \\
+\'E interessante mostrare il fatto che non viene in questo momento dichiarata alcuna capacità 
+per i posti delle reti {\tt philo} e che quindi viene applicato il valore di default del sistema (capacità
+unitaria).
+
+\begin{verbatim}philo{ think -> take -> munch_munch -> release -> think};
+\end{verbatim}
+
+\'E possibile vedere una rappresentazione grafica di ogni rete 
+appartenente all'array philo nell'immagine \ref{es:philo1}. \\
+Per poter mostrare un'altra funzionalità del linguaggio è stato scelto ora di modificare 
+leggermente il problema da come descritto da Dijkstra. \\
+Supponiamo che si voglia contare il numero di volte in cui ogni filosofo mangia. In questo caso
+è necessario creare un posto illimitato collegato ad esempio alla transizione take che 
+tenga traccia dei cicli effettuati dalla rete. Aggiungendo il codice seguente:
+
+\begin{verbatim}#default_place_capacity=unlimited;
+Place philo{times};
+philo{ take -> times};
+\end{verbatim}
+
+Si raggiunge il risultato desiderato che viene mostrato nella figura \ref{es:philo2}.\\
+
+Passiamo ora a considerare le reti che definiscono i comportamenti delle forchette. \\
+Queste reti contengono un solo posto (con capacità unitaria) che descrive la presenza 
+o meno della forchetta sul tavolo. Oltre a questo posto devono essere presenti anche due 
+transizioni che permettono di aggiungere e togliere la marca dal posto. \\
+Prima cosa sarà necessario ripristinare la capacità di default assegnata ai posti dopodiché si
+passerà a dichiarare i posti e le transizioni delle componenti.
+
+\begin{verbatim}#default_place_capacity=1;
+Place fork{free};
+Transition fork{get, release};
+fork{free -> get | release -> free};
+\end{verbatim}
+
+La rappresentazione grafica di questa rete è mostrata nella figura \ref{es:fork1}.\\
+
+\begin{figure}[htbp] 
+\centering% 
+\subfigure[\label{es:fork1}] 
+{\includegraphics[width=5cm]{img/fork1.png}}\hspace{1cm}\vspace{1cm}% 
+\subfigure[\label{es:fork2}] 
+{\includegraphics[width=5cm]{img/fork2.png}}\hspace{1cm}\vspace{1cm}% 
+%\subfigure[\label{l12}] 
+%{\includegraphics[width=6cm]{layout/lay12}}\hspace{2cm}% 
+\caption{Modelli parziali del problema dei cinque filosofi relativi alle forchette\label{fig:modelli_parziali_fork}} 
+\end{figure} 
+
+In questo momento sono state definite tutte le reti necessarie, è ora possibile definire la marcatura iniziale
+di ogni componente. Le rappresentazioni grafiche sono mostrate nelle figure \ref{es:philo3} e \ref{es:fork2}.
+
+\begin{verbatim}philo{ think=1};
+fork{ free=1};
+\end{verbatim}
+
+\'E ora necessario unire ogni filosofo con le forchette adiacenti. \'E stato per comodità deciso che 
+il filosofo di posto {\tt i} ha come forchette vicine quelle di indice {\tt i} e {\tt i+1}. Per poter distinguere 
+le reti {\tt fork} con le quali ogni rete {\tt philo} interagisce è necessario aggiungere il prefisso ad 
+ogni elemento che viene aggiunto nella nuova rete altrimenti i posti di nome {\tt free} vengono sovrapposti 
+scorrettamente. \\
+Per comodità ogni rete creata viene riassegnata alle reti che descrivono i filosofi.
+
+\begin{verbatim}#union_add_prefix=True;
+for(i=0;i<5;i+=1){
+  philo[i] = (philo[i] | fork[i] | fork[i+1 % 5] ) 
+  	on [take = get = get as philo[i].take,
+	       release = release = release as philo[i].release ];
+ }
+ \end{verbatim}
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=8cm]{img/philo_con_fork.png}}
+\caption{Rappresentazione grafica delle interazioni tra il filosofo 1 e le forchette adiacenti}\label{es:philo_con_fork}
+\end{figure}
+
+
+Come mostrato in figura \ref{es:philo_con_fork} le reti vengono unite correttamente, vengono aggiunti tutti
+i prefissi e non ci sono sovrapposizioni non volute. \\
+Ultimo passo per raggiungere quanto desiderato è l'unione di tutte le nuove reti. In questo caso 
+non è necessario aggiungere i prefissi in quanto già presenti e non è necessario dichiarare su quali 
+elementi effettuare la sovrapposizione in quanto i posti con nomi uguali sono concettualmente (e correttamente) gli stessi. \\
+Scrivendo quindi le seguenti istruzioni:
+
+\begin{verbatim}#union_add_prefix=False;
+sys = (philo[0] | philo[1] | philo[2] | philo[3] | philo[4]) on [ ];
+\end{verbatim}
+
+Si ottiene quanto mostrato in figura \ref{fig:philosophers.png}.\\
+
+\begin{figure}[htb]
+\centerline{\includegraphics[width=12cm]{img/philosophers.png}}
+\caption{Modellazione del problema dei 5 filosofi}\label{fig:philosophers.png}
+\end{figure}
+
+Viene ora mostrato il codice completo e leggermente compattato.
+
+\begin{verbatim}
+PetriNet philo[5], fork[5];
+Place philo{munch_munch, think}, fork{free};
+Transition philo{take, release}, fork{get, release};
+
+#default_place_capacity=unlimited;
+Place philo{times};
+
+philo{think=1};
+fork{free=1};
+
+philo{think -> take -> munch_munch -> release -> think 
+          | take -> times};
+fork{free -> get | release -> free};
+
+#union_add_prefix=True;
+for(i=0;i<5;i+=1){
+  philo[i] = (philo[i] | fork[i] | fork[i+1 % 5] ) 
+  	on [take = get = get as philo[i].take, 
+	       release = release = release as philo[i].release ];
+ }
+
+#union_add_prefix=False;
+sys = (philo[0] | philo[1] | philo[2] | philo[3] | philo[4]) on [ ];
 \end{verbatim}
 
 %
