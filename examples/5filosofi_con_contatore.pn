@@ -1,0 +1,33 @@
+// Dichiarazione delle reti e dei relativi elementi 
+// La capacità di default, se non dichiarata, è 1
+PetriNet philo[5], fork[5];
+Place philo{munch_munch, think}, fork{free};
+Transition philo{take, release}, fork{get, release};
+
+// Posto che tiene traccia delle volte che ogni 
+// filosofo mangia
+#default_place_capacity=unlimited;
+Place philo{times};
+
+// Marcatura iniziale per ogni rete:
+// - i filosofi pensano
+// - le forchette sono sul tavolo
+philo{think=1};
+fork{free=1};
+
+// Modellazione di ogni rete degli array
+philo{think -> take -> munch_munch -> release -> think | take -> times};
+fork{free -> get | release -> free};
+
+#union_add_prefix=True;
+for(i=0;i<5;i+=1){
+  philo[i] = (philo[i] | fork[i] | fork[i+1 % 5] ) on [take = get = get as philo[i].take, release = release = release as philo[i].release ];
+ }
+
+philo[1]::to_pnml_pipe("~/Desktop/philo_con_fork.xml");
+
+#union_add_prefix=False;
+sys = (philo[0] | philo[1] | philo[2] | philo[3] | philo[4]) on [ ];
+
+//sys::to_dot("~/Desktop/philo_con_contatore", "png");
+//sys::to_pnml_pipe("~/Desktop/philo_con_contatore.xml");
