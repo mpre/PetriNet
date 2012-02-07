@@ -1,3 +1,5 @@
-PetriNet is a textual description language 
-for Petri nets.
+PetriNet is a textual description language for Petri nets.
+
+It was written during my bachelor's thesis in 2010. It isn't really well documented but you can find some 
+examples in the *examples* directory and find your way out.
 
